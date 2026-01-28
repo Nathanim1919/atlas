@@ -79,10 +79,16 @@
   
   --animate-marquee: marquee 25s linear infinite;
   --animate-marquee2: marquee2 25s linear infinite;
+  --animate-marquee-left: marquee-left 60s linear infinite;
+  --animate-marquee-right: marquee-right 60s linear infinite;
 
-  @keyframes marquee {
+  @keyframes marquee-left {
     0% { transform: translateX(0%); }
-    100% { transform: translateX(-100%); }
+    100% { transform: translateX(-33.333%); }
+  }
+  @keyframes marquee-right {
+    0% { transform: translateX(-33.333%); }
+    100% { transform: translateX(0%); }
   }
   @keyframes marquee2 {
     0% { transform: translateX(100%); }
