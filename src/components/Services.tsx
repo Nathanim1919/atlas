@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { 
   Server, 
@@ -16,11 +16,12 @@ import {
   HardDrive,
   Settings,
   Smartphone,
-  Palette,
   TestTube,
   Wrench,
   ArrowRight,
-  CheckCircle2
+  ChevronRight,
+  Layers,
+  Check
 } from "lucide-react";
 
 const services = [
@@ -28,279 +29,196 @@ const services = [
     id: "system-engineering",
     icon: Server,
     title: "System Engineering",
-    subtitle: "35+ Professionals",
-    description: "Building robust and well-managed ICT infrastructure for business-critical industries with our knowledgeable engineering team.",
-    color: "from-blue-500 to-blue-600",
+    subtitle: "Infrastructure Excellence",
+    description: "Building robust, scalable, and secure ICT infrastructure for mission-critical operations. Our engineering team ensures your physical and virtual systems are optimized for peak performance.",
     features: [
-      { icon: Network, title: "ICT Infrastructure Projects", desc: "Design, management, and execution of complete ICT solutions" },
-      { icon: Database, title: "Enterprise Systems", desc: "Oracle Database, Application Servers, Backup & Recovery Solutions" },
-      { icon: Shield, title: "SLA Services", desc: "Managed services for servers, storage, OS, and enterprise databases" },
-      { icon: Monitor, title: "Project Audit", desc: "ICT infrastructure project audit, commissioning, and verification" },
-      { icon: Cpu, title: "Consultancy", desc: "Expert consultancy on ICT infrastructure systems implementation" },
-      { icon: HardDrive, title: "Managed Services", desc: "Complete ICT infrastructure management for reduced total cost" },
-    ],
-    stats: [
-      { value: "80+", label: "Integration Projects" },
-      { value: "10+", label: "SLA Clients" },
-      { value: "35+", label: "Engineers" },
+      { icon: Network, title: "Infrastructure Design", desc: "End-to-end network architecture and deployment" },
+      { icon: Database, title: "Enterprise Systems", desc: "Oracle Database & Application Server solutions" },
+      { icon: Shield, title: "Security & Compliance", desc: "Hardened systems meeting industry standards" },
+      { icon: HardDrive, title: "Storage Solutions", desc: "High-availability SAN/NAS configurations" },
     ]
   },
   {
     id: "software-development",
     icon: Code2,
-    title: "Enterprise Application Development",
-    subtitle: "55+ Professionals",
-    description: "World-class software development focused on robust, flexible, secured, and user-friendly enterprise applications.",
-    color: "from-violet-500 to-violet-600",
+    title: "Software Development",
+    subtitle: "Digital Innovation",
+    description: "Custom enterprise software tailored to your specific business processes. We leverage modern stacks to build secure, scalable, and user-centric applications.",
     features: [
-      { icon: Monitor, title: "Custom Web Development", desc: "Modern web applications for internal use or customer-facing solutions" },
-      { icon: Smartphone, title: "Mobile Development", desc: "Multi-platform mobile apps with low-risk, cost-effective solutions" },
-      { icon: Settings, title: "API Development", desc: "Secure, well-documented APIs for seamless system integration" },
-      { icon: Palette, title: "UX/UI Design", desc: "Responsive & scalable apps that transform customer experiences" },
-      { icon: TestTube, title: "Quality Assurance", desc: "Industry-standard automated and manual testing practices" },
-      { icon: Wrench, title: "Application Maintenance", desc: "Modernize applications for improved security and reliability" },
-    ],
-    stats: [
-      { value: "40+", label: "Developers" },
-      { value: "5", label: "QA Team" },
-      { value: "5", label: "Dev Teams" },
+      { icon: Monitor, title: "Web Applications", desc: "Scalable cloud-native web solutions" },
+      { icon: Smartphone, title: "Mobile Solutions", desc: "Cross-platform enterprise mobility apps" },
+      { icon: Settings, title: "API Integration", desc: "Seamless connectivity between disparate systems" },
+      { icon: TestTube, title: "QA & Testing", desc: "Automated testing for reliability assurance" },
     ]
   },
   {
     id: "cloud",
     icon: Cloud,
-    title: "Cloud Implementation Services",
-    subtitle: "Private Cloud Solutions",
-    description: "Your trusted partner for private cloud solutions in Ethiopia, ensuring expected outcomes with less cost, risk, and disruption.",
-    color: "from-cyan-500 to-cyan-600",
+    title: "Cloud Solutions",
+    subtitle: "Future-Ready Infrastructure",
+    description: "Navigate your cloud journey with confidence. Whether private, public, or hybrid, we design cloud environments that drive agility and reduce operational overhead.",
     features: [
-      { icon: Cloud, title: "OpenStack Implementation", desc: "Private cloud deployment for financial and government institutions" },
-      { icon: Server, title: "Server Configuration", desc: "Tune virtual and physical servers to match application workloads" },
-      { icon: Shield, title: "Security & Governance", desc: "Ensure secure environment with standardized governance" },
-      { icon: Database, title: "Data Management", desc: "Maximize your use of data with optimized cloud infrastructure" },
-      { icon: Settings, title: "Multi-Cloud Management", desc: "Simplify management of multiple cloud environments" },
-      { icon: Monitor, title: "Consulting Services", desc: "Make the right decisions with expert cloud consulting" },
-    ],
-    stats: [
-      { value: "100%", label: "Success Rate" },
-      { value: "10+", label: "Implementations" },
-      { value: "24/7", label: "Support" },
+      { icon: Cloud, title: "Private Cloud", desc: "Secure OpenStack & virtualization deployments" },
+      { icon: Layers, title: "Migration Strategy", desc: "Risk-free transition of legacy workloads" },
+      { icon: Shield, title: "Cloud Security", desc: "Identity management and threat protection" },
+      { icon: Settings, title: "DevOps", desc: "CI/CD pipelines and infrastructure as code" },
     ]
   },
   {
     id: "managed-services",
     icon: Headphones,
-    title: "Managed Services & SLA",
-    subtitle: "End-to-End Support",
-    description: "Comprehensive end-to-end support services with defined service standards and commitments based on your requirements.",
-    color: "from-emerald-500 to-emerald-600",
+    title: "Managed Services",
+    subtitle: "24/7 Operational Support",
+    description: "Proactive management of your IT estate. We handle the complexity of day-to-day operations so you can focus on strategic business initiatives.",
     features: [
-      { icon: Network, title: "Network & Security", desc: "Complete network infrastructure and security management" },
-      { icon: HardDrive, title: "Storage Management", desc: "Enterprise storage solutions monitoring and maintenance" },
-      { icon: Database, title: "Database Services", desc: "Oracle and enterprise database administration and support" },
-      { icon: Code2, title: "Application Support", desc: "Application server maintenance and optimization" },
-      { icon: Server, title: "Operating Systems", desc: "Linux, Windows Server, and virtualization platforms" },
-      { icon: Settings, title: "Infrastructure", desc: "Complete ICT infrastructure lifecycle management" },
-    ],
-    stats: [
-      { value: "99.9%", label: "Uptime SLA" },
-      { value: "4hr", label: "Response Time" },
-      { value: "10+", label: "Enterprise Clients" },
+      { icon: Network, title: "NOC Services", desc: "24/7 network monitoring and incident response" },
+      { icon: Database, title: "DBA Services", desc: "Performance tuning and database maintenance" },
+      { icon: Server, title: "Server Management", desc: "Patch management and health monitoring" },
+      { icon: Wrench, title: "IT Support", desc: "Multi-tiered technical support and helpdesk" },
     ]
   },
   {
     id: "consultancy",
     icon: GraduationCap,
     title: "Consultancy & Training",
-    subtitle: "10+ Years Experience",
-    description: "Empowering businesses, non-profits, and government institutions across Ethiopia with expert ICT consultancy and training.",
-    color: "from-amber-500 to-amber-600",
+    subtitle: "Strategic Expertise",
+    description: "Empowering your team with the knowledge and strategies needed to thrive in the digital age. From digital transformation roadmaps to technical certification training.",
     features: [
-      { icon: Settings, title: "Digital Transformation", desc: "SaaS adoption, legacy system modernization, and optimization" },
-      { icon: Shield, title: "Risk & Compliance", desc: "Guidance on risk management and regulatory requirements" },
-      { icon: Code2, title: "SaaS Implementation", desc: "Expert integration, data migration, and configuration" },
-      { icon: GraduationCap, title: "Technology Training", desc: "SaaS platforms and cloud computing education" },
-      { icon: Monitor, title: "Digital Literacy", desc: "Enhance digital skills across all organizational levels" },
-      { icon: Wrench, title: "Change Management", desc: "Facilitate smooth technology adoption transitions" },
-    ],
-    stats: [
-      { value: "20+", label: "Organizations" },
-      { value: "500+", label: "Trained Professionals" },
-      { value: "10+", label: "Years Experience" },
+      { icon: Settings, title: "Digital Strategy", desc: "Technology roadmaps aligned with business goals" },
+      { icon: Shield, title: "Risk Assessment", desc: "Security audits and compliance consulting" },
+      { icon: GraduationCap, title: "Corporate Training", desc: "Customized technical workshops and certification" },
+      { icon: Wrench, title: "Process Optimization", desc: "ITIL-based service management improvement" },
     ]
   },
 ];
 
 export default function Services() {
-  const [activeService, setActiveService] = useState(services[0].id);
-
-  const activeServiceData = services.find(s => s.id === activeService);
+  const [activeServiceId, setActiveServiceId] = useState(services[0].id);
+  const activeService = services.find(s => s.id === activeServiceId) || services[0];
 
   return (
-    <section id="services" className="py-24 bg-neutral-50 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 dot-pattern" />
-      
+    <section id="services" className="py-24 bg-white relative">
       <div className="relative max-w-7xl mx-auto px-6">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="inline-block px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4">
-            Our Services
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold font-display text-neutral-900 mb-6">
-            Comprehensive <span className="gradient-text">ICT Solutions</span>
-          </h2>
-          <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
-            From system engineering to software development, we deliver end-to-end technology solutions tailored to your business needs.
-          </p>
-        </motion.div>
-
-        {/* Service Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {services.map((service) => (
-            <motion.button
-              key={service.id}
-              onClick={() => setActiveService(service.id)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
-                activeService === service.id
-                  ? "bg-primary-600 text-white shadow-lg shadow-primary-500/30"
-                  : "bg-white text-neutral-600 hover:bg-neutral-100 border border-neutral-200"
-              }`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <service.icon size={20} />
-              <span className="hidden sm:inline">{service.title.split(" ")[0]}</span>
-            </motion.button>
-          ))}
-        </div>
-
-        {/* Active Service Detail */}
-        {activeServiceData && (
-          <motion.div
-            key={activeServiceData.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="bg-white rounded-3xl shadow-xl overflow-hidden"
-          >
-            {/* Service Header */}
-            <div className={`bg-gradient-to-r ${activeServiceData.color} p-8 md:p-12 text-white`}>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                    <activeServiceData.icon size={32} />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl md:text-3xl font-bold font-display">{activeServiceData.title}</h3>
-                    <p className="text-white/80">{activeServiceData.subtitle}</p>
-                  </div>
-                </div>
-                <div className="flex gap-6">
-                  {activeServiceData.stats.map((stat, index) => (
-                    <div key={index} className="text-center">
-                      <div className="text-3xl font-bold font-display">{stat.value}</div>
-                      <div className="text-sm text-white/80">{stat.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <p className="mt-6 text-lg text-white/90 max-w-3xl">
-                {activeServiceData.description}
+        {/* Section Header - Clean & Technical */}
+        <div className="mb-16 border-b border-neutral-200 pb-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="max-w-3xl">
+              <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 tracking-tight mb-4">
+                Solutions Portfolio
+              </h2>
+              <p className="text-lg text-neutral-600 max-w-2xl">
+                Integrated technology services designed for enterprise scale, security, and performance.
               </p>
             </div>
-
-            {/* Service Features */}
-            <div className="p-8 md:p-12">
-              <h4 className="text-xl font-semibold font-display text-neutral-900 mb-8">What We Offer</h4>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {activeServiceData.features.map((feature, index) => (
-                  <motion.div
-                    key={feature.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="group p-6 rounded-2xl border border-neutral-200 hover:border-primary-300 hover:shadow-md transition-all"
-                  >
-                    <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary-500 transition-colors">
-                      <feature.icon className="text-primary-600 group-hover:text-white transition-colors" size={24} />
-                    </div>
-                    <h5 className="font-semibold text-neutral-900 mb-2">{feature.title}</h5>
-                    <p className="text-neutral-600 text-sm">{feature.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
+            <div className="hidden md:block">
+              <a href="#contact" className="text-emerald-700 font-semibold hover:text-emerald-800 flex items-center gap-2 text-sm">
+                Download Service Catalog <ArrowRight size={16} />
+              </a>
             </div>
-          </motion.div>
-        )}
+          </div>
+        </div>
 
-        {/* Service Cards Overview */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-16"
-        >
-          <h3 className="text-2xl font-bold font-display text-neutral-900 mb-8 text-center">
-            All Services at a Glance
-          </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, index) => (
+        <div className="grid lg:grid-cols-12 gap-0 border border-neutral-200 rounded-lg overflow-hidden bg-neutral-50">
+          {/* Left Column - Navigation List */}
+          <div className="lg:col-span-3 bg-white border-r border-neutral-200">
+            <div className="flex flex-col">
+              {services.map((service) => (
+                <button
+                  key={service.id}
+                  onClick={() => setActiveServiceId(service.id)}
+                  className={`group flex items-center justify-between p-5 text-left transition-all duration-200 border-l-4 ${
+                    activeServiceId === service.id
+                      ? "bg-neutral-50 border-l-emerald-600 text-neutral-900"
+                      : "bg-white border-l-transparent text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
+                  }`}
+                >
+                  <span className="font-medium text-sm">{service.title}</span>
+                  {activeServiceId === service.id && (
+                    <ChevronRight size={16} className="text-emerald-600" />
+                  )}
+                </button>
+              ))}
+            </div>
+            
+            {/* Trust Indicator - Integrated */}
+            <div className="p-6 mt-auto border-t border-neutral-200 bg-neutral-50">
+              <h4 className="text-xs font-bold text-neutral-900 uppercase tracking-wider mb-3">Service Standards</h4>
+              <ul className="space-y-2">
+                {[
+                  "ISO 9001:2015 Certified",
+                  "24/7 Support Available",
+                  "SLA Guaranteed"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-xs text-neutral-600">
+                    <Check size={12} className="text-emerald-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Right Column - Detail View */}
+          <div className="lg:col-span-9 bg-white min-h-[600px]">
+            <AnimatePresence mode="wait">
               <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                onClick={() => setActiveService(service.id)}
-                className="group cursor-pointer p-6 rounded-2xl bg-white border border-neutral-200 hover:border-primary-300 hover:shadow-xl transition-all"
+                key={activeService.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="h-full flex flex-col"
               >
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-4 shadow-lg`}>
-                  <service.icon className="text-white" size={28} />
+                {/* Content Header */}
+                <div className="p-8 md:p-10 border-b border-neutral-200 bg-white">
+                  <div className="flex items-start gap-6 mb-6">
+                    <div className="p-3 bg-neutral-100 rounded-md text-neutral-900">
+                      <activeService.icon size={32} strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-neutral-900 mb-2">{activeService.title}</h3>
+                      <p className="text-emerald-700 font-medium text-sm mb-4">{activeService.subtitle}</p>
+                      <p className="text-neutral-600 leading-relaxed max-w-3xl">
+                        {activeService.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <h4 className="text-xl font-semibold font-display text-neutral-900 mb-2 group-hover:text-primary-600 transition-colors">
-                  {service.title}
-                </h4>
-                <p className="text-neutral-600 text-sm mb-4">{service.description}</p>
-                <div className="flex items-center gap-2 text-primary-600 font-medium text-sm">
-                  Learn more
-                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+
+                {/* Features Grid - Technical Layout */}
+                <div className="p-8 md:p-10 bg-neutral-50/30 grow">
+                  <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+                    {activeService.features.map((feature, idx) => (
+                      <div key={idx} className="flex gap-4 items-start group">
+                        <div className="mt-1 text-emerald-600 group-hover:text-emerald-700 transition-colors">
+                          <feature.icon size={20} strokeWidth={1.5} />
+                        </div>
+                        <div>
+                          <h5 className="font-semibold text-neutral-900 text-sm mb-1">{feature.title}</h5>
+                          <p className="text-sm text-neutral-500 leading-relaxed">
+                            {feature.desc}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-12 pt-8 border-t border-neutral-200">
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs text-neutral-400">
+                        Ref: {activeService.id.toUpperCase()}_SVC_V2.4
+                      </div>
+                      <button className="text-sm font-semibold text-neutral-900 hover:text-emerald-700 flex items-center gap-2 transition-colors">
+                        View Technical Specifications <ArrowRight size={16} />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
-            ))}
+            </AnimatePresence>
           </div>
-        </motion.div>
-
-        {/* Partner Logos */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-20 text-center"
-        >
-          <p className="text-neutral-500 mb-8">Working with industry leaders</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            {["Oracle", "IBM", "Lenovo", "Nutanix", "RedHat", "SUSE"].map((partner) => (
-              <div
-                key={partner}
-                className="px-6 py-3 bg-white rounded-xl border border-neutral-200 text-neutral-600 font-semibold hover:border-primary-300 hover:text-primary-600 transition-colors"
-              >
-                {partner}
-              </div>
-            ))}
-          </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
-
-
