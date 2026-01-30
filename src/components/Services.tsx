@@ -150,9 +150,9 @@ export default function Services() {
                     setActiveServiceId(service.id);
                     window.history.pushState(null, "", `#${service.id}`);
                   }}
-                  className={`group flex items-center justify-between p-5 text-left transition-all duration-200 border-l-4 ${
+                  className={`group flex items-center cursor-pointer justify-between p-5 text-left transition-all duration-200 border-l-4 ${
                     activeServiceId === service.id
-                      ? "bg-neutral-50 border-l-emerald-600 text-neutral-900"
+                      ? "bg-neutral-50 border-l-emerald-600 bg-linear-to-r from-green-600 text-white to-transparent"
                       : "bg-white border-l-transparent text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
                   }`}
                 >

@@ -2,28 +2,45 @@
 
 import { motion } from "framer-motion";
 import { Building2, Award, Handshake, Globe2, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import Image from "next/image";
+import EnatImage from "../../public/bank/enat.png";
+import WegagenImage from "../../public/bank/wegagen.png";
+import DashenImage from "../../public/bank/dashen.jpeg";
+// import AbayImage from "../../public/bank/abay.png";
+import OromiaImage from "../../public/bank/oromo.png";
+import SiinqeeImage from "../../public/bank/sinque.png";
+import HijraImage from "../../public/bank/hijira.jpeg";
+import BerhanImage from "../../public/bank/birhan.jpg";
+import NibImage from "../../public/bank/nib.png";
+import BunnaImage from "../../public/bank/bunna.png";
+import EthSwitchImage from "../../public/bank/etswitch.jpeg";
+import EthiopianAirlinesImage from "../../public/bank/airline.png";
+import EthioTelecomImage from "../../public/bank/Ethio-Telecom.jpg";
+import MinistryOfFinanceImage from "../../public/bank/m1.jpeg";
+import EthiopianElectricUtilityImage from "../../public/bank/electric.png";
+// import EthiopianRevenueAuthorityImage from "../../public/bank/ethiopian-revenue-authority.png";
+import AddisAbabaUniversityImage from "../../public/bank/addis.jpeg";
+// import EthiopianInsuranceCorporationImage from "../../public/bank/ethiopian-insurance-corporation.png";
 
 const clients = [
-  "Commercial Bank of Ethiopia",
-  "Dashen Bank",
-  "Awash Bank",
-  "Wegagen Bank",
-  "Abay Bank",
-  "Oromia International Bank",
-  "Enat Bank",
-  "Siinqee Bank",
-  "Hijra Bank",
-  "Berhan Bank",
-  "Nib International Bank",
-  "Bunna Bank",
-  "EthSwitch",
-  "Ethiopian Airlines",
-  "Ethio Telecom",
-  "Ministry of Finance",
-  "Ethiopian Electric Utility",
-  "Ethiopian Revenue Authority",
-  "Addis Ababa University",
-  "Ethiopian Insurance Corporation",
+  { name: "Enat Bank", image: EnatImage },
+  { name: "Wegagen Bank", image: WegagenImage },
+  { name: "Dashen Bank", image: DashenImage },
+  // { name: "Abay Bank", image: AbayImage },
+  { name: "Oromia International Bank", image: OromiaImage },
+  { name: "Siinqee Bank", image: SiinqeeImage },
+  { name: "Hijra Bank", image: HijraImage },
+  { name: "Berhan Bank", image: BerhanImage },
+  { name: "Nib International Bank", image: NibImage },
+  { name: "Bunna Bank", image: BunnaImage },
+  { name: "EthSwitch", image: EthSwitchImage },
+  { name: "Ethiopian Airlines", image: EthiopianAirlinesImage },
+  { name: "Ethio Telecom", image: EthioTelecomImage },
+  { name: "Ministry of Finance", image: MinistryOfFinanceImage },
+  { name: "Ethiopian Electric Utility", image: EthiopianElectricUtilityImage },
+  // { name: "Ethiopian Revenue Authority", image: EthiopianRevenueAuthorityImage },
+  { name: "Addis Ababa University", image: AddisAbabaUniversityImage },
+  // { name: "Ethiopian Insurance Corporation", image: EthiopianInsuranceCorporationImage },
 ];
 
 const partners = [
@@ -59,25 +76,33 @@ export default function Clients() {
           </motion.div>
         </div>
 
-        {/* Client Logos - Clean Grid */}
+        {/* Client Logos - Creative Grid */}
         <div className="mb-32">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-px bg-neutral-200 border border-neutral-200 rounded-2xl overflow-hidden">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8">
             {clients.map((client, index) => (
               <motion.div
-                key={client}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                key={client.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.02 }}
-                className="bg-white p-8 flex items-center justify-center hover:bg-neutral-50 transition-colors duration-300 group relative h-32"
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className="group relative flex items-center justify-center p-6 h-40 rounded-2xl bg-neutral-50/50 hover:bg-white hover:shadow-2xl hover:shadow-emerald-900/10 border border-transparent hover:border-emerald-100 transition-all duration-500"
               >
-                <div className="text-center">
-                  <span className="text-lg font-bold text-neutral-400 group-hover:text-neutral-900 transition-colors duration-300">
-                    {client}
+                {/* Image Container */}
+                <div className="relative w-full h-full flex items-center justify-center transition-all duration-500 group-hover:-translate-y-4">
+                  <Image 
+                    src={client.image} 
+                    alt={client.name} 
+                    className="w-full h-full object-contain filter grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" 
+                  />
+                </div>
+                
+                {/* Name Label - Appears on Hover */}
+                <div className="absolute inset-x-0 bottom-6 flex justify-center opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100 pointer-events-none">
+                  <span className="bg-white/90 backdrop-blur-sm text-neutral-900 border border-neutral-200 text-xs font-semibold px-4 py-1.5 rounded-full shadow-sm whitespace-nowrap">
+                    {client.name}
                   </span>
                 </div>
-                {/* Corner Accent */}
-                <div className="absolute top-0 right-0 w-2 h-2 bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.div>
             ))}
           </div>

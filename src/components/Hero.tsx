@@ -13,7 +13,7 @@ const stats = [
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-emerald-950">
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-blue-950">
       {/* Abstract Background Pattern */}
       <div className="absolute inset-0 opacity-20">
         <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">

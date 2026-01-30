@@ -313,18 +313,17 @@ export default function Products() {
               
               <div className="relative flex overflow-x-hidden group">
                 <div className="flex animate-marquee whitespace-nowrap group-hover:[animation-play-state:paused]">
-                  {[...partnerBanks, ...partnerBanks, ...partnerBanks].map((bank, index) => (
-                    <div key={`${bank}-${index}`} className="mx-8 flex items-center">
+                  {[...partnerBanks, ...partnerBanks].map((bank, index) => (
+                    <div key={`first-${bank}-${index}`} className="mx-8 flex items-center">
                       <span className="text-xl font-bold text-neutral-400 hover:text-neutral-800 transition-colors duration-300 cursor-default">
                         {bank}
                       </span>
                     </div>
                   ))}
                 </div>
-                
-                <div className="absolute top-0 flex animate-marquee2 whitespace-nowrap group-hover:[animation-play-state:paused]">
-                  {[...partnerBanks, ...partnerBanks, ...partnerBanks].map((bank, index) => (
-                    <div key={`${bank}-${index}-duplicate`} className="mx-8 flex items-center">
+                <div className="flex animate-marquee whitespace-nowrap group-hover:[animation-play-state:paused]">
+                  {[...partnerBanks, ...partnerBanks].map((bank, index) => (
+                    <div key={`second-${bank}-${index}`} className="mx-8 flex items-center">
                       <span className="text-xl font-bold text-neutral-400 hover:text-neutral-800 transition-colors duration-300 cursor-default">
                         {bank}
                       </span>
