@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Banknote, 
   Smartphone, 
@@ -106,6 +106,27 @@ export default function Products() {
   const [activeTab, setActiveTab] = useState(products[0].id);
   const activeProduct = products.find(p => p.id === activeTab) || products[0];
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      if (hash && products.some(p => p.id === hash)) {
+        setActiveTab(hash);
+        // Scroll to section
+        const element = document.getElementById("products");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    };
+
+    // Check initial hash
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
   return (
     <section id="products" className="py-32 bg-neutral-50 relative overflow-hidden">
       {/* Subtle Apple-style Mesh Gradient Background */}
@@ -138,7 +159,10 @@ export default function Products() {
             {products.map((product) => (
               <button
                 key={product.id}
-                onClick={() => setActiveTab(product.id)}
+                onClick={() => {
+                  setActiveTab(product.id);
+                  window.history.pushState(null, "", `#${product.id}`);
+                }}
                 className={`relative px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === product.id
                     ? "text-neutral-900 shadow-sm"

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Server, 
   Code2, 
@@ -96,6 +96,27 @@ export default function Services() {
   const [activeServiceId, setActiveServiceId] = useState(services[0].id);
   const activeService = services.find(s => s.id === activeServiceId) || services[0];
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      if (hash && services.some(s => s.id === hash)) {
+        setActiveServiceId(hash);
+        // Scroll to section
+        const element = document.getElementById("services");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    };
+
+    // Check initial hash
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
   return (
     <section id="services" className="py-24 bg-white relative">
       <div className="relative max-w-7xl mx-auto px-6">
@@ -125,7 +146,10 @@ export default function Services() {
               {services.map((service) => (
                 <button
                   key={service.id}
-                  onClick={() => setActiveServiceId(service.id)}
+                  onClick={() => {
+                    setActiveServiceId(service.id);
+                    window.history.pushState(null, "", `#${service.id}`);
+                  }}
                   className={`group flex items-center justify-between p-5 text-left transition-all duration-200 border-l-4 ${
                     activeServiceId === service.id
                       ? "bg-neutral-50 border-l-emerald-600 text-neutral-900"

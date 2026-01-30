@@ -18,24 +18,24 @@ import Logo from "../../public/logo.png";
 
 const footerLinks = {
   solutions: [
-    { name: "System Engineering", href: "#system-engineering" },
-    { name: "Software Development", href: "#software-development" },
-    { name: "Cloud Infrastructure", href: "#cloud" },
-    { name: "Managed Services", href: "#managed-services" },
-    { name: "Consultancy", href: "#consultancy" },
+    { name: "System Engineering", href: "/#system-engineering" },
+    { name: "Software Development", href: "/#software-development" },
+    { name: "Cloud Infrastructure", href: "/#cloud" },
+    { name: "Managed Services", href: "/#managed-services" },
+    { name: "Consultancy", href: "/#consultancy" },
   ],
   products: [
-    { name: "Uni-Cash", href: "#unicash" },
-    { name: "Virtual Integrated Banking", href: "#vib" },
-    { name: "Merchant Application", href: "#merchant" },
-    { name: "Payment Gateway", href: "#payment" },
+    { name: "Uni-Cash", href: "/#unicash" },
+    { name: "Virtual Integrated Banking", href: "/#vib" },
+    { name: "Merchant Application", href: "/#merchant" },
+    { name: "Payment Gateway", href: "/#payment" },
   ],
   company: [
-    { name: "About Atlas", href: "#about" },
-    { name: "Leadership", href: "#leadership" },
-    { name: "Clients & Partners", href: "#clients" },
-    { name: "Careers", href: "#careers" },
-    { name: "Contact", href: "#contact" },
+    { name: "About Atlas", href: "/#about" },
+    { name: "Leadership", href: "/#leadership" },
+    { name: "Clients & Partners", href: "/#clients" },
+    { name: "Careers", href: "/careers" },
+    { name: "Contact", href: "/#contact" },
   ],
 };
 

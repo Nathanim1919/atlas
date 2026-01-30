@@ -11,35 +11,36 @@ const navLinks = [
   { name: "Home", href: "/" },
   { 
     name: "About", 
-    href: "#about",
+    href: "/#about",
     subLinks: [
-      { name: "Company Overview", href: "#about", description: "Learn about our history and values" },
-      { name: "Vision & Mission", href: "#vision", description: "Our goals and guiding principles" },
-      { name: "Leadership", href: "#leadership", description: "Meet the team driving our success" },
+      { name: "Company Overview", href: "/#about", description: "Learn about our history and values" },
+      { name: "Vision & Mission", href: "/#vision", description: "Our goals and guiding principles" },
+      { name: "Leadership", href: "/#about", description: "Meet the team driving our success" },
     ]
   },
   { 
     name: "Services", 
-    href: "#services",
+    href: "/#services",
     subLinks: [
-      { name: "System Engineering", href: "#system-engineering", description: "Robust infrastructure solutions" },
-      { name: "Software Development", href: "#software-development", description: "Custom software tailored to you" },
-      { name: "Cloud Solutions", href: "#cloud", description: "Scalable and secure cloud services" },
-      { name: "Managed Services", href: "#managed-services", description: "Proactive IT management" },
-      { name: "Consultancy & Training", href: "#consultancy", description: "Expert advice and skill building" },
+      { name: "System Engineering", href: "/#system-engineering", description: "Robust infrastructure solutions" },
+      { name: "Software Development", href: "/#software-development", description: "Custom software tailored to you" },
+      { name: "Cloud Solutions", href: "/#cloud", description: "Scalable and secure cloud services" },
+      { name: "Managed Services", href: "/#managed-services", description: "Proactive IT management" },
+      { name: "Consultancy & Training", href: "/#consultancy", description: "Expert advice and skill building" },
     ]
   },
   { 
     name: "Products", 
-    href: "#products",
+    href: "/#products",
     subLinks: [
-      { name: "Uni-Cash", href: "#unicash", description: "Unified cash management system" },
-      { name: "Virtual Integrated Banking", href: "#vib", description: "Seamless banking integration" },
-      { name: "Merchant Application", href: "#merchant", description: "Tools for modern merchants" },
+      { name: "Uni-Cash", href: "/#unicash", description: "Unified cash management system" },
+      { name: "Virtual Integrated Banking", href: "/#vib", description: "Seamless banking integration" },
+      { name: "Merchant Application", href: "/#merchant", description: "Tools for modern merchants" },
     ]
   },
-  { name: "Clients", href: "#clients" },
-  { name: "Contact", href: "#contact" },
+  { name: "Clients", href: "/#clients" },
+  { name: "Careers", href: "/careers" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 export default function Navbar() {
@@ -158,7 +159,7 @@ export default function Navbar() {
             {/* CTA Button */}
             <div className="hidden lg:flex items-center gap-4 relative z-20">
               <Link
-                href="#contact"
+                href="/#contact"
                 className="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-medium transition-all shadow-lg shadow-primary-600/20 hover:shadow-primary-600/40 text-sm"
               >
                 Get Started
@@ -292,7 +293,7 @@ export default function Navbar() {
                 ))}
                 <div className="pt-6 border-t border-neutral-100">
                   <Link
-                    href="#contact"
+                    href="/#contact"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="w-full block text-center py-3 bg-primary-600 text-white rounded-xl font-medium"
                   >
