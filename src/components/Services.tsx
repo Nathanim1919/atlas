@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { 
   Server, 
@@ -12,17 +12,21 @@ import {
   Shield,
   Monitor,
   Network,
-  Cpu,
   HardDrive,
   Settings,
   Smartphone,
   TestTube,
   Wrench,
   ArrowRight,
-  ChevronRight,
-  Layers,
-  Check
+  Check,
+  Layers
 } from "lucide-react";
+import SystemEngineering from "./services/SystemEngineering";
+import SoftwareDevelopment from "./services/SoftwareDevelopment";
+import CloudSolutions from "./services/CloudSolutions";
+import ManagedServices from "./services/ManagedServices";
+import ConsultancyTraining from "./services/ConsultancyTraining";
+import ServicesSidebar from "./services/ServicesSidebar";
 
 const services = [
   {
@@ -92,129 +96,110 @@ const services = [
   },
 ];
 
+
 export default function Services() {
-  const [activeServiceId, setActiveServiceId] = useState(services[0].id);
-  const activeService = services.find(s => s.id === activeServiceId) || services[0];
+  const [activeId, setActiveId] = useState(services[0].id);
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.slice(1);
-      if (hash && services.some(s => s.id === hash)) {
-        setActiveServiceId(hash);
-        // Scroll to section
-        const element = document.getElementById("services");
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-20% 0px -50% 0px", threshold: 0.1 }
+    );
 
-    // Check initial hash
-    handleHashChange();
+    services.forEach((service) => {
+      const element = document.getElementById(service.id);
+      if (element) observer.observe(element);
+    });
 
-    // Listen for hash changes
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
+    return () => observer.disconnect();
   }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - offset;
+  
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+      // Manually set active ID immediately for better UX
+      setActiveId(id);
+    }
+  };
 
   return (
     <section id="services" className="py-24 bg-white relative">
-      <div className="relative max-w-7xl mx-auto px-6">
-        {/* Section Header - Clean & Technical */}
-        <div className="mb-16 border-b border-neutral-200 pb-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="max-w-3xl">
-              <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 tracking-tight mb-4">
-                Solutions Portfolio
-              </h2>
-              <p className="text-lg text-neutral-600 max-w-2xl">
-                Integrated technology services designed for enterprise scale, security, and performance.
-              </p>
-            </div>
-            <div className="hidden md:block">
-              <a href="#contact" className="text-emerald-700 font-semibold hover:text-emerald-800 flex items-center gap-2 text-sm">
-                Download Service Catalog <ArrowRight size={16} />
-              </a>
-            </div>
-          </div>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 tracking-tight mb-4">
+            Solutions Portfolio
+          </h2>
+          <p className="text-lg text-neutral-600 max-w-2xl">
+            Integrated technology services designed for enterprise scale, security, and performance.
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-0 border border-neutral-200 rounded-lg overflow-hidden bg-neutral-50">
-          {/* Left Column - Navigation List */}
-          <div className="lg:col-span-3 bg-white border-r border-neutral-200">
-            <div className="flex flex-col">
-              {services.map((service) => (
-                <button
-                  key={service.id}
-                  onClick={() => {
-                    setActiveServiceId(service.id);
-                    window.history.pushState(null, "", `#${service.id}`);
-                  }}
-                  className={`group flex items-center cursor-pointer justify-between p-5 text-left transition-all duration-200 border-l-4 ${
-                    activeServiceId === service.id
-                      ? "bg-neutral-50 border-l-emerald-600 bg-linear-to-r from-green-600 text-white to-transparent"
-                      : "bg-white border-l-transparent text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
-                  }`}
-                >
-                  <span className="font-medium text-sm">{service.title}</span>
-                  {activeServiceId === service.id && (
-                    <ChevronRight size={16} className="text-emerald-600" />
-                  )}
-                </button>
-              ))}
-            </div>
-            
-            {/* Trust Indicator - Integrated */}
-            <div className="p-6 mt-auto border-t border-neutral-200 bg-neutral-50">
-              <h4 className="text-xs font-bold text-neutral-900 uppercase tracking-wider mb-3">Service Standards</h4>
-              <ul className="space-y-2">
-                {[
-                  "ISO 9001:2015 Certified",
-                  "24/7 Support Available",
-                  "SLA Guaranteed"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-xs text-neutral-600">
-                    <Check size={12} className="text-emerald-600" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div className="grid lg:grid-cols-12 gap-12">
+          {/* Sticky Sidebar Navigation */}
+          <div className="hidden lg:block lg:col-span-3">
+            <ServicesSidebar 
+              services={services} 
+              activeId={activeId} 
+              onSelect={scrollToSection} 
+            />
           </div>
 
-          {/* Right Column - Detail View */}
-          <div className="lg:col-span-9 bg-white min-h-[600px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeService.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="h-full flex flex-col"
-              >
-                {/* Content Header */}
-                <div className="p-8 md:p-10 border-b border-neutral-200 bg-white">
-                  <div className="flex items-start gap-6 mb-6">
-                    <div className="p-3 bg-neutral-100 rounded-md text-neutral-900">
-                      <activeService.icon size={32} strokeWidth={1.5} />
+          {/* Scrollable Content Area */}
+          <div className="lg:col-span-9 space-y-24">
+            {services.map((service) => {
+              if (service.id === "system-engineering") {
+                return <SystemEngineering key={service.id} />;
+              }
+              if (service.id === "software-development") {
+                return <SoftwareDevelopment key={service.id} />;
+              }
+              if (service.id === "cloud") {
+                return <CloudSolutions key={service.id} />;
+              }
+              if (service.id === "managed-services") {
+                return <ManagedServices key={service.id} />;
+              }
+              if (service.id === "consultancy") {
+                return <ConsultancyTraining key={service.id} />;
+              }
+              
+              return (
+                <div 
+                  key={service.id} 
+                  id={service.id}
+                  className="scroll-mt-32 group"
+                >
+                  <div className="flex items-start gap-6 mb-8">
+                    <div className="p-3 bg-neutral-100 rounded-xl text-neutral-900 group-hover:bg-emerald-50 group-hover:text-emerald-700 transition-colors">
+                      <service.icon size={32} strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-neutral-900 mb-2">{activeService.title}</h3>
-                      <p className="text-emerald-700 font-medium text-sm mb-4">{activeService.subtitle}</p>
+                      <h3 className="text-2xl font-bold text-neutral-900 mb-2">{service.title}</h3>
+                      <p className="text-emerald-700 font-medium text-sm mb-4">{service.subtitle}</p>
                       <p className="text-neutral-600 leading-relaxed max-w-3xl">
-                        {activeService.description}
+                        {service.description}
                       </p>
                     </div>
                   </div>
-                </div>
 
-                {/* Features Grid - Technical Layout */}
-                <div className="p-8 md:p-10 bg-neutral-50/30 grow">
-                  <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
-                    {activeService.features.map((feature, idx) => (
-                      <div key={idx} className="flex gap-4 items-start group">
-                        <div className="mt-1 text-emerald-600 group-hover:text-emerald-700 transition-colors">
+                  <div className="grid md:grid-cols-2 gap-x-12 gap-y-8 bg-neutral-50/50 rounded-2xl p-8 border border-neutral-100">
+                    {service.features.map((feature, idx) => (
+                      <div key={idx} className="flex gap-4 items-start">
+                        <div className="mt-1 text-emerald-600">
                           <feature.icon size={20} strokeWidth={1.5} />
                         </div>
                         <div>
@@ -226,20 +211,9 @@ export default function Services() {
                       </div>
                     ))}
                   </div>
-
-                  <div className="mt-12 pt-8 border-t border-neutral-200">
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-neutral-400">
-                        Ref: {activeService.id.toUpperCase()}_SVC_V2.4
-                      </div>
-                      <button className="text-sm font-semibold text-neutral-900 hover:text-emerald-700 flex items-center gap-2 transition-colors">
-                        View Technical Specifications <ArrowRight size={16} />
-                      </button>
-                    </div>
-                  </div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
+              );
+            })}
           </div>
         </div>
       </div>

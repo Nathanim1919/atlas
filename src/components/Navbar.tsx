@@ -74,20 +74,20 @@ export default function Navbar() {
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-emerald-500 text-white py-2 hidden lg:block">
+      <div className="bg-(--steel-blue) text-white py-2 hidden lg:block">
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center text-sm">
           <div className="flex items-center gap-6">
-            <a href="tel:+251118693096" className="flex items-center gap-2 hover:text-accent-400 transition-colors">
+            <a href="tel:+251118693096" className="flex items-center gap-2 hover:text-(--sunflower) transition-colors">
               <Phone size={14} />
               <span>+251 11 869 3096</span>
             </a>
-            <a href="mailto:info@act.com.et" className="flex items-center gap-2 hover:text-accent-400 transition-colors">
+            <a href="mailto:info@act.com.et" className="flex items-center gap-2 hover:text-(--sunflower) transition-colors">
               <Mail size={14} />
               <span>info@act.com.et</span>
             </a>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-neutral-400">Addis Ababa, Ethiopia</span>
+            <span className="text-white/80">Addis Ababa, Ethiopia</span>
           </div>
         </div>
       </div>
@@ -129,8 +129,8 @@ export default function Navbar() {
                     href={link.href}
                     className={`px-4 py-2 rounded-full font-medium text-sm transition-all flex items-center gap-1 relative z-10 ${
                       activeDropdown === link.name 
-                        ? "text-primary-700" 
-                        : "text-neutral-600 hover:text-primary-600"
+                        ? "text-(--steel-blue)" 
+                        : "text-neutral-600 hover:text-(--steel-blue)"
                     }`}
                   >
                     {link.name}
@@ -148,7 +148,7 @@ export default function Navbar() {
                   {activeDropdown === link.name && (
                     <motion.div
                       layoutId="navbar-pill"
-                      className="absolute inset-0 bg-primary-50 rounded-full z-0"
+                      className="absolute inset-0 bg-(--steel-blue)/5 rounded-full z-0"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
@@ -157,14 +157,7 @@ export default function Navbar() {
             </div>
 
             {/* CTA Button */}
-            <div className="hidden lg:flex items-center gap-4 relative z-20">
-              <Link
-                href="/#contact"
-                className="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-medium transition-all shadow-lg shadow-primary-600/20 hover:shadow-primary-600/40 text-sm"
-              >
-                Get Started
-              </Link>
-            </div>
+          
 
             {/* Mobile Menu Button */}
             <button
@@ -199,21 +192,21 @@ export default function Navbar() {
                   
                   <div className="grid grid-cols-12 gap-8">
                     {/* Featured Section (Left) */}
-                    <div className="col-span-4 bg-neutral-50 rounded-xl p-6 flex flex-col justify-between">
+                    <div className="col-span-4 bg-(--steel-blue) rounded-xl p-6 flex flex-col justify-between">
                       <motion.div
                         key={activeDropdown + "left"}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <h3 className="text-lg font-bold text-neutral-900 mb-2">
+                        <h3 className="text-lg font-bold text-white mb-2">
                           {activeDropdown}
                         </h3>
-                        <p className="text-neutral-500 text-sm leading-relaxed">
+                        <p className="text-blue-100 text-sm leading-relaxed">
                           Explore our {activeDropdown?.toLowerCase()} solutions.
                         </p>
                       </motion.div>
-                      <Link href={activeLink.href} className="flex items-center gap-2 text-primary-600 font-medium text-sm mt-4 hover:gap-3 transition-all">
+                      <Link href={activeLink.href} className="flex items-center gap-2 text-(--sunflower) font-medium text-sm mt-4 hover:gap-3 transition-all">
                         View all <ArrowRight size={16} />
                       </Link>
                     </div>
@@ -236,9 +229,9 @@ export default function Navbar() {
                                 href={subLink.href}
                                 className="group block p-3 rounded-xl hover:bg-neutral-50 transition-all border border-transparent hover:border-neutral-100"
                               >
-                                <div className="font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors mb-0.5 flex items-center gap-2 text-sm">
+                                <div className="font-semibold text-neutral-900 group-hover:text-(--steel-blue) transition-colors mb-0.5 flex items-center gap-2 text-sm">
                                   {subLink.name}
-                                  <ArrowRight size={12} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary-600" />
+                                  <ArrowRight size={12} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-(--steel-blue)" />
                                 </div>
                                 <p className="text-xs text-neutral-500 group-hover:text-neutral-600 line-clamp-1">
                                   {subLink.description}
@@ -295,7 +288,7 @@ export default function Navbar() {
                   <Link
                     href="/#contact"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-full block text-center py-3 bg-primary-600 text-white rounded-xl font-medium"
+                    className="w-full block text-center py-3 bg-(--steel-blue) text-white rounded-xl font-medium"
                   >
                     Get Started
                   </Link>

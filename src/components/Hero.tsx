@@ -1,246 +1,186 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Play, Server, Shield, Globe, Cpu, Database, Activity } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
-const stats = [
-  { value: "12+", label: "Years Experience" },
-  { value: "90+", label: "Team Members" },
-  { value: "80+", label: "Enterprise Projects" },
-  { value: "99.9%", label: "Uptime Guaranteed" },
+// Bank/Client Logos
+const allPartners = [
+  { name: "CBE", src: "/bank/act.png" }, // Placeholder if needed
+  { name: "Ethio Telecom", src: "/bank/Ethio-Telecom.jpg" },
+  { name: "Dashen Bank", src: "/bank/dashen.jpeg" },
+  { name: "Bunna Bank", src: "/bank/bunna.png" },
+  { name: "Awash", src: "/bank/birhan.png" },
+  { name: "Wegagen", src: "/bank/wegagen.png" },
+  { name: "Nib", src: "/bank/nib.png" },
+  { name: "Enat", src: "/bank/enat.png" },
+  { name: "Oromia Bank", src: "/bank/oromo.png" },
+  { name: "Sinque Bank", src: "/bank/sinque.png" },
+  { name: "Hijra Bank", src: "/bank/hijira.jpeg" },
+  { name: "Addis Bank", src: "/bank/addis.jpeg" },
 ];
+
+// Create rows by shuffling or slicing the partners array
+const row1 = [...allPartners, ...allPartners, ...allPartners, ...allPartners];
+const row2 = [...allPartners.slice(4), ...allPartners.slice(0, 4), ...allPartners, ...allPartners, ...allPartners];
+const row3 = [...allPartners.reverse(), ...allPartners, ...allPartners, ...allPartners];
+const row4 = [...allPartners.slice(2), ...allPartners.slice(0, 2), ...allPartners, ...allPartners, ...allPartners];
+const row5 = [...allPartners, ...allPartners, ...allPartners, ...allPartners];
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-blue-950">
-      {/* Abstract Background Pattern */}
-      <div className="absolute inset-0 opacity-20">
-        <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <defs>
-            <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
-              <path d="M 8 0 L 0 0 0 8" fill="none" stroke="currentColor" strokeWidth="0.1" className="text-emerald-500" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
+    <section className="relative  flex w-[90%] mx-auto flex-col justify-center overflow-hidden bg-white">
+      {/* Abstract Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[60vw] h-[60vh] bg-[radial-gradient(circle_at_center,rgba(62,125,162,0.08)_0%,transparent_70%)] blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[40vw] h-[40vh] bg-[radial-gradient(circle_at_center,rgba(221,227,37,0.1)_0%,transparent_70%)] blur-3xl" />
+        
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-size-[60px_60px] opacity-40" />
       </div>
 
-      {/* Ambient Glow */}
-      <div className="absolute top-0 right-0 w-2/3 h-2/3 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-teal-500/10 rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-24">
+      <div className="container relative mx-auto px-6 z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left Content - Corporate & Clean */}
-          <div className="text-white z-10">
+          
+          {/* Left Content */}
+          <div className="max-w-2xl">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-900/50 border border-emerald-700/50 rounded-md mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-sm font-medium text-slate-600 mb-8"
             >
-              <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-              <span className="text-xs font-semibold tracking-wide uppercase text-emerald-100">Enterprise ICT Solutions</span>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--sunflower) opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-(--steel-blue)"></span>
+              </span>
+              Next-Gen System Engineering
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl md:text-6xl lg:text-6xl font-bold font-display leading-tight mb-6 tracking-tight"
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-6 font-display"
             >
               Building the <br />
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-400 to-teal-300">
-                Digital Infrastructure
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-(--steel-blue) to-slate-700">
+                Digital Backbone
               </span>
-              <br />
-              of Tomorrow
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg text-emerald-100/70 max-w-xl mb-10 leading-relaxed font-light"
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg text-slate-600 mb-10 leading-relaxed max-w-lg"
             >
-              Atlas Computer Technology delivers mission-critical systems, cloud infrastructure, and enterprise software designed for scale, security, and performance.
+              We engineer mission-critical infrastructure, secure enterprise systems, and scalable cloud solutions for Ethiopia's leading financial and telecom institutions.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4"
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-wrap items-center gap-4"
             >
               <Link
                 href="#contact"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-emerald-500 text-white font-semibold rounded-lg hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-900/20"
+                className="group relative inline-flex items-center justify-center px-8 py-4 text-white bg-(--steel-blue) rounded-lg overflow-hidden transition-all hover:bg-[#306689] shadow-lg shadow-blue-900/10"
               >
-                Start Your Transformation
-                <ArrowRight size={18} />
+                <span className="font-semibold">Start Your Project</span>
+                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
+              
               <Link
                 href="#services"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-emerald-700 text-emerald-100 font-semibold rounded-lg hover:bg-emerald-900/30 transition-all"
+                className="inline-flex items-center justify-center px-8 py-4 text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-all font-medium"
               >
-                View Services
+                View Solutions
               </Link>
             </motion.div>
-
-            {/* Trust Indicators */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mt-12 pt-8 border-t border-emerald-800/30 flex items-center gap-8"
-            >
-              <div className="flex items-center gap-2 text-emerald-200/60 grayscale hover:grayscale-0 transition-all duration-300">
-                <Globe size={20} />
-                <span className="text-sm font-medium">Global Standards</span>
-              </div>
-              <div className="flex items-center gap-2 text-emerald-200/60 grayscale hover:grayscale-0 transition-all duration-300">
-                <Shield size={20} />
-                <span className="text-sm font-medium">Bank-Grade Security</span>
-              </div>
-              <div className="flex items-center gap-2 text-emerald-200/60 grayscale hover:grayscale-0 transition-all duration-300">
-                <Server size={20} />
-                <span className="text-sm font-medium">99.9% Uptime</span>
-              </div>
-            </motion.div>
           </div>
 
-          {/* Right Content - Abstract Tech Visualization */}
-          <div className="relative h-[600px] w-full hidden lg:block">
-            <div className="absolute inset-0 flex items-center justify-center">
-              {/* Central Core */}
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 1 }}
-                className="relative z-20"
-              >
-                <div className="w-32 h-32 bg-linear-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-2xl shadow-emerald-500/30 flex items-center justify-center transform rotate-12 border border-emerald-400/30 backdrop-blur-xl">
-                  <Cpu size={48} className="text-white" />
-                </div>
-                {/* Pulse Effect */}
-                <div className="absolute inset-0 bg-emerald-500 rounded-2xl animate-ping opacity-20" />
-              </motion.div>
+          {/* Right Content - Marquee Wall */}
+          <div className="relative h-[600px] w-full overflow-hidden flex items-center justify-center mask-linear-gradient-vertical">
+             
+             {/* Fade Gradients for Smooth Entry/Exit */}
+             <div className="absolute inset-y-0 left-0 w-24 bg-linear-to-r from-white to-transparent z-10" />
+             <div className="absolute inset-y-0 right-0 w-24 bg-linear-to-l from-white to-transparent z-10" />
 
-              {/* Orbiting Nodes */}
-              {[...Array(3)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute border border-emerald-500/20 rounded-full"
-                  style={{
-                    width: `${300 + i * 150}px`,
-                    height: `${300 + i * 150}px`,
-                  }}
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: 20 + i * 10,
-                    repeat: Infinity,
-                    ease: "linear",
-                    repeatType: "loop",
-                  }}
-                >
-                  <motion.div
-                    className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-emerald-950 border-2 border-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)]"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i }}
+             {/* Center ACT Logo */}
+             <motion.div 
+               initial={{ scale: 0.8, opacity: 0 }}
+               animate={{ scale: 1, opacity: 1 }}
+               transition={{ duration: 0.8 }}
+               className="absolute z-20 w-30 h-30 bg-white rounded-full shadow-2xl flex items-center justify-center p-8 border border-slate-100"
+             >
+                <div className="absolute inset-0 rounded-full bg-white/80 backdrop-blur-sm z-0" />
+                <div className="relative z-10 w-full h-full">
+                  <Image 
+                    src="/logo.png" 
+                    alt="ACT Logo" 
+                    fill
+                    className="object-contain w-20 h-20"
                   />
-                </motion.div>
-              ))}
-
-              {/* Connecting Lines (Decorative) */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30">
-                <line x1="50%" y1="50%" x2="20%" y2="20%" stroke="url(#lineGrad)" strokeWidth="1" />
-                <line x1="50%" y1="50%" x2="80%" y2="20%" stroke="url(#lineGrad)" strokeWidth="1" />
-                <line x1="50%" y1="50%" x2="20%" y2="80%" stroke="url(#lineGrad)" strokeWidth="1" />
-                <line x1="50%" y1="50%" x2="80%" y2="80%" stroke="url(#lineGrad)" strokeWidth="1" />
-                <defs>
-                  <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="transparent" />
-                    <stop offset="50%" stopColor="#10b981" />
-                    <stop offset="100%" stopColor="transparent" />
-                  </linearGradient>
-                </defs>
-              </svg>
-
-              {/* Floating Data Cards */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8, duration: 0.8 }}
-                className="absolute top-20 right-10 bg-emerald-900/80 backdrop-blur-md p-4 rounded-xl border border-emerald-500/30 shadow-xl"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-xs font-mono text-emerald-200">SYSTEM_STATUS</span>
                 </div>
-                <div className="text-sm font-semibold text-white">All Systems Operational</div>
-              </motion.div>
+                {/* Pulse Effect behind logo */}
+                <div className="absolute inset-0 rounded-full bg-(--steel-blue)/5 animate-ping" />
+             </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1, duration: 0.8 }}
-                className="absolute bottom-32 left-0 bg-emerald-900/80 backdrop-blur-md p-4 rounded-xl border border-emerald-500/30 shadow-xl"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <Shield size={14} className="text-emerald-400" />
-                  <span className="text-xs font-mono text-emerald-200">SECURITY_LEVEL</span>
+             {/* Marquee Rows */}
+             <div className="absolute inset-0 flex flex-col justify-center gap-8 hover:[&_*]:paused">
+                
+                {/* Row 1 - Left */}
+                <div className="flex gap-8 animate-marquee whitespace-nowrap">
+                  {row1.map((partner, i) => (
+                    <div key={`r1-${i}`} className="relative h-12 w-32 shrink-0">
+                      <Image src={partner.src} alt={partner.name} fill className="object-contain" />
+                    </div>
+                  ))}
                 </div>
-                <div className="text-sm font-semibold text-white">Enterprise Grade Encryption</div>
-              </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2, duration: 0.8 }}
-                className="absolute bottom-10 right-20 bg-emerald-900/80 backdrop-blur-md p-4 rounded-xl border border-emerald-500/30 shadow-xl"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <Database size={14} className="text-emerald-400" />
-                  <span className="text-xs font-mono text-emerald-200">DATA_FLOW</span>
+                {/* Row 2 - Right */}
+                <div className="flex gap-8 animate-marquee-reverse whitespace-nowrap">
+                  {row2.map((partner, i) => (
+                    <div key={`r2-${i}`} className="relative h-12 w-32 shrink-0">
+                      <Image src={partner.src} alt={partner.name} fill className="object-contain" />
+                    </div>
+                  ))}
                 </div>
-                <div className="text-sm font-semibold text-white">Real-time Analytics Active</div>
-              </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.4, duration: 0.8 }}
-                className="absolute top-10 left-20 bg-emerald-900/80 backdrop-blur-md p-4 rounded-xl border border-emerald-500/30 shadow-xl"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <Activity size={14} className="text-emerald-400" />
-                  <span className="text-xs font-mono text-emerald-200">NETWORK_LATENCY</span>
+                {/* Row 3 - Left */}
+                <div className="flex gap-8 animate-marquee whitespace-nowrap">
+                  {row3.map((partner, i) => (
+                    <div key={`r3-${i}`} className="relative h-12 w-32 shrink-0">
+                      <Image src={partner.src} alt={partner.name} fill className="object-contain" />
+                    </div>
+                  ))}
                 </div>
-                <div className="text-sm font-semibold text-white">&lt; 20ms Global Response</div>
-              </motion.div>
-            </div>
+
+                {/* Row 4 - Right */}
+                <div className="flex gap-8 animate-marquee-reverse whitespace-nowrap">
+                  {row4.map((partner, i) => (
+                    <div key={`r4-${i}`} className="relative h-12 w-32 shrink-0">
+                      <Image src={partner.src} alt={partner.name} fill className="object-contain" />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Row 5 - Left */}
+                <div className="flex gap-8 animate-marquee whitespace-nowrap">
+                  {row5.map((partner, i) => (
+                    <div key={`r5-${i}`} className="relative h-12 w-32 shrink-0">
+                      <Image src={partner.src} alt={partner.name} fill className="object-contain" />
+                    </div>
+                  ))}
+                </div>
+
+             </div>
           </div>
-        </div>
 
-        {/* Bottom Stats Grid - Clean & Integrated */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-emerald-800/30 pt-12"
-        >
-          {stats.map((stat, index) => (
-            <div key={index} className="group">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-1 group-hover:text-emerald-400 transition-colors">
-                {stat.value}
-              </div>
-              <div className="text-sm text-emerald-200/60 font-medium uppercase tracking-wider">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
