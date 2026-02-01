@@ -141,11 +141,11 @@ export default function Testimonials() {
         <div className="absolute inset-y-0 right-0 w-32 bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
         
         {/* Row 1: Right to Left */}
-        <div className="flex animate-marquee-left whitespace-nowrap hover:[animation-play-state:paused]">
+        <div className="flex animate-marquee-left whitespace-nowrap hover:[animation-play-state:paused] [animation-duration:10s]">
           {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
             <div 
               key={`row1-${testimonial.id}-${index}`} 
-              className="inline-block w-[85vw] md:w-[45vw] lg:w-[30vw] mx-4 whitespace-normal"
+              className="inline-block w-[85vw] md:w-[45vw] lg:w-[30vw] mx-2 whitespace-normal"
             >
               <TestimonialCard testimonial={testimonial} />
             </div>
@@ -170,32 +170,35 @@ export default function Testimonials() {
 
 function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] }) {
   return (
-    <div className="bg-white/60 backdrop-blur-xl rounded-4xl p-4 w-full min-w-[350px] border border-white/40 shadow-xl shadow-emerald-900/5 h-full min-h-[300px] flex flex-col justify-between hover:border-emerald-200/50 hover:shadow-2xl hover:shadow-emerald-900/10 hover:-translate-y-1 transition-all duration-500 cursor-pointer group relative overflow-hidden">
+    <div className="bg-white rounded-2xl p-6 w-full min-w-[300px] border border-neutral-200/60 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)] hover:border-emerald-500/20 hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden h-full flex flex-col justify-between">
       
-      {/* Decorative Gradient Blob */}
-      <div className="absolute -top-20 -right-20 w-40 h-40 bg-emerald-100/30 rounded-full blur-3xl group-hover:bg-emerald-200/40 transition-colors duration-700" />
+      {/* Subtle Gradient Glow on Hover */}
+      <div className="absolute inset-0 bg-linear-to-br from-transparent via-transparent to-emerald-50/0 group-hover:to-emerald-50/30 transition-all duration-500" />
       
       <div className="relative z-10 flex flex-col h-full">
-        {/* Quote Icon & Company */}
-        <div className="flex justify-between items-start mb-6">
-          <div className="p-3 bg-white rounded-2xl shadow-sm border border-neutral-100 group-hover:scale-110 transition-transform duration-300">
-            <Quote size={20} className="text-emerald-500 fill-emerald-500/20" />
+        {/* Header */}
+        <div className="flex justify-between items-start mb-4">
+          <div className="p-2 bg-neutral-50 rounded-lg border border-neutral-100 group-hover:bg-white group-hover:border-emerald-100 transition-colors duration-300">
+             <Quote size={14} className="text-emerald-600/80" />
           </div>
-          <div className="px-3 py-1 bg-neutral-100/50 rounded-full border border-neutral-200/50 backdrop-blur-sm">
-            <span className="text-xs font-bold text-neutral-600 tracking-wide uppercase">{testimonial.company}</span>
+          <div className="px-2.5 py-0.5 bg-neutral-50 rounded-full border border-neutral-100">
+            <span className="text-[9px] font-bold text-neutral-500 tracking-widest uppercase">{testimonial.company}</span>
           </div>
         </div>
         
         {/* Quote Text */}
-        <blockquote className="text-lg text-neutral-800 leading-relaxed font-medium mb-8 grow">
+        <blockquote className="text-md text-neutral-700 leading-relaxed font-medium italic mb-4 grow">
           "{testimonial.quote}"
         </blockquote>
         
         {/* Footer: Author */}
-        <div className="pt-6 border-t border-neutral-100 flex items-end justify-between">
+        <div className="pt-4 border-t border-neutral-100 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-500 font-bold text-xs border border-neutral-200">
+            {testimonial.name.charAt(0)}
+          </div>
           <div>
-            <div className="font-bold text-neutral-900 text-base">{testimonial.name}</div>
-            <div className="text-xs text-emerald-600 font-medium mt-0.5 uppercase tracking-wider">{testimonial.role}</div>
+            <div className="font-semibold text-neutral-900 text-xs">{testimonial.name}</div>
+            <div className="text-[10px] text-neutral-500 font-medium mt-0.5">{testimonial.role}</div>
           </div>
         </div>
       </div>
