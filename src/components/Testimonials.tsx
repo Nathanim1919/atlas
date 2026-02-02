@@ -8,56 +8,56 @@ const testimonials = [
     id: 1,
     company: "Wegagen Bank",
     name: "Goitom G/Tsadkan",
-    role: "CIO",
-    quote: "Atlas's platforms streamlined our payment processing and enhanced customer engagement significantly.",
+    role: "Chief Information Officer",
+    quote: "Atlas Computer Technology PLC's USSD and Mobile banking platforms have streamlined our bank payment processing, enhanced customer engagement, and improved overall operational efficiency. Their proactive approach and technical proficiency have made a significant positive impact on our business operations.",
     rating: 5,
   },
   {
     id: 2,
     company: "Oromia Int. Bank",
     name: "Geleta Bekuma",
-    role: "VP-IT",
-    quote: "Implemented OLVM infrastructure, enhancing our services and leveraging technological advancements.",
+    role: "VP-Information Technology",
+    quote: "Atlas Computer Technology has implemented Oracle Linux Virtualization Management (OLVM) based hyper-converged infrastructure, enhancing our services and leveraging technological advancements. We are happy with their professionalism, commitment, and efficiency.",
     rating: 5,
   },
   {
     id: 3,
     company: "Abay Bank",
-    name: "Elias Berhanu",
-    role: "Director IT",
-    quote: "Excellent service in maintaining our servers and storage with a defined Service Level Agreement.",
+    name: "Elias Berhanu Benede",
+    role: "Director Information Technology",
+    quote: "Atlas Computer Technology PLC provided excellent service in maintaining our servers, storage, and related systems with a defined Service Level Agreement (SLA). We would certainly recommend them for any similar project.",
     rating: 5,
   },
   {
     id: 4,
     company: "Dashen Bank",
     name: "Anteneh Tadesse",
-    role: "Director Infra",
-    quote: "Instrumental in the infrastructure and Oracle Core Technology Stack implementation for FlexCube.",
+    role: "Director, IT Infrastructure Dept.",
+    quote: "Atlas Computer Technology PLC has been instrumental in the infrastructure and Oracle Core Technology Stack implementation for our FlexCube upgrade project. Their expertise in installation, configuration, and performance tuning has been commendable.",
     rating: 5,
   },
   {
     id: 5,
     company: "Enat Bank",
     name: "Dinku Kassaye",
-    role: "CIO",
-    quote: "Successfully implemented Transaction SMS and USSD services, enhancing customer communication.",
+    role: "Chief Information Officer",
+    quote: "Atlas Computer Technology PLC has successfully implemented Transaction Short Message Services (SMS) and USSD services, enhancing our customer communication. We are happy with their approach and methodology of design, implementation, and project management services.",
     rating: 5,
   },
   {
     id: 6,
     company: "Siinqee Bank",
-    name: "Samson Eyob",
-    role: "CIO",
-    quote: "Professional approach and technical expertise make them an invaluable asset to our operations.",
+    name: "Samson Eyob Wondemu",
+    role: "Chief Information Officer",
+    quote: "Atlas Computer Technology PLC's professional approach, technical expertise, and commitment to customer satisfaction make them an invaluable asset. Their attention to detail and project management skills ensure a smooth and hassle-free implementation process.",
     rating: 5,
   },
   {
     id: 7,
     company: "Hijra Bank",
-    name: "Hassen Mohammed",
-    role: "VP-IS",
-    quote: "Digital wallet platform offers seamless financial management and secure transactions.",
+    name: "Hassen Mohammed Ali",
+    role: "VP-Information System",
+    quote: "Atlas Computer Technology PLC's digital wallet and internet banking platform offers seamless financial management, secure transactions, and user-friendly features. Their robust security, ease of use, and exceptional support have greatly benefited our operations.",
     rating: 5,
   },
 ];
@@ -187,7 +187,7 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
         </div>
         
         {/* Quote Text */}
-        <blockquote className="text-md text-neutral-700 leading-relaxed font-medium italic mb-4 grow">
+        <blockquote className="text-sm text-neutral-700 leading-relaxed font-medium italic mb-4 grow">
           "{testimonial.quote}"
         </blockquote>
         
