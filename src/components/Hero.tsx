@@ -157,7 +157,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-lg md:text-xl text-neutral-500 mb-10 leading-relaxed max-w-xl font-light"
             >
-              We engineer mission-critical infrastructure, secure enterprise systems, and scalable cloud solutions for the nation's leading financial and telecom institutions.
+              Atlas Computer Technology PLC (ACT) is a premier ICT solutions provider in Addis Ababa, delivering infrastructure, system integration, software development, and consultancy services for over a decade.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -169,7 +169,7 @@ export default function Hero() {
             >
               <Link
                 href="#contact"
-                className="group relative inline-flex items-center justify-center px-8 py-4 text-white bg-neutral-900 rounded-full overflow-hidden transition-all hover:bg-neutral-800 shadow-xl shadow-neutral-900/20 hover:shadow-neutral-900/30 hover:-translate-y-1"
+                className="group relative inline-flex items-center justify-center px-8 py-4 text-white bg-primary-600 rounded-full overflow-hidden transition-all hover:bg-primary-700 shadow-xl shadow-primary-600/20 hover:shadow-primary-600/30 hover:-translate-y-1"
               >
                 <span className="font-semibold text-lg">Start Your Project</span>
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -177,7 +177,7 @@ export default function Hero() {
               
               <Link
                 href="#services"
-                className="group inline-flex items-center justify-center px-8 py-4 text-neutral-600 bg-white border border-neutral-200 rounded-full hover:bg-neutral-50 hover:border-neutral-300 transition-all font-medium text-lg shadow-sm hover:shadow-md"
+                className="group inline-flex items-center justify-center px-8 py-4 text-primary-600 bg-white border border-primary-200 rounded-full hover:bg-primary-50 hover:border-primary-300 transition-all font-medium text-lg shadow-sm hover:shadow-md"
               >
                 View Solutions
               </Link>

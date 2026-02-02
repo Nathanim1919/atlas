@@ -227,6 +227,13 @@ export default function Navbar() {
                               <Link
                                 key={subLink.name}
                                 href={subLink.href}
+                                onClick={() => {
+                                  setIsMobileMenuOpen(false);
+                                  // Dispatch hashchange manually to notify components
+                                  setTimeout(() => {
+                                    window.dispatchEvent(new Event("hashchange"));
+                                  }, 100);
+                                }}
                                 className="group block p-3 rounded-xl hover:bg-neutral-50 transition-all border border-transparent hover:border-neutral-100"
                               >
                                 <div className="font-semibold text-neutral-900 group-hover:text-(--steel-blue) transition-colors mb-0.5 flex items-center gap-2 text-sm">

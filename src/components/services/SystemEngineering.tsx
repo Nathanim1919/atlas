@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView, animate } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import { 
   Server, 
   Database, 
@@ -11,6 +12,52 @@ import {
   CheckCircle2,
   ArrowRight
 } from "lucide-react";
+
+interface CountUpProps {
+  from?: number;
+  to: number;
+  separator?: string;
+  direction?: "up" | "down";
+  duration?: number;
+  className?: string;
+  startCounting?: boolean;
+}
+
+const CountUp = ({
+  from = 0,
+  to,
+  separator = ",",
+  direction = "up",
+  duration = 1,
+  className = "",
+  startCounting = true,
+}: CountUpProps) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    if ((startCounting || inView) && !hasAnimated && ref.current) {
+      const controls = animate(from, to, {
+        duration: duration,
+        onUpdate: (value) => {
+          if (ref.current) {
+            // Check if we need to format as a float for small numbers like 99.99
+            const isFloat = !Number.isInteger(to);
+            const formattedValue = isFloat 
+              ? value.toFixed(2) 
+              : Math.floor(value).toLocaleString('en-US').replace(/,/g, separator);
+            ref.current.textContent = formattedValue;
+          }
+        },
+        onComplete: () => setHasAnimated(true),
+      });
+      return () => controls.stop();
+    }
+  }, [from, to, duration, separator, startCounting, inView, hasAnimated]);
+
+  return <span ref={ref} className={className}>{from}</span>;
+};
 
 export default function SystemEngineering() {
   const features = [
@@ -117,13 +164,22 @@ export default function SystemEngineering() {
       {/* Technical Specs / Stats Bar */}
       <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-neutral-50 rounded-2xl border border-neutral-100">
         {[
-          { label: "Uptime SLA", value: "99.99%" },
-          { label: "Response Time", value: "< 15min" },
-          { label: "Security Level", value: "Tier 4" },
-          { label: "Support", value: "24/7/365" }
+          { label: "Uptime SLA", value: 99.99, suffix: "%", isFloat: true },
+          { label: "Response Time", value: 15, prefix: "< ", suffix: "min" },
+          { label: "Security Level", value: 4, prefix: "Tier " },
+          { label: "Support", value: 24, suffix: "/7/365" }
         ].map((stat, i) => (
           <div key={i} className="text-center">
-            <div className="text-2xl font-bold text-[var(--primary-600)]">{stat.value}</div>
+            <div className="text-2xl font-bold text-primary-600 flex justify-center items-center gap-1">
+              {stat.prefix}
+              <CountUp 
+                from={0} 
+                to={stat.value} 
+                duration={1.5}
+                startCounting={false}
+              />
+              {stat.suffix}
+            </div>
             <div className="text-xs text-neutral-500 uppercase tracking-wider font-medium mt-1">{stat.label}</div>
           </div>
         ))}

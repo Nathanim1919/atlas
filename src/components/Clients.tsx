@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView, animate } from "framer-motion";
 import { Building2, Award, Handshake, Globe2, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import EnatImage from "../../public/bank/enat.png";
 import WegagenImage from "../../public/bank/wegagen.png";
 import DashenImage from "../../public/bank/dashen.jpeg";
@@ -19,7 +20,7 @@ import EthioTelecomImage from "../../public/bank/Ethio-Telecom.jpg";
 import MinistryOfFinanceImage from "../../public/bank/m1.jpeg";
 import EthiopianElectricUtilityImage from "../../public/bank/electric.png";
 // import EthiopianRevenueAuthorityImage from "../../public/bank/ethiopian-revenue-authority.png";
-import AddisAbabaUniversityImage from "../../public/bank/addis.jpeg";
+import AddisAbabaImage from "../../public/bank/addis.jpeg";
 // import EthiopianInsuranceCorporationImage from "../../public/bank/ethiopian-insurance-corporation.png";
 
 const clients = [
@@ -39,7 +40,7 @@ const clients = [
   { name: "Ministry of Finance", image: MinistryOfFinanceImage },
   { name: "Ethiopian Electric Utility", image: EthiopianElectricUtilityImage },
   // { name: "Ethiopian Revenue Authority", image: EthiopianRevenueAuthorityImage },
-  { name: "Addis Ababa University", image: AddisAbabaUniversityImage },
+  { name: "Addis Ababa University", image: AddisAbabaImage },
   // { name: "Ethiopian Insurance Corporation", image: EthiopianInsuranceCorporationImage },
 ];
 
@@ -52,17 +53,53 @@ const partners = [
   { name: "SUSE", description: "Solution Partner for Enterprise Linux", icon: Award },
 ];
 
+interface CountUpProps {
+  from?: number;
+  to: number;
+  separator?: string;
+  direction?: "up" | "down";
+  duration?: number;
+  className?: string;
+  startCounting?: boolean;
+}
+
+const CountUp = ({
+  from = 0,
+  to,
+  separator = ",",
+  direction = "up",
+  duration = 1,
+  className = "",
+  startCounting = true,
+}: CountUpProps) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    if ((startCounting || inView) && !hasAnimated && ref.current) {
+      const controls = animate(from, to, {
+        duration: duration,
+        onUpdate: (value) => {
+          if (ref.current) {
+            ref.current.textContent = Math.floor(value).toLocaleString('en-US').replace(/,/g, separator);
+          }
+        },
+        onComplete: () => setHasAnimated(true),
+      });
+      return () => controls.stop();
+    }
+  }, [from, to, duration, separator, startCounting, inView, hasAnimated]);
+
+  return <span ref={ref} className={className}>{from}</span>;
+};
+
 export default function Clients() {
   return (
-    <section id="clients" className="py-32 bg-neutral-950 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary-900/20 via-neutral-950 to-neutral-950 pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none invert" />
+    <section id="clients" className="py-32 bg-neutral-50 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] pointer-events-none" />
       
-      {/* Glowing Orbs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary-500/10 rounded-full blur-3xl pointer-events-none" />
-
       <div className="relative max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <div className="mb-24 text-center">
@@ -72,10 +109,10 @@ export default function Clients() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-6">
-              Trusted by the <span className="text-secondary-400 drop-shadow-[0_0_15px_rgba(221,227,37,0.3)]">Nation's Best</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 tracking-tight mb-6">
+              Trusted by the <span className="text-primary-600">Nation's Best</span>
             </h2>
-            <p className="text-xl text-neutral-400 max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-xl text-neutral-600 max-w-2xl mx-auto font-light leading-relaxed">
               We are the technology partner of choice for Ethiopia's leading financial institutions, government bodies, and enterprises.
             </p>
           </motion.div>
@@ -83,24 +120,21 @@ export default function Clients() {
 
         {/* Client Logos - Marquee */}
         <div className="mb-32 relative">
-          <div className="absolute inset-y-0 left-0 w-32 bg-linear-to-r from-neutral-950 to-transparent z-10" />
-          <div className="absolute inset-y-0 right-0 w-32 bg-linear-to-l from-neutral-950 to-transparent z-10" />
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-neutral-50 to-transparent z-10" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-neutral-50 to-transparent z-10" />
           
-          <div className="flex overflow-hidden">
-            <div className="flex animate-marquee gap-8 min-w-full items-center">
-              {[...clients, ...clients].map((client, index) => (
-                <div
-                  key={`${client.name}-${index}`}
-                  className="relative shrink-0 w-48 h-24 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center p-4 hover:border-secondary-400/30 hover:bg-white/10 transition-all duration-300 group"
-                >
+          <div className="grid grid-cols-4 w-[500px] mx-auto">
+            {
+              clients.map((client, index) => (
+                <div key={index} className="relative shrink-0 w-48 h-24 flex items-center justify-center p-4 transition-all duration-300 group">
                   <Image 
                     src={client.image} 
                     alt={client.name} 
-                    className="w-full h-full object-contain filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" 
+                    className="w-full h-full object-contain transition-all duration-300" 
                   />
                 </div>
-              ))}
-            </div>
+              ))
+            }
           </div>
         </div>
 
@@ -108,12 +142,12 @@ export default function Clients() {
         <div id="partners" className="relative">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
             <div className="max-w-2xl">
-              <span className="text-secondary-400 font-semibold tracking-wider uppercase text-sm mb-4 block">Global Ecosystem</span>
-              <h3 className="text-3xl md:text-4xl font-bold text-white">
+              <span className="text-primary-600 font-semibold tracking-wider uppercase text-sm mb-4 block">Global Ecosystem</span>
+              <h3 className="text-3xl md:text-4xl font-bold text-neutral-900">
                 Strategic Technology Alliances
               </h3>
             </div>
-            <p className="text-neutral-400 max-w-md">
+            <p className="text-neutral-600 max-w-md">
               Collaborating with world-class technology leaders to deliver certified, high-performance solutions.
             </p>
           </div>
@@ -126,21 +160,21 @@ export default function Clients() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="group bg-neutral-900/50 backdrop-blur-sm rounded-3xl p-8 border border-white/5 hover:border-secondary-400/50 hover:bg-neutral-900 hover:shadow-[0_0_30px_-10px_rgba(221,227,37,0.1)] transition-all duration-500 cursor-default"
+                className="group bg-white rounded-3xl p-8 border border-neutral-200 hover:border-primary-200 hover:shadow-xl transition-all duration-500 cursor-default"
               >
                 <div className="flex justify-between items-start mb-8">
-                  <div className="w-12 h-12 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-secondary-400/10 group-hover:border-secondary-400/20 transition-all duration-500">
-                    <partner.icon size={24} className="text-neutral-300 group-hover:text-secondary-400 transition-colors" />
+                  <div className="w-12 h-12 bg-primary-50 rounded-2xl border border-primary-100 flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-primary-100 transition-all duration-500">
+                    <partner.icon size={24} className="text-primary-600 transition-colors" />
                   </div>
-                  <ArrowUpRight size={20} className="text-neutral-500 group-hover:text-secondary-400 transition-colors" />
+                  <ArrowUpRight size={20} className="text-neutral-400 group-hover:text-primary-600 transition-colors" />
                 </div>
                 
-                <h4 className="text-xl font-bold text-white mb-3">{partner.name}</h4>
-                <p className="text-neutral-400 text-sm leading-relaxed mb-6">
+                <h4 className="text-xl font-bold text-neutral-900 mb-3">{partner.name}</h4>
+                <p className="text-neutral-600 text-sm leading-relaxed mb-6">
                   {partner.description}
                 </p>
                 
-                <div className="flex items-center gap-2 text-xs font-semibold text-secondary-400 bg-secondary-400/10 w-fit px-3 py-1.5 rounded-full border border-secondary-400/20">
+                <div className="flex items-center gap-2 text-xs font-semibold text-primary-700 bg-primary-50 w-fit px-3 py-1.5 rounded-full border border-primary-100">
                   <CheckCircle2 size={14} />
                   Certified Partner
                 </div>
@@ -155,20 +189,29 @@ export default function Clients() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mt-32 border-t border-white/10 pt-16"
+          className="mt-32 border-t border-neutral-200 pt-16"
         >
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
             {[
-              { value: "50+", label: "Enterprise Clients" },
-              { value: "12+", label: "Years of Excellence" },
-              { value: "100%", label: "Project Success Rate" },
-              { value: "24/7", label: "Dedicated Support" },
+              { value: 50, suffix: "+", label: "Enterprise Clients" },
+              { value: 12, suffix: "+", label: "Years of Excellence" },
+              { value: 100, suffix: "%", label: "Project Success Rate" },
+              { value: 24, suffix: "/7", label: "Dedicated Support" },
             ].map((stat, index) => (
               <div key={index} className="group">
-                <div className="text-4xl md:text-5xl font-bold text-white mb-2 group-hover:text-secondary-400 transition-colors duration-300 drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
-                  {stat.value}
+                <div className="text-4xl md:text-5xl font-bold text-neutral-900 mb-2 group-hover:text-primary-600 transition-colors duration-300 flex justify-center items-center">
+                  <CountUp
+                    from={0}
+                    to={stat.value}
+                    separator=","
+                    direction="up"
+                    duration={1.5}
+                    className="count-up-text"
+                    startCounting={false} // Will be triggered by useInView inside component
+                  />
+                  <span>{stat.suffix}</span>
                 </div>
-                <div className="text-sm font-medium text-neutral-500 uppercase tracking-wider group-hover:text-neutral-400 transition-colors">
+                <div className="text-sm font-medium text-neutral-500 uppercase tracking-wider group-hover:text-neutral-700 transition-colors">
                   {stat.label}
                 </div>
               </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Banknote, 
   Smartphone, 
@@ -83,6 +83,27 @@ const partnerBanks = ["Dashen Bank", "Wegagen Bank", "Abay Bank", "Enat Bank", "
 export default function Products() {
   const [activeTab, setActiveTab] = useState(products[0].id);
   const activeProduct = products.find(p => p.id === activeTab) || products[0];
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#", "");
+      const product = products.find(p => p.id === hash);
+      if (product) {
+        setActiveTab(product.id);
+        const element = document.getElementById("products");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    };
+
+    // Handle initial load
+    handleHashChange();
+
+    // Handle subsequent navigation
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   return (
     <section id="products" className="py-32 bg-white relative overflow-hidden">
@@ -242,7 +263,6 @@ export default function Products() {
 
               {/* Security Badge */}
               <div className="bg-linear-to-br from-primary-50 to-white rounded-4xl border border-primary-100 p-8 text-center relative overflow-hidden shadow-lg shadow-primary-100/50">
-                <div className="absolute inset-0 bg-[url('/noise.png')] opacity-5" />
                 <Shield className="w-12 h-12 text-primary-600 mx-auto mb-4" />
                 <h4 className="text-neutral-900 font-bold mb-2">Bank-Grade Security</h4>
                 <p className="text-neutral-500 text-xs leading-relaxed">

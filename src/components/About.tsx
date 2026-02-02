@@ -1,8 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, animate } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import {
   Target,
   Eye,
@@ -30,18 +29,59 @@ const values = [
 ];
 
 const stats = [
-  { value: "10+", label: "Years of Excellence", icon: Award },
-  { value: "90+", label: "Expert Engineers", icon: Users },
-  { value: "80+", label: "Enterprise Projects", icon: Building2 },
-  { value: "10+", label: "Global Partners", icon: Globe2 },
+  { value: 10, suffix: "+", label: "Years of Excellence", icon: Award },
+  { value: 90, suffix: "+", label: "Expert Engineers", icon: Users },
+  { value: 80, suffix: "+", label: "Enterprise Projects", icon: Building2 },
+  { value: 10, suffix: "+", label: "Global Partners", icon: Globe2 },
 ];
+
+interface CountUpProps {
+  from?: number;
+  to: number;
+  separator?: string;
+  direction?: "up" | "down";
+  duration?: number;
+  className?: string;
+  startCounting?: boolean;
+}
+
+const CountUp = ({
+  from = 0,
+  to,
+  separator = ",",
+  direction = "up",
+  duration = 1,
+  className = "",
+  startCounting = true,
+}: CountUpProps) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    if ((startCounting || inView) && !hasAnimated && ref.current) {
+      const controls = animate(from, to, {
+        duration: duration,
+        onUpdate: (value) => {
+          if (ref.current) {
+            ref.current.textContent = Math.floor(value).toLocaleString('en-US').replace(/,/g, separator);
+          }
+        },
+        onComplete: () => setHasAnimated(true),
+      });
+      return () => controls.stop();
+    }
+  }, [from, to, duration, separator, startCounting, inView, hasAnimated]);
+
+  return <span ref={ref} className={className}>{from}</span>;
+};
 
 export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="about" className="py-32 bg-gray-100 relative overflow-hidden">
+    <section id="about" className="py-32 px-8   bg-gray-100 relative overflow-hidden">
       {/* Abstract Background Shapes */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-linear-to-bl from-(--steel-blue)/5 via-transparent to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-linear-to-tr from-(--sunflower)/5 via-transparent to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none" />
@@ -133,7 +173,17 @@ export default function About() {
                       viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
                     >
-                      <div className="text-5xl font-bold text-white mb-2 tracking-tight font-display">{stat.value}</div>
+                      <div className="text-5xl font-bold text-white mb-2 tracking-tight font-display flex items-center">
+                        <CountUp
+                            from={0}
+                            to={stat.value}
+                            separator=","
+                            direction="up"
+                            duration={1.5}
+                            startCounting={false}
+                        />
+                        <span>{stat.suffix}</span>
+                      </div>
                       <div className="text-sm font-medium text-slate-400 flex items-center gap-2">
                         <stat.icon size={16} className="text-(--steel-blue)" />
                         {stat.label}
