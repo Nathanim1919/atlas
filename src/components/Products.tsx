@@ -26,16 +26,16 @@ const products = [
     id: "unicash",
     name: "Uni-Cash",
     tagline: "Unified Payment Ecosystem",
-    description: "A seamless bridge between enterprises and financial institutions. Uni-Cash simplifies complex payment flows, enabling real-time transaction processing, automated reconciliation, and multi-channel integration.",
+    description: "Atlas's Pay @Bank solution - Uni-Cash provides a reliable and secure communication channel between enterprises and their banks for sending payment requests and getting status information. Uni-Cash also communicates with customers for timely and efficient payments.",
     icon: Banknote,
     modules: [
-      { name: "Core Banking Bridge", desc: "Secure ISO 8583 integration", icon: Building2 },
-      { name: "Bill Aggregation", desc: "Centralized utility payments", icon: Zap },
-      { name: "School Pay", desc: "Tuition & fee management", icon: GraduationCap },
-      { name: "Reconciliation", desc: "Automated settlement engine", icon: Layers },
+      { name: "Uni-Cash Bank", desc: "Financial institution integration", icon: Building2 },
+      { name: "Uni-Cash School", desc: "School fee collection & management", icon: GraduationCap },
+      { name: "Uni-Cash Utility", desc: "Utility bill payments & tracking", icon: Zap },
+      { name: "Uni-Cash College", desc: "Higher education fee management", icon: Layers },
     ],
     stats: [
-      { value: "500K+", label: "Daily Txns" },
+      { value: "500K+", label: "Bills/Month" },
       { value: "99.999%", label: "Uptime" },
       { value: "10+", label: "Banks Live" },
     ]

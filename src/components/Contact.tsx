@@ -16,10 +16,17 @@ import {
 const contactInfo = [
   {
     icon: Building2,
-    title: "Headquarters",
-    details: ["Airport Road, Aberus Complex", "9th Floor, Addis Ababa"],
+    title: "Location 1 - HQ",
+    details: ["Airport Road, Aberus Complex", "9th Floor, Addis Ababa, Ethiopia"],
     action: "Get Directions",
     link: "https://maps.google.com/?q=Atlas+Computer+Technology+Addis+Ababa"
+  },
+  {
+    icon: MapPin,
+    title: "Location 2",
+    details: ["Kirkos Sub-city, Near Lancha Train Station", "Zefco Building, 3rd Floor, Addis Ababa"],
+    action: "Get Directions",
+    link: "https://maps.google.com/?q=Kirkos+Lancha+Addis+Ababa"
   },
   {
     icon: Phone,
@@ -31,7 +38,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email",
-    details: ["info@act.com.et", "support@act.com.et"],
+    details: ["info@act.com.et"],
     action: "Send Email",
     link: "mailto:info@act.com.et"
   },

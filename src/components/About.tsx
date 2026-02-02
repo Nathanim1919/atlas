@@ -29,10 +29,10 @@ const values = [
 ];
 
 const stats = [
-  { value: 10, suffix: "+", label: "Years of Excellence", icon: Award },
-  { value: 90, suffix: "+", label: "Expert Engineers", icon: Users },
+  { value: 2011, suffix: "", label: "Year Established", icon: Award },
+  { value: 90, suffix: "+", label: "Professionals", icon: Users },
   { value: 80, suffix: "+", label: "Enterprise Projects", icon: Building2 },
-  { value: 10, suffix: "+", label: "Global Partners", icon: Globe2 },
+  { value: 5, suffix: "", label: "Departments", icon: Globe2 },
 ];
 
 interface CountUpProps {
@@ -238,7 +238,7 @@ export default function About() {
              <div className="relative z-10 max-w-lg">
               <h3 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 font-display tracking-tight">Our Mission</h3>
               <p className="text-xl text-slate-600 leading-relaxed font-light">
-                To engineer and integrate innovative, cost-effective software and IT solutions using cutting-edge technology to empower our customers.
+                To engineer and integrate innovative, cost-effective software and IT solutions using cutting-edge technology to empower our customers with meaningful benefits and impact.
               </p>
               <div className="mt-12 h-1 w-24 bg-linear-to-r from-(--steel-blue) to-transparent rounded-full" />
             </div>

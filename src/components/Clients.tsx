@@ -194,7 +194,7 @@ export default function Clients() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
             {[
               { value: 50, suffix: "+", label: "Enterprise Clients" },
-              { value: 12, suffix: "+", label: "Years of Excellence" },
+              { value: 14, suffix: "+", label: "Years Since 2011" },
               { value: 100, suffix: "%", label: "Project Success Rate" },
               { value: 24, suffix: "/7", label: "Dedicated Support" },
             ].map((stat, index) => (
