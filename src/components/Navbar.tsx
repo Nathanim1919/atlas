@@ -39,7 +39,7 @@ const navLinks = [
     ]
   },
   { name: "Clients", href: "/#clients" },
-  { name: "Careers", href: "/careers" },
+  // { name: "Careers", href: "/careers" },
   { name: "Contact", href: "/#contact" },
 ];
 
