@@ -113,12 +113,21 @@ export default function Hero() {
   }, [stepIndex, charIndex]);
 
   return (
-    <section className="relative w-[95%] mx-auto min-h-[90vh] flex flex-col justify-center overflow-hidden bg-white">
+    <section className="relative w-[90%] mx-auto min-h-[90vh] flex flex-col justify-center overflow-hidden bg-white">
       {/* Background Gradients - Neon Inspired */}
-    
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Main Gradient Blob */}
+        <div className="absolute top-[-20%] right-[-10%] w-[80vw] h-[80vh] bg-[radial-gradient(circle_at_center,rgba(62,125,162,0.15)_0%,transparent_60%)] blur-[100px]" />
+        
+        {/* Secondary Accent Blob */}
+        <div className="absolute bottom-[-10%] left-[-10%] w-[60vw] h-[60vh] bg-[radial-gradient(circle_at_center,rgba(221,227,37,0.12)_0%,transparent_60%)] blur-[100px]" />
+        
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03]" />
+      </div>
 
       <div className="container relative mx-auto px-6 z-10 pt-12 lg:pt-0">
-        <div className="grid lg:grid-cols-[45%_45%] gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-[45%_60%] gap-12 lg:gap-20 items-center">
           
           {/* Left Column: Content */}
           <div className="flex flex-col items-start text-left">
@@ -133,8 +142,9 @@ export default function Hero() {
               className="text-5xl md:text-6xl font-bold tracking-tight text-neutral-900 leading-[1.1] mb-8 font-display"
             >
               The Digital Backbone <br />
-              <span className="relative inline-block bg-transparent px-2 py-1 text-(--steel-blue)">
-                <span className="relative">
+              <span className="relative inline-block">
+                <span className="absolute -inset-1 bg-linear-to-r from-primary-100 to-secondary-100 blur-xl opacity-50"></span>
+                <span className="relative text-transparent bg-clip-text bg-linear-to-r from-primary-600 via-primary-500 to-primary-700">
                   for Modern Ethiopia
                 </span>
               </span>
@@ -159,7 +169,7 @@ export default function Hero() {
             >
               <Link
                 href="#contact"
-                className="group relative inline-flex items-center justify-center px-8 py-4 text-white bg-primary-600 rounded-md overflow-hidden transition-all hover:bg-primary-700 shadow-xl shadow-primary-600/20 hover:shadow-primary-600/30 hover:-translate-y-1"
+                className="group relative inline-flex items-center justify-center px-8 py-4 text-white bg-primary-600 rounded-full overflow-hidden transition-all hover:bg-primary-700 shadow-xl shadow-primary-600/20 hover:shadow-primary-600/30 hover:-translate-y-1"
               >
                 <span className="font-semibold text-lg">Start Your Project</span>
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -167,74 +177,47 @@ export default function Hero() {
               
               <Link
                 href="#services"
-                className="group inline-flex items-center justify-center px-8 py-4 text-primary-600 bg-white border border-primary-200 rounded-md hover:bg-primary-50 hover:border-primary-300 transition-all font-medium text-lg shadow-sm hover:shadow-md"
+                className="group inline-flex items-center justify-center px-8 py-4 text-primary-600 bg-white border border-primary-200 rounded-full hover:bg-primary-50 hover:border-primary-300 transition-all font-medium text-lg shadow-sm hover:shadow-md"
               >
                 View Solutions
               </Link>
-            </motion.div>
-
-            {/* Trust Indicators (Logos) */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="mt-12 pt-8 border-t border-neutral-100 w-full"
-            >
-              <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-4">Trusted by Leading Financial Institutions</p>
-              <div className="relative w-full overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
-                 <div className="flex gap-12 animate-marquee items-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 w-max">
-                    {[...allPartners, ...allPartners].map((partner, i) => (
-                      <div key={i} className="relative w-32 h-16 shrink-0 flex items-center justify-center">
-                         <Image 
-                           src={partner.src} 
-                           alt={partner.name} 
-                           width={120} 
-                           height={60} 
-                           className="object-contain max-h-12 w-auto"
-                         />
-                      </div>
-                    ))}
-                 </div>
-              </div>
             </motion.div>
           </div>
 
           {/* Right Column: Terminal Preview */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4, type: "spring", bounce: 0.2 }}
-            className="relative w-full perspective-[2000px]"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="relative w-full"
           >
-            {/* Abstract Decorative Elements behind terminal */}
-            <div className="absolute -top-12 -right-12 w-64 h-64 bg-secondary-200/30 rounded-full blur-3xl opacity-20" />
-            <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-primary-200/30 rounded-full blur-3xl opacity-20" />
+            {/* Glow Effect */}
+            <div className="absolute -inset-1 bg-linear-to-r from-primary-500 to-secondary-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
             
-            <div className="relative rounded-xl bg-[#1e1e1e] border border-white/10 shadow-2xl shadow-black/50 overflow-hidden h-[480px] flex flex-col transform transition-transform duration-700 ease-out hover:scale-[1.01]">
+            <div className="relative rounded-xl bg-neutral-950 border border-neutral-800 shadow-2xl overflow-hidden h-[480px] flex flex-col">
               {/* Terminal Header */}
-              <div className="flex items-center justify-between px-4 py-3 bg-[#252526] border-b border-black/20">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-800 bg-neutral-900/50">
                 <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#FF5F56] hover:bg-[#FF5F56]/80 transition-colors shadow-inner"></div>
-                  <div className="w-3 h-3 rounded-full bg-[#FFBD2E] hover:bg-[#FFBD2E]/80 transition-colors shadow-inner"></div>
-                  <div className="w-3 h-3 rounded-full bg-[#27C93F] hover:bg-[#27C93F]/80 transition-colors shadow-inner"></div>
+                  <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1 rounded-md bg-black/20 border border-white/5">
-                  <Terminal size={10} className="text-neutral-500" />
-                  <span className="text-[10px] text-neutral-400 font-mono tracking-wide">act-cli — zsh</span>
+                <div className="text-xs text-neutral-500 font-mono flex items-center gap-2">
+                  <Terminal size={12} />
+                  act-cli — v2.4.0
                 </div>
-                <div className="w-10"></div>
               </div>
 
               {/* Terminal Content */}
-              <div ref={scrollRef} className="p-6 font-mono text-sm md:text-base text-left overflow-y-auto flex-1 bg-[#1e1e1e] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <div ref={scrollRef} className="p-6 font-mono text-sm md:text-base text-left overflow-y-auto flex-1 scrollbar-hide">
                 <div className="flex flex-col gap-2">
                   {terminalLines.map((line) => (
                     <div key={line.id} className={`${line.color} ${line.isCommand ? "" : "pl-4"}`}>
                       {line.isCommand ? (
                         <div className="flex items-center gap-2">
-                          <span className="text-secondary-400 font-bold">➜</span>
-                          <span className="text-blue-400 font-bold">~</span>
-                          <span className="text-neutral-200">{line.text}</span>
+                          <span className="text-secondary-400">➜</span>
+                          <span className="text-neutral-400">~</span>
+                          <span className="text-neutral-300">{line.text}</span>
                         </div>
                       ) : (
                         line.text
@@ -245,36 +228,22 @@ export default function Hero() {
                   {/* Active typing line */}
                   {stepIndex < steps.length && steps[stepIndex].type === 'command' && (
                     <div className="flex items-center gap-2 text-neutral-400">
-                      <span className="text-secondary-400 font-bold">➜</span>
-                      <span className="text-blue-400 font-bold">~</span>
-                      <span className="text-neutral-200">{currentCommand}</span>
-                      <span className="animate-pulse bg-neutral-400 w-2.5 h-5 block"></span>
+                      <span className="text-secondary-400">➜</span>
+                      <span>~</span>
+                      <span className="text-neutral-300">{currentCommand}</span>
+                      <span className="animate-pulse bg-secondary-400 w-2 h-5 block"></span>
                     </div>
                   )}
 
                   {/* Final blinking cursor */}
                   {stepIndex >= steps.length && (
                     <div className="flex items-center gap-2 text-neutral-400 mt-2">
-                      <span className="text-secondary-400 font-bold">➜</span>
-                      <span className="text-blue-400 font-bold">~</span>
-                      <span className="text-neutral-200"></span>
-                      <span className="animate-pulse bg-neutral-400 w-2.5 h-5 block"></span>
+                      <span className="text-secondary-400">➜</span>
+                      <span>~</span>
+                      <span className="animate-pulse bg-secondary-400 w-2 h-5 block"></span>
                     </div>
                   )}
                 </div>
-              </div>
-
-              {/* Status Bar */}
-              <div className="px-3 py-1.5 bg-[#007acc] text-white text-[10px] font-mono flex justify-between items-center select-none">
-                 <div className="flex gap-3">
-                    <span className="flex items-center gap-1"><span className="font-bold">NORMAL</span></span>
-                    <span>master*</span>
-                 </div>
-                 <div className="flex gap-3">
-                    <span>utf-8</span>
-                    <span>Ln {terminalLines.length + 1}, Col 1</span>
-                    <span className="flex items-center gap-1.5">ACT-SERVER <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span></span>
-                 </div>
               </div>
             </div>
           </motion.div>

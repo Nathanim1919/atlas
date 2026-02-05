@@ -87,9 +87,9 @@ export default function Testimonials() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 tracking-tight mb-6">
+            {/* <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 tracking-tight mb-6">
               Trusted by <span className="text-(--steel-blue)">Industry Leaders</span>
-            </h2>
+            </h2> */}
             <p className="text-xl text-neutral-500 max-w-2xl mx-auto font-light leading-relaxed">
               We take pride in powering the critical infrastructure of Ethiopia's top financial and government institutions.
             </p>
@@ -109,7 +109,7 @@ export default function Testimonials() {
           <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <span className="px-3 py-1 rounded-full bg-(--secondary-500)/20 text-(--sunflower) text-xs font-medium uppercase tracking-wider border border-(--secondary-500)/20">
+                <span className="px-3 py-1 rounded-full bg-(--secondary-500)/20 text-(--secondary-300) text-xs font-medium uppercase tracking-wider border border-(--secondary-500)/20">
                   Case Study
                 </span>
                 <span className="text-neutral-400 text-sm font-medium flex items-center gap-2">
@@ -126,7 +126,7 @@ export default function Testimonials() {
 
             <div className="bg-white/5 rounded-3xl p-8 border border-white/10 backdrop-blur-sm">
               <div className="text-sm text-neutral-400 mb-2">Key Outcome</div>
-              <div className="text-3xl font-bold text-(--sunflower) mb-6">{successStory.outcome}</div>
+              <div className="text-3xl font-bold text-secondary-400 mb-6">{successStory.outcome}</div>
               <button className="w-full py-3 bg-white text-neutral-900 rounded-xl font-semibold hover:bg-neutral-100 transition-colors flex items-center justify-center gap-2">
                 Read Full Story <ArrowRight size={18} />
               </button>
@@ -179,7 +179,7 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
         {/* Header */}
         <div className="flex justify-between items-start mb-4">
           <div className="p-2 bg-neutral-50 rounded-lg border border-neutral-100 group-hover:bg-white group-hover:border-(--secondary-100) transition-colors duration-300">
-             <Quote size={14} className="text-(--steel-blue)/80" />
+             <Quote size={14} className="text-(--secondary-600)/80" />
           </div>
           <div className="px-2.5 py-0.5 bg-neutral-50 rounded-full border border-neutral-100">
             <span className="text-[9px] font-bold text-neutral-500 tracking-widest uppercase">{testimonial.company}</span>

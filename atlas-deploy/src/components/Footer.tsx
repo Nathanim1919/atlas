@@ -154,25 +154,16 @@ export default function Footer() {
                 Contact Us
               </h4>
               <ul className="space-y-5">
-                <li className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center shrink-0 border border-primary-100 mt-1">
+                <li className="flex gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center shrink-0 border border-primary-100">
                     <MapPin size={18} className="text-primary-600" />
                   </div>
-                  <div className="space-y-4">
-                    <div>
-                      <span className="block text-neutral-900 font-medium text-sm mb-0.5">Location 1</span>
-                      <span className="text-neutral-500 text-sm leading-relaxed block">
-                        Airport Road, Aberus Complex, 9th Floor
-                      </span>
-                    </div>
-                    <div>
-                      <span className="block text-neutral-900 font-medium text-sm mb-0.5">Location 2</span>
-                      <span className="text-neutral-500 text-sm leading-relaxed block">
-                        Kirkos Sub-city, Near Lancha Train Station,<br />
-                        Zefco Building, 3rd Floor<br />
-                        Addis Ababa, Ethiopia
-                      </span>
-                    </div>
+                  <div>
+                    <span className="block text-neutral-900 font-medium text-sm mb-0.5">Headquarters</span>
+                    <span className="text-neutral-500 text-sm leading-relaxed block">
+                      Airport Road, Aberus Complex, 9th Floor<br />
+                      Addis Ababa, Ethiopia
+                    </span>
                   </div>
                 </li>
                 <li className="flex gap-4">

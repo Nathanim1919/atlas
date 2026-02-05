@@ -108,7 +108,7 @@ export default function Contact() {
       {/* Abstract Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-[500px] bg-linear-to-b from-white to-transparent" />
-        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-[var(--secondary-50)]/50 rounded-full blur-3xl translate-y-1/2 translate-x-1/4" />
+        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-emerald-50/50 rounded-full blur-3xl translate-y-1/2 translate-x-1/4" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6">
@@ -122,10 +122,10 @@ export default function Contact() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-[var(--secondary-600)] font-semibold tracking-wider uppercase text-sm mb-4 block">Contact Us</span>
+              <span className="text-emerald-600 font-semibold tracking-wider uppercase text-sm mb-4 block">Contact Us</span>
               <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 tracking-tight mb-6">
                 Let's Build the <br />
-                <span className="text-[var(--secondary-600)]">Future Together</span>
+                <span className="text-emerald-700">Future Together</span>
               </h2>
               <p className="text-lg text-neutral-500 font-light leading-relaxed">
                 Whether you have a question about features, pricing, need a demo, or anything else, our team is ready to answer all your questions.
@@ -140,9 +140,9 @@ export default function Contact() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="group flex gap-6 p-6 rounded-2xl bg-white border border-neutral-100 hover:border-[var(--secondary-100)] hover:shadow-lg hover:shadow-[var(--secondary-900)]/5 transition-all duration-300"
+                  className="group flex gap-6 p-6 rounded-2xl bg-white border border-neutral-100 hover:border-emerald-100 hover:shadow-lg hover:shadow-emerald-900/5 transition-all duration-300"
                 >
-                  <div className="w-12 h-12 bg-neutral-50 rounded-xl flex items-center justify-center text-neutral-400 group-hover:bg-[var(--secondary-50)] group-hover:text-[var(--secondary-600)] transition-colors duration-300 shrink-0">
+                  <div className="w-12 h-12 bg-neutral-50 rounded-xl flex items-center justify-center text-neutral-400 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors duration-300 shrink-0">
                     <info.icon size={24} strokeWidth={1.5} />
                   </div>
                   <div>
@@ -155,7 +155,7 @@ export default function Contact() {
                     {info.link && (
                       <a 
                         href={info.link} 
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--secondary-600)] hover:text-[var(--secondary-700)] transition-colors"
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
                       >
                         {info.action} <ArrowRight size={12} />
                       </a>
@@ -176,7 +176,7 @@ export default function Contact() {
           >
             <div className="bg-white rounded-4xl p-8 md:p-12 border border-neutral-200 shadow-xl shadow-neutral-100/50 relative overflow-hidden">
               {/* Decorative Top Line */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-[var(--secondary-400)] via-[var(--secondary-300)] to-[var(--secondary-400)]" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-emerald-500 via-teal-500 to-emerald-500" />
 
               {isSubmitted ? (
                 <motion.div
@@ -184,7 +184,7 @@ export default function Contact() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-20 flex flex-col items-center justify-center h-full"
                 >
-                  <div className="w-20 h-20 bg-[var(--secondary-50)] rounded-full flex items-center justify-center mb-6 text-[var(--secondary-600)]">
+                  <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-6 text-emerald-600">
                     <CheckCircle2 size={40} />
                   </div>
                   <h3 className="text-2xl font-bold text-neutral-900 mb-3">Message Received</h3>
@@ -200,7 +200,7 @@ export default function Contact() {
                         htmlFor="name" 
                         className={`absolute left-0 transition-all duration-200 ${
                           activeField === "name" || formData.name 
-                            ? "-top-6 text-xs text-[var(--secondary-600)] font-semibold" 
+                            ? "-top-6 text-xs text-emerald-600 font-semibold" 
                             : "top-3 text-neutral-400"
                         }`}
                       >
@@ -215,7 +215,7 @@ export default function Contact() {
                         onFocus={() => setActiveField("name")}
                         onBlur={() => setActiveField(null)}
                         required
-                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-[var(--secondary-400)] outline-none transition-colors text-neutral-900 placeholder-transparent"
+                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-emerald-500 outline-none transition-colors text-neutral-900 placeholder-transparent"
                         placeholder="John Doe"
                       />
                     </div>
@@ -224,7 +224,7 @@ export default function Contact() {
                         htmlFor="email" 
                         className={`absolute left-0 transition-all duration-200 ${
                           activeField === "email" || formData.email 
-                            ? "-top-6 text-xs text-[var(--secondary-600)] font-semibold" 
+                            ? "-top-6 text-xs text-emerald-600 font-semibold" 
                             : "top-3 text-neutral-400"
                         }`}
                       >
@@ -239,7 +239,7 @@ export default function Contact() {
                         onFocus={() => setActiveField("email")}
                         onBlur={() => setActiveField(null)}
                         required
-                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-[var(--secondary-400)] outline-none transition-colors text-neutral-900 placeholder-transparent"
+                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-emerald-500 outline-none transition-colors text-neutral-900 placeholder-transparent"
                         placeholder="john@company.com"
                       />
                     </div>
@@ -251,7 +251,7 @@ export default function Contact() {
                         htmlFor="company" 
                         className={`absolute left-0 transition-all duration-200 ${
                           activeField === "company" || formData.company 
-                            ? "-top-6 text-xs text-[var(--secondary-600)] font-semibold" 
+                            ? "-top-6 text-xs text-emerald-600 font-semibold" 
                             : "top-3 text-neutral-400"
                         }`}
                       >
@@ -265,7 +265,7 @@ export default function Contact() {
                         onChange={handleChange}
                         onFocus={() => setActiveField("company")}
                         onBlur={() => setActiveField(null)}
-                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-[var(--secondary-400)] outline-none transition-colors text-neutral-900 placeholder-transparent"
+                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-emerald-500 outline-none transition-colors text-neutral-900 placeholder-transparent"
                         placeholder="Acme Inc."
                       />
                     </div>
@@ -274,7 +274,7 @@ export default function Contact() {
                         htmlFor="phone" 
                         className={`absolute left-0 transition-all duration-200 ${
                           activeField === "phone" || formData.phone 
-                            ? "-top-6 text-xs text-[var(--secondary-600)] font-semibold" 
+                            ? "-top-6 text-xs text-emerald-600 font-semibold" 
                             : "top-3 text-neutral-400"
                         }`}
                       >
@@ -288,7 +288,7 @@ export default function Contact() {
                         onChange={handleChange}
                         onFocus={() => setActiveField("phone")}
                         onBlur={() => setActiveField(null)}
-                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-[var(--secondary-400)] outline-none transition-colors text-neutral-900 placeholder-transparent"
+                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-emerald-500 outline-none transition-colors text-neutral-900 placeholder-transparent"
                         placeholder="+251..."
                       />
                     </div>
@@ -309,8 +309,8 @@ export default function Contact() {
                           onClick={() => setFormData({ ...formData, service })}
                           className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border ${
                             formData.service === service
-                              ? "bg-[var(--secondary-400)] text-neutral-900 border-[var(--secondary-400)] shadow-md shadow-[var(--secondary-400)]/20"
-                              : "bg-white text-neutral-600 border-neutral-200 hover:border-[var(--secondary-300)] hover:text-[var(--secondary-700)]"
+                              ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20"
+                              : "bg-white text-neutral-600 border-neutral-200 hover:border-emerald-300 hover:text-emerald-700"
                           }`}
                         >
                           {service}
@@ -324,7 +324,7 @@ export default function Contact() {
                       htmlFor="message" 
                       className={`absolute left-0 transition-all duration-200 ${
                         activeField === "message" || formData.message 
-                          ? "-top-6 text-xs text-[var(--secondary-600)] font-semibold" 
+                          ? "-top-6 text-xs text-emerald-600 font-semibold" 
                           : "top-3 text-neutral-400"
                       }`}
                     >
@@ -339,7 +339,7 @@ export default function Contact() {
                       onBlur={() => setActiveField(null)}
                       required
                       rows={3}
-                      className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-[var(--secondary-400)] outline-none transition-colors text-neutral-900 placeholder-transparent resize-none"
+                      className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-emerald-500 outline-none transition-colors text-neutral-900 placeholder-transparent resize-none"
                       placeholder="Tell us about your project..."
                     />
                   </div>

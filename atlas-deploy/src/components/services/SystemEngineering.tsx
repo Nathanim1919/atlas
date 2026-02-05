@@ -92,13 +92,13 @@ export default function SystemEngineering() {
       {/* Hero Section of the Component */}
       <div className="relative overflow-hidden rounded-3xl bg-neutral-900 text-white p-8 md:p-12 mb-8">
         <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-(--steel-blue) text-xs font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-6">
             <Server size={14} />
             <span>Infrastructure Excellence</span>
           </div>
           
           <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
-            System <span className="text-(--steel-blue)">Engineering</span>
+            System <span className="text-emerald-400">Engineering</span>
           </h2>
           
           <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-2xl">
@@ -108,7 +108,7 @@ export default function SystemEngineering() {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <button className="bg-(--steel-blue) text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors flex items-center gap-2">
+            <button className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors flex items-center gap-2">
               Schedule Assessment <ArrowRight size={16} />
             </button>
             <button className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors backdrop-blur-sm">
