@@ -1,24 +1,28 @@
 "use client";
 
-import { motion, useInView, animate } from "framer-motion";
+import { motion, useInView, animate, AnimatePresence } from "framer-motion";
 import { Building2, Award, Handshake, Globe2, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import EnatImage from "../../public/bank/enat.png";
 import WegagenImage from "../../public/bank/wegagen.png";
 import DashenImage from "../../public/bank/dashen.jpeg";
-// import AbayImage from "../../public/bank/abay.png";
+import RammisImage from "../../public/bank/rammis.png";
 import OromiaImage from "../../public/bank/oromo.png";
 import SiinqeeImage from "../../public/bank/sinque.png";
 import HijraImage from "../../public/bank/hijira.jpeg";
 import BerhanImage from "../../public/bank/birhan.jpg";
-import NibImage from "../../public/bank/nib.png";
+import NibImage from "../../public/bank/nib1.png";
 import BunnaImage from "../../public/bank/bunna.png";
 import EthSwitchImage from "../../public/bank/etswitch.jpeg";
+import AbayImage from "../../public/bank/abay.jpeg";
+import ZemzemImage from "../../public/bank/zemzem.png";
+import PssImage from "../../public/bank/pss.png";
 import EthiopianAirlinesImage from "../../public/bank/airline.png";
 import EthioTelecomImage from "../../public/bank/Ethio-Telecom.jpg";
 import MinistryOfFinanceImage from "../../public/bank/m1.jpeg";
 import EthiopianElectricUtilityImage from "../../public/bank/electric.png";
+import AwashImage from "../../public/bank/awash.png";
 // import EthiopianRevenueAuthorityImage from "../../public/bank/ethiopian-revenue-authority.png";
 import AddisAbabaImage from "../../public/bank/addis.jpeg";
 // import EthiopianInsuranceCorporationImage from "../../public/bank/ethiopian-insurance-corporation.png";
@@ -27,13 +31,17 @@ const clients = [
   { name: "Enat Bank", image: EnatImage },
   { name: "Wegagen Bank", image: WegagenImage },
   { name: "Dashen Bank", image: DashenImage },
-  // { name: "Abay Bank", image: AbayImage },
+  {name: "Awash Bank", image: AwashImage },
+  {name: "ZamZam Bank", image: ZemzemImage },
+  { name: "Abay Bank", image: AbayImage },
   { name: "Oromia International Bank", image: OromiaImage },
   { name: "Siinqee Bank", image: SiinqeeImage },
   { name: "Hijra Bank", image: HijraImage },
   { name: "Berhan Bank", image: BerhanImage },
   { name: "Nib International Bank", image: NibImage },
+  { name: "Rammis Bank", image: RammisImage },
   { name: "Bunna Bank", image: BunnaImage },
+  { name: "PSS Bank", image: PssImage },
   { name: "EthSwitch", image: EthSwitchImage },
   { name: "Ethiopian Airlines", image: EthiopianAirlinesImage },
   { name: "Ethio Telecom", image: EthioTelecomImage },
@@ -94,6 +102,47 @@ const CountUp = ({
   return <span ref={ref} className={className}>{from}</span>;
 };
 
+const ClientCard = ({ client, index }: { client: { name: string; image: typeof EnatImage }; index: number }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+      className="relative w-34  bg-(--steel-blue)/10 hover:bg-(--steel-blue)/20 rounded-3xl shrink-0 flex items-center justify-center p-4 transition-all duration-300 group cursor-pointer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <Image
+        src={client.image}
+        alt={client.name}
+        className="w-full h-full object-contain transition-all duration-300 group-hover:scale-105"
+      />
+
+      {/* Animated Tooltip */}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="absolute -top-12 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
+          >
+            <div className="relative bg-slate-900 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap">
+              {/* Arrow */}
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45" />
+              {client.name}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
 export default function Clients() {
   return (
     <section id="clients" className="py-32 bg-neutral-50 relative overflow-hidden">
@@ -120,19 +169,13 @@ export default function Clients() {
 
         {/* Client Logos - Marquee */}
         <div className="mb-32 relative">
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-neutral-50 to-transparent z-10" />
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-neutral-50 to-transparent z-10" />
+          <div className="absolute inset-y-0 left-0 w-32 bg-linear-to-r from-neutral-50 to-transparent z-10" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-linear-to-l from-neutral-50 to-transparent z-10" />
           
-          <div className="grid grid-cols-4 w-[500px] mx-auto">
+          <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 w-[90%] gap-4 mx-auto">
             {
               clients.map((client, index) => (
-                <div key={index} className="relative shrink-0 w-48 h-24 flex items-center justify-center p-4 transition-all duration-300 group">
-                  <Image 
-                    src={client.image} 
-                    alt={client.name} 
-                    className="w-full h-full object-contain transition-all duration-300" 
-                  />
-                </div>
+                <ClientCard key={index} client={client} index={index} />
               ))
             }
           </div>

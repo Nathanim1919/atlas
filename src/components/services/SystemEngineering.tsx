@@ -12,6 +12,8 @@ import {
   CheckCircle2,
   ArrowRight
 } from "lucide-react";
+import { getIcon } from "@/lib/iconMap";
+import type { SanityService } from "@/lib/types";
 
 interface CountUpProps {
   from?: number;
@@ -42,7 +44,6 @@ const CountUp = ({
         duration: duration,
         onUpdate: (value) => {
           if (ref.current) {
-            // Check if we need to format as a float for small numbers like 99.99
             const isFloat = !Number.isInteger(to);
             const formattedValue = isFloat 
               ? value.toFixed(2) 
@@ -59,33 +60,52 @@ const CountUp = ({
   return <span ref={ref} className={className}>{from}</span>;
 };
 
-export default function SystemEngineering() {
-  const features = [
-    {
-      icon: Network,
-      title: "Network Architecture",
-      description: "Design and deployment of resilient, high-speed network infrastructures tailored for enterprise scale.",
-      capabilities: ["SD-WAN Implementation", "Core Switching & Routing", "Wireless Enterprise Solutions"]
-    },
-    {
-      icon: Database,
-      title: "Enterprise Systems",
-      description: "Comprehensive database and application server management ensuring data integrity and availability.",
-      capabilities: ["Oracle & SQL Server", "High Availability Clusters", "Disaster Recovery Planning"]
-    },
-    {
-      icon: Shield,
-      title: "Security Infrastructure",
-      description: "Hardened security perimeters and internal controls to protect your most critical digital assets.",
-      capabilities: ["Next-Gen Firewalls", "Intrusion Prevention", "Zero Trust Architecture"]
-    },
-    {
-      icon: HardDrive,
-      title: "Storage & Virtualization",
-      description: "Optimized storage solutions and virtualization strategies to maximize hardware efficiency.",
-      capabilities: ["SAN/NAS Storage", "VMware & Hyper-V", "Container Orchestration"]
-    }
-  ];
+// Fallback data
+const defaultFeatures = [
+  {
+    title: "Network Architecture",
+    description: "Design and deployment of resilient, high-speed network infrastructures tailored for enterprise scale.",
+    icon: "Network",
+    capabilities: ["SD-WAN Implementation", "Core Switching & Routing", "Wireless Enterprise Solutions"]
+  },
+  {
+    title: "Enterprise Systems",
+    description: "Comprehensive database and application server management ensuring data integrity and availability.",
+    icon: "Database",
+    capabilities: ["Oracle & SQL Server", "High Availability Clusters", "Disaster Recovery Planning"]
+  },
+  {
+    title: "Security Infrastructure",
+    description: "Hardened security perimeters and internal controls to protect your most critical digital assets.",
+    icon: "Shield",
+    capabilities: ["Next-Gen Firewalls", "Intrusion Prevention", "Zero Trust Architecture"]
+  },
+  {
+    title: "Storage & Virtualization",
+    description: "Optimized storage solutions and virtualization strategies to maximize hardware efficiency.",
+    icon: "HardDrive",
+    capabilities: ["SAN/NAS Storage", "VMware & Hyper-V", "Container Orchestration"]
+  }
+];
+
+const defaultStats = [
+  { label: "Uptime SLA", value: 99.99, suffix: "%", isFloat: true },
+  { label: "Response Time", value: 15, prefix: "< ", suffix: "min" },
+  { label: "Security Level", value: 4, prefix: "Tier " },
+  { label: "Support", value: 24, suffix: "/7/365" }
+];
+
+interface SystemEngineeringProps {
+  data?: SanityService;
+}
+
+export default function SystemEngineering({ data }: SystemEngineeringProps) {
+  const features = data?.features && data.features.length > 0 ? data.features : defaultFeatures;
+  const stats = data?.stats && data.stats.length > 0 ? data.stats : defaultStats;
+  const subtitle = data?.subtitle || "Infrastructure Excellence";
+  const heroDescription = data?.heroDescription || "We build the backbone of your digital operations. Our engineering solutions deliver robust, scalable, and secure ICT infrastructure designed to support mission-critical workloads with 99.99% uptime reliability.";
+  const ctaPrimary = data?.ctaPrimaryText || "Schedule Assessment";
+  const ctaSecondary = data?.ctaSecondaryText || "View Case Studies";
 
   return (
     <section id="system-engineering" className="scroll-mt-32 mb-24">
@@ -94,7 +114,7 @@ export default function SystemEngineering() {
         <div className="relative z-10 max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-(--steel-blue) text-xs font-medium mb-6">
             <Server size={14} />
-            <span>Infrastructure Excellence</span>
+            <span>{subtitle}</span>
           </div>
           
           <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
@@ -102,18 +122,18 @@ export default function SystemEngineering() {
           </h2>
           
           <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-2xl">
-            We build the backbone of your digital operations. Our engineering solutions deliver 
-            robust, scalable, and secure ICT infrastructure designed to support mission-critical 
-            workloads with 99.99% uptime reliability.
+            {heroDescription}
           </p>
 
           <div className="flex flex-wrap gap-4">
             <button className="bg-(--steel-blue) text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors flex items-center gap-2">
-              Schedule Assessment <ArrowRight size={16} />
+              {ctaPrimary} <ArrowRight size={16} />
             </button>
-            <button className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors backdrop-blur-sm">
-              View Case Studies
-            </button>
+            {ctaSecondary && (
+              <button className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors backdrop-blur-sm">
+                {ctaSecondary}
+              </button>
+            )}
           </div>
         </div>
 
@@ -149,26 +169,23 @@ export default function SystemEngineering() {
               {feature.description}
             </p>
 
-            <div className="space-y-2">
-              {feature.capabilities.map((cap, cIdx) => (
-                <div key={cIdx} className="flex items-center gap-2 text-xs font-medium text-neutral-500">
-                  <CheckCircle2 size={14} className="text-emerald-500" />
-                  {cap}
-                </div>
-              ))}
-            </div>
+            {feature.capabilities && feature.capabilities.length > 0 && (
+              <div className="space-y-2">
+                {feature.capabilities.map((cap, cIdx) => (
+                  <div key={cIdx} className="flex items-center gap-2 text-xs font-medium text-neutral-500">
+                    <CheckCircle2 size={14} className="text-emerald-500" />
+                    {cap}
+                  </div>
+                ))}
+              </div>
+            )}
           </motion.div>
         ))}
       </div>
 
       {/* Technical Specs / Stats Bar */}
       <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-neutral-50 rounded-2xl border border-neutral-100">
-        {[
-          { label: "Uptime SLA", value: 99.99, suffix: "%", isFloat: true },
-          { label: "Response Time", value: 15, prefix: "< ", suffix: "min" },
-          { label: "Security Level", value: 4, prefix: "Tier " },
-          { label: "Support", value: 24, suffix: "/7/365" }
-        ].map((stat, i) => (
+        {stats.map((stat, i) => (
           <div key={i} className="text-center">
             <div className="text-2xl font-bold text-primary-600 flex justify-center items-center gap-1">
               {stat.prefix}

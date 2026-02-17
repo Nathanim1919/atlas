@@ -3,7 +3,17 @@
 import { motion } from "framer-motion";
 import { Quote, Star, Building2, ArrowRight } from "lucide-react";
 
-const testimonials = [
+export interface Testimonial {
+  _id?: string;
+  id?: number;
+  company: string;
+  name: string;
+  role: string;
+  quote: string;
+  rating: number;
+}
+
+const defaultTestimonials: Testimonial[] = [
   {
     id: 1,
     company: "Wegagen Bank",
@@ -69,7 +79,9 @@ const successStory = {
   outcome: "100% Service Continuity",
 };
 
-export default function Testimonials() {
+export default function Testimonials({ testimonials = [] }: { testimonials?: Testimonial[] }) {
+  const displayTestimonials = testimonials.length > 0 ? testimonials : defaultTestimonials;
+
   return (
     <section className="py-32 bg-gray-100 relative overflow-hidden">
       {/* Background Ambience */}
@@ -142,9 +154,9 @@ export default function Testimonials() {
         
         {/* Row 1: Right to Left */}
         <div className="flex animate-marquee-left whitespace-nowrap hover:[animation-play-state:paused] [animation-duration:10s]">
-          {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+          {[...displayTestimonials, ...displayTestimonials, ...displayTestimonials].map((testimonial, index) => (
             <div 
-              key={`row1-${testimonial.id}-${index}`} 
+              key={`row1-${testimonial.id || testimonial._id}-${index}`} 
               className="inline-block w-[85vw] md:w-[45vw] lg:w-[30vw] mx-2 whitespace-normal"
             >
               <TestimonialCard testimonial={testimonial} />
@@ -154,9 +166,9 @@ export default function Testimonials() {
 
         {/* Row 2: Left to Right */}
         {/* <div className="flex animate-marquee-right whitespace-nowrap hover:[animation-play-state:paused]">
-          {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+          {[...displayTestimonials, ...displayTestimonials, ...displayTestimonials].map((testimonial, index) => (
             <div 
-              key={`row2-${testimonial.id}-${index}`} 
+              key={`row2-${testimonial.id || testimonial._id}-${index}`} 
               className="inline-block w-[85vw] md:w-[45vw] lg:w-[30vw] mx-4 whitespace-normal"
             >
               <TestimonialCard testimonial={testimonial} />
@@ -168,7 +180,7 @@ export default function Testimonials() {
   );
 }
 
-function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] }) {
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <div className="bg-white rounded-2xl p-6 w-full min-w-[300px] border border-neutral-200/60 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)] hover:border-(--secondary-500)/20 hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden h-full flex flex-col justify-between">
       

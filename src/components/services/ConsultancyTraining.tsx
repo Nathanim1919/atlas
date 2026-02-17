@@ -14,34 +14,45 @@ import {
   TrendingUp,
   FileCheck
 } from "lucide-react";
+import { getIcon } from "@/lib/iconMap";
+import type { SanityService } from "@/lib/types";
 
-export default function ConsultancyTraining() {
-  const features = [
-    {
-      title: "Digital Strategy",
-      description: "Technology roadmaps aligned with business goals.",
-      icon: Target,
-      tag: "Strategic"
-    },
-    {
-      title: "Risk Assessment",
-      description: "Security audits and compliance consulting.",
-      icon: Shield,
-      tag: "Compliance"
-    },
-    {
-      title: "Corporate Training",
-      description: "Customized technical workshops and certification.",
-      icon: GraduationCap,
-      tag: "Education"
-    },
-    {
-      title: "Process Optimization",
-      description: "ITIL-based service management improvement.",
-      icon: TrendingUp,
-      tag: "Efficiency"
-    }
-  ];
+const defaultFeatures = [
+  {
+    title: "Digital Strategy",
+    description: "Technology roadmaps aligned with business goals.",
+    icon: "Target",
+    tag: "Strategic"
+  },
+  {
+    title: "Risk Assessment",
+    description: "Security audits and compliance consulting.",
+    icon: "Shield",
+    tag: "Compliance"
+  },
+  {
+    title: "Corporate Training",
+    description: "Customized technical workshops and certification.",
+    icon: "GraduationCap",
+    tag: "Education"
+  },
+  {
+    title: "Process Optimization",
+    description: "ITIL-based service management improvement.",
+    icon: "TrendingUp",
+    tag: "Efficiency"
+  }
+];
+
+interface ConsultancyTrainingProps {
+  data?: SanityService;
+}
+
+export default function ConsultancyTraining({ data }: ConsultancyTrainingProps) {
+  const features = data?.features && data.features.length > 0 ? data.features : defaultFeatures;
+  const subtitle = data?.subtitle || "Strategic Expertise";
+  const heroDescription = data?.heroDescription || "Empowering your team with the knowledge and strategies needed to thrive. From digital transformation roadmaps to technical certification training, we bridge the gap between technology and business value.";
+  const ctaPrimary = data?.ctaPrimaryText || "Explore Training Catalog";
 
   return (
     <section id="consultancy" className="scroll-mt-32 mb-24">
@@ -53,7 +64,7 @@ export default function ConsultancyTraining() {
           <div className="order-2 lg:order-1">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-50 border border-secondary-200 text-secondary-700 text-xs font-medium mb-6">
               <Lightbulb size={14} className="text-secondary-500" />
-              <span>Strategic Expertise</span>
+              <span>{subtitle}</span>
             </div>
             
             <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-neutral-900">
@@ -61,14 +72,12 @@ export default function ConsultancyTraining() {
             </h2>
             
             <p className="text-neutral-600 text-lg leading-relaxed mb-8">
-              Empowering your team with the knowledge and strategies needed to thrive. 
-              From digital transformation roadmaps to technical certification training, 
-              we bridge the gap between technology and business value.
+              {heroDescription}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button className="bg-primary-600 text-white hover:bg-primary-700 px-6 py-3 rounded-lg font-semibold text-sm transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary-600/20">
-                Explore Training Catalog <ArrowRight size={16} />
+                {ctaPrimary} <ArrowRight size={16} />
               </button>
             </div>
           </div>
@@ -109,32 +118,36 @@ export default function ConsultancyTraining() {
 
         {/* Feature Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 border-t border-neutral-200">
-          {features.map((feature, idx) => (
-            <div 
-              key={idx}
-              className={`
-                p-8 group hover:bg-neutral-50 transition-colors
-                ${idx !== features.length - 1 ? 'lg:border-r border-neutral-200' : ''}
-                ${idx < 2 ? 'border-b lg:border-b-0 border-neutral-200' : ''}
-              `}
-            >
-              <div className="mb-4 flex items-center justify-between">
-                <div className="p-2 rounded-lg bg-primary-50 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors">
-                  <feature.icon size={24} strokeWidth={1.5} />
+          {features.map((feature, idx) => {
+            const FeatureIcon = getIcon(feature.icon);
+            return (
+              <div 
+                key={idx}
+                className={`
+                  p-8 group hover:bg-neutral-50 transition-colors
+                  ${idx !== features.length - 1 ? 'lg:border-r border-neutral-200' : ''}
+                  ${idx < 2 ? 'border-b lg:border-b-0 border-neutral-200' : ''}
+                `}
+              >
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="p-2 rounded-lg bg-primary-50 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                    <FeatureIcon size={24} strokeWidth={1.5} />
+                  </div>
+                  {feature.tag && (
+                    <span className="text-[10px] font-medium px-2 py-1 rounded-full bg-neutral-100 text-neutral-500 border border-neutral-200">
+                      {feature.tag}
+                    </span>
+                  )}
                 </div>
-                <span className="text-[10px] font-medium px-2 py-1 rounded-full bg-neutral-100 text-neutral-500 border border-neutral-200">
-                  {feature.tag}
-                </span>
+                <h3 className="text-base font-bold text-neutral-900 mb-2">{feature.title}</h3>
+                <p className="text-sm text-neutral-500 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="text-base font-bold text-neutral-900 mb-2">{feature.title}</h3>
-              <p className="text-sm text-neutral-500 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
-

@@ -5,17 +5,24 @@ import Products from "@/components/Products";
 import Testimonials from "@/components/Testimonials";
 import Clients from "@/components/Clients";
 import Contact from "@/components/Contact";
+import { client } from "@/sanity/lib/client";
+import { TESTIMONIALS_QUERY, SERVICES_QUERY } from "@/sanity/lib/queries";
 
-export default function Home() {
+export default async function Home() {
+  const [testimonials, services] = await Promise.all([
+    client.fetch(TESTIMONIALS_QUERY),
+    client.fetch(SERVICES_QUERY),
+  ]);
+
   return (
-    <>
+    <div className="w-full mx-auto">
       <Hero />
       <About />
-      <Services />
+      <Services services={services} />
       <Products />
-      <Testimonials />
+      <Testimonials testimonials={testimonials} />
       <Clients />
       <Contact />
-    </>
+    </div>
   );
 }

@@ -188,7 +188,7 @@ export default function Navbar() {
                 }}
                 style={{ left: 0 }} // Base position, animated via x
               >
-                <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-6 relative overflow-hidden w-[600px]">
+                <div className="bg-white backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-6 relative overflow-hidden w-[600px]">
                   
                   <div className="grid grid-cols-12 gap-8">
                     {/* Featured Section (Left) */}

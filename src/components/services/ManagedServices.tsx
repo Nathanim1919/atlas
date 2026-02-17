@@ -16,6 +16,8 @@ import {
   ShieldCheck,
   Zap
 } from "lucide-react";
+import { getIcon } from "@/lib/iconMap";
+import type { SanityService } from "@/lib/types";
 
 interface CountUpProps {
   from?: number;
@@ -62,33 +64,43 @@ const CountUp = ({
   return <span ref={ref} className={className}>{from}</span>;
 };
 
-export default function ManagedServices() {
-  const features = [
-    {
-      title: "NOC Services",
-      description: "24/7 network monitoring and incident response.",
-      icon: Activity,
-      metric: { value: 99.99, suffix: "% Uptime", isFloat: true }
-    },
-    {
-      title: "DBA Services",
-      description: "Proactive tuning and health checks.",
-      icon: Database,
-      metric: { value: 1, prefix: "< ", suffix: "ms Latency" }
-    },
-    {
-      title: "Server Mgmt",
-      description: "Patch management and security hardening.",
-      icon: Server,
-      metric: { text: "Zero-Day Patching" } // Text metrics don't use CountUp
-    },
-    {
-      title: "IT Support",
-      description: "Multi-tiered technical support and helpdesk.",
-      icon: Headphones,
-      metric: { value: 15, suffix: "m Response" }
-    }
-  ];
+const defaultFeatures = [
+  {
+    title: "NOC Services",
+    description: "24/7 network monitoring and incident response.",
+    icon: "Activity",
+    stat: "99.99% Uptime"
+  },
+  {
+    title: "DBA Services",
+    description: "Proactive tuning and health checks.",
+    icon: "Database",
+    stat: "< 1ms Latency"
+  },
+  {
+    title: "Server Mgmt",
+    description: "Patch management and security hardening.",
+    icon: "Server",
+    stat: "Zero-Day Patching"
+  },
+  {
+    title: "IT Support",
+    description: "Multi-tiered technical support and helpdesk.",
+    icon: "Headphones",
+    stat: "15m Response"
+  }
+];
+
+interface ManagedServicesProps {
+  data?: SanityService;
+}
+
+export default function ManagedServices({ data }: ManagedServicesProps) {
+  const features = data?.features && data.features.length > 0 ? data.features : defaultFeatures;
+  const subtitle = data?.subtitle || "24/7 Operational Support";
+  const heroDescription = data?.heroDescription || "We handle the complexity of your IT operations so you don't have to. Proactive monitoring, instant incident response, and enterprise-grade reliability.";
+  const ctaPrimary = data?.ctaPrimaryText || "View Service Plans";
+  const ctaSecondary = data?.ctaSecondaryText || "Schedule Consultation";
 
   return (
     <section id="managed-services" className="scroll-mt-32 mb-24">
@@ -109,17 +121,18 @@ export default function ManagedServices() {
             </h2>
             
             <p className="text-neutral-600 text-lg leading-relaxed mb-8 max-w-md">
-              We handle the complexity of your IT operations so you don't have to. 
-              Proactive monitoring, instant incident response, and enterprise-grade reliability.
+              {heroDescription}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button className="bg-primary-600 text-white hover:bg-primary-700 px-6 py-3 rounded-lg font-semibold text-sm transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary-600/20 whitespace-nowrap">
-                View Service Plans <ArrowRight size={16} />
+                {ctaPrimary} <ArrowRight size={16} />
               </button>
-              <button className="bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-200 px-6 py-3 rounded-lg font-semibold text-sm transition-colors whitespace-nowrap">
-                Schedule Consultation
-              </button>
+              {ctaSecondary && (
+                <button className="bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-200 px-6 py-3 rounded-lg font-semibold text-sm transition-colors whitespace-nowrap">
+                  {ctaSecondary}
+                </button>
+              )}
             </div>
           </div>
 
@@ -185,31 +198,28 @@ export default function ManagedServices() {
 
         {/* Feature Strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 border-t border-neutral-200 bg-neutral-50/50">
-          {features.map((feature, idx) => (
-            <div 
-              key={idx}
-              className={`
-                p-6 md:p-8 group hover:bg-white transition-colors
-                ${idx !== features.length - 1 ? 'border-r border-neutral-200' : ''}
-                ${idx < 2 ? 'border-b md:border-b-0 border-neutral-200' : ''}
-              `}
-            >
-              <feature.icon className="text-neutral-400 group-hover:text-primary-600 transition-colors mb-4" size={24} strokeWidth={1.5} />
-              <h3 className="text-sm font-bold text-neutral-900 mb-1">{feature.title}</h3>
-              <p className="text-xs text-neutral-500 mb-3 line-clamp-2">{feature.description}</p>
-              <div className="inline-block px-2 py-1 rounded bg-primary-50 text-primary-700 text-[10px] font-mono font-medium border border-primary-100">
-                {feature.metric.text ? (
-                  feature.metric.text
-                ) : (
-                  <>
-                    {feature.metric.prefix}
-                    <CountUp from={0} to={feature.metric.value || 0} duration={1.5} startCounting={false} />
-                    {feature.metric.suffix}
-                  </>
+          {features.map((feature, idx) => {
+            const FeatureIcon = getIcon(feature.icon);
+            return (
+              <div 
+                key={idx}
+                className={`
+                  p-6 md:p-8 group hover:bg-white transition-colors
+                  ${idx !== features.length - 1 ? 'border-r border-neutral-200' : ''}
+                  ${idx < 2 ? 'border-b md:border-b-0 border-neutral-200' : ''}
+                `}
+              >
+                <FeatureIcon className="text-neutral-400 group-hover:text-primary-600 transition-colors mb-4" size={24} strokeWidth={1.5} />
+                <h3 className="text-sm font-bold text-neutral-900 mb-1">{feature.title}</h3>
+                <p className="text-xs text-neutral-500 mb-3 line-clamp-2">{feature.description}</p>
+                {feature.stat && (
+                  <div className="inline-block px-2 py-1 rounded bg-primary-50 text-primary-700 text-[10px] font-mono font-medium border border-primary-100">
+                    {feature.stat}
+                  </div>
                 )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

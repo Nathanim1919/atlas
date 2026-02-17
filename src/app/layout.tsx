@@ -32,9 +32,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" className="scroll-smooth">
       <body
@@ -44,7 +44,32 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              var s = document.createElement("script");
+              s.src = "https://cdn.botpress.cloud/webchat/v3.5/inject.js";
+              s.addEventListener("load", function() {
+                window.botpress.init({
+                  "clientId": "72f733ec-96e3-4b3f-af2d-e194e9e983fc",
+                  "configuration": {
+                    "botName": "Atlas Assistant",
+                    "botAvatar": "https://files.bpcontent.cloud/2026/02/07/08/20260207084834-WM2AZ8GZ.png",
+                    "color": "#397497",
+                    "variant": "solid",
+                    "themeMode": "light",
+                    "fontFamily": "inter",
+                    "radius": 2
+                  }
+                });
+              });
+              document.body.appendChild(s);
+            `,
+          }}
+        />
       </body>
     </html>
   );
 }
+

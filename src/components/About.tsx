@@ -81,30 +81,27 @@ export default function About() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="about" className="py-32 px-8   bg-gray-100 relative overflow-hidden">
-      {/* Abstract Background Shapes */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-linear-to-bl from-(--steel-blue)/5 via-transparent to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-linear-to-tr from-(--sunflower)/5 via-transparent to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none" />
-
+    <section id="about" className="py-8 px-8   bg-gray-100 relative overflow-hidden">
+ 
       {/* Grid Pattern Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-size-[4rem_4rem] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none opacity-50" />
 
       <div className="relative w-full mx-auto">
         {/* Section Header - Minimalist & Bold */}
-        <div className="mb-24 max-w-7xl mx-auto">
+        <div className="mb-24 w-full md:max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-neutral-200 pb-12"
+            className="flex flex-col md:flex-row md:items-end md:justify-between justify-start gap-8 border-b border-neutral-200"
           >
-            <div className="max-w-3xl">
+            <div className="">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-(--steel-blue)/5 border border-(--steel-blue)/10 text-xs font-bold text-(--steel-blue) uppercase tracking-wider mb-6">
                 <span className="w-2 h-2 rounded-full bg-(--steel-blue)"></span>
                 Who We Are
               </div>
-              <h2 className="text-5xl lg:text-7xl font-bold font-display text-slate-900 leading-[1.1] tracking-tight">
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold font-display text-slate-900 leading-[1.1] tracking-tight">
                 Architecting the <br />
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-(--steel-blue) to-slate-700">Future of Enterprise.</span>
               </h2>
@@ -118,14 +115,14 @@ export default function About() {
         {/* Main Content Grid */}
         <div className="grid lg:grid-cols-12 gap-16 mb-32 max-w-7xl mx-auto">
           {/* Left Column - Narrative */}
-          <div className="lg:col-span-7 space-y-8">
+          <div className="lg:col-span-7 space-y-2">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h3 className="text-5xl font-bold text-slate-900 mb-6 font-display">Strategic Technology Partner</h3>
+              <h3 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6 font-display">Strategic Technology Partner</h3>
               <p className="text-slate-600 leading-relaxed text-lg">
                 We don't just supply technology; we integrate it. ACT operates at the intersection of infrastructure, software, and strategy. Our multidisciplinary approach ensures that every solution we deploy is scalable, secure, and aligned with your long-term business objectives.
               </p>
