@@ -79,7 +79,7 @@ export default function Navbar() {
           <div className="flex items-center gap-6">
             <a href="tel:+251118693096" className="flex items-center gap-2 hover:text-(--sunflower) transition-colors">
               <Phone size={14} />
-              <span>+251 11 869 3096</span>
+              <span>+25111-5-32-91-39</span>
             </a>
             <a href="mailto:info@act.com.et" className="flex items-center gap-2 hover:text-(--sunflower) transition-colors">
               <Mail size={14} />

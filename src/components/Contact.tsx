@@ -31,7 +31,7 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Phone",
-    details: ["+251 11 869 3096", "+251 911 221671"],
+    details: ["+25111-5-32-91-39"],
     action: "Call Now",
     link: "tel:+251118693096"
   },

@@ -1,26 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { 
-  Server, 
-  Code2, 
-  Cloud, 
-  Headphones,
-  GraduationCap,
-  Database,
-  Shield,
-  Monitor,
-  Network,
-  HardDrive,
-  Settings,
-  Smartphone,
-  TestTube,
-  Wrench,
-  ArrowRight,
-  Check,
-  Layers
-} from "lucide-react";
+
 import SystemEngineering from "./services/SystemEngineering";
 import SoftwareDevelopment from "./services/SoftwareDevelopment";
 import CloudSolutions from "./services/CloudSolutions";

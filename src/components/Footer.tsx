@@ -182,7 +182,7 @@ export default function Footer() {
                   <div>
                     <span className="block text-neutral-900 font-medium text-sm mb-0.5">Phone</span>
                     <a href="tel:+251118693096" className="text-neutral-500 text-sm hover:text-primary-600 transition-colors">
-                      +251 11 869 3096
+                    +25111-5-32-91-39
                     </a>
                   </div>
                 </li>
@@ -228,9 +228,9 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <div className="flex gap-2">
                 {[
-                  { icon: Linkedin, href: "#" },
-                  { icon: Twitter, href: "#" },
-                  { icon: Facebook, href: "#" },
+                  { icon: Linkedin, href: "https://www.linkedin.com/company/atlas-computer-technology/about/" },
+                  // { icon: Twitter, href: "#" },
+                  // { icon: Facebook, href: "#" },
                 ].map((social, index) => (
                   <a
                     key={index}
