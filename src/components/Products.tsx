@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { 
   Banknote, 
   Smartphone, 
@@ -218,9 +219,26 @@ export default function Products() {
                         </div>
                       ))}
                     </div>
-                    <button className="flex items-center gap-2 text-sm font-bold text-primary-600 hover:text-primary-700 transition-colors">
-                      View Technical Specs <ArrowRight size={16} />
-                    </button>
+                    <div className="flex items-center gap-3">
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          if (typeof window !== "undefined") {
+                            window.dispatchEvent(new CustomEvent("open-demo-modal", { detail: { intent: "demo", product: activeProduct.id } }));
+                          }
+                        }}
+                        className="px-5 py-2.5 bg-(--steel-blue) hover:bg-primary-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm hover:shadow-md cursor-pointer"
+                      >
+                        Request a Demo
+                      </button>
+                      <Link 
+                        href={`/products/${activeProduct.id === "merchant" ? "merchant-pay" : activeProduct.id}`}
+                        className="flex items-center gap-1.5 text-xs font-bold text-neutral-700 hover:text-(--steel-blue) px-3 py-2 transition-colors"
+                      >
+                        <span>Explore Full Product</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

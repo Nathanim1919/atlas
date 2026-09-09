@@ -16,50 +16,51 @@ import {
 const contactInfo = [
   {
     icon: Building2,
-    title: "Location 1 - HQ",
-    details: ["Airport Road, Aberus Complex", "9th Floor, Addis Ababa, Ethiopia"],
+    title: "Location 1 - Head Office",
+    details: ["Airport Road, Aberus Complex, 9th Floor", "Addis Ababa, Ethiopia"],
     action: "Get Directions",
-    link: "https://maps.google.com/?q=Atlas+Computer+Technology+Addis+Ababa"
+    link: "https://maps.google.com/?q=Aberus+Complex+Addis+Ababa"
   },
   {
     icon: MapPin,
-    title: "Location 2",
+    title: "Location 2 - Branch Office",
     details: ["Kirkos Sub-city, Near Lancha Train Station", "Zefco Building, 3rd Floor, Addis Ababa"],
     action: "Get Directions",
     link: "https://maps.google.com/?q=Kirkos+Lancha+Addis+Ababa"
   },
   {
     icon: Phone,
-    title: "Phone",
+    title: "Direct Line",
     details: ["+25111-5-32-91-39"],
     action: "Call Now",
-    link: "tel:+251118693096"
+    link: "tel:+251115329139"
   },
   {
     icon: Mail,
-    title: "Email",
-    details: ["info@act.com.et"],
+    title: "Official Email & Web",
+    details: ["info@act.com.et", "www.act.com.et"],
     action: "Send Email",
     link: "mailto:info@act.com.et"
   },
   {
     icon: Clock,
-    title: "Office Hours",
-    details: ["Mon - Fri: 8:30 AM - 5:30 PM", "Sat: 8:30 AM - 12:30 PM"],
+    title: "Support & Office Hours",
+    details: ["Mon - Fri: 8:30 AM - 5:30 PM", "24/7 SLA NOC Hotline for Banks"],
     action: null,
     link: null
   },
 ];
 
 const services = [
-  "System Engineering",
-  "Software Development",
-  "Cloud Solutions",
-  "Managed Services",
-  "Consultancy & Training",
-  "Uni-Cash Solutions",
-  "Banking Solutions",
-  "Other",
+  "System Engineering & Infrastructure",
+  "Software Development & Mobility",
+  "Private Cloud (OpenStack & HCI)",
+  "Managed Services & 24/7 SLAs",
+  "Uni-Cash (Pay@Bank Integration)",
+  "Virtual Integrated Banking (VIB)",
+  "AI & Automation Solutions",
+  "Consultancy & Enterprise Training",
+  "Other Enterprise Inquiries",
 ];
 
 export default function Contact() {

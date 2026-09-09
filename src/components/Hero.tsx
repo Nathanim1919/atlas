@@ -177,8 +177,16 @@ Prod    [##############......] 72%`,
           
           {/* Left Column: Content */}
           <div className="flex flex-col items-start text-left relative">
-            {/* Badge */}
-         
+            {/* Corporate Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-50 border border-primary-200/60 text-primary-800 text-xs font-bold mb-4"
+            >
+              <span className="w-2 h-2 rounded-full bg-secondary-500 animate-pulse" />
+              <span>Established 2011 • Powering 20+ Commercial Banks in Ethiopia</span>
+            </motion.div>
 
             {/* Main Heading */}
             <motion.h1
@@ -200,9 +208,9 @@ Prod    [##############......] 72%`,
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="md:text-lg relative lg:text-xl text-neutral-500 mb-4  leading-relaxed w-[350px] md:w-full font-light"
+              className="md:text-lg relative lg:text-xl text-neutral-600 mb-6 leading-relaxed max-w-xl font-light"
             >
-              Atlas Computer Technology PLC (ACT) is a premier ICT solutions provider in Addis Ababa, delivering infrastructure, system integration, software development, and consultancy services for over a decade.
+              Atlas Computer Technology PLC (ACT) engineers mission-critical infrastructure, OpenStack private cloud, custom software, and the nationwide Uni-Cash payment ecosystem.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -210,21 +218,26 @@ Prod    [##############......] 72%`,
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col md:flex-row items-center gap-4"
+              className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto"
             >
-              <Link
-                href="#contact"
-                className="group relative inline-flex items-center justify-center px-8 py-4 text-white bg-primary-600 rounded-md overflow-hidden transition-all hover:bg-primary-700 shadow-xl shadow-primary-600/20 hover:shadow-primary-600/30 hover:-translate-y-1"
+              <button
+                type="button"
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("open-demo-modal", { detail: { intent: "demo" } }));
+                  }
+                }}
+                className="group w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-white bg-primary-600 rounded-xl overflow-hidden transition-all hover:bg-primary-700 shadow-lg shadow-primary-600/20 hover:shadow-primary-600/30 font-bold text-sm sm:text-base cursor-pointer"
               >
-                <span className="font-semibold lg:text-lg">Start Your Project</span>
-                <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </Link>
+                <span>Request a Demo</span>
+                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
               
               <Link
-                href="#services"
-                className="group w-full md:w-auto bg-(--sunflower) inline-flex items-center justify-center px-8 py-4 text-primary-600  border border-primary-200 rounded-md hover:bg-primary-50 hover:border-primary-300 transition-all font-medium lg:text-lg shadow-sm hover:shadow-md"
+                href="/#services"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-neutral-800 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 rounded-xl transition-all font-semibold text-sm sm:text-base"
               >
-                View Solutions
+                Explore Solutions
               </Link>
             </motion.div>
 

@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import DemoModal from "@/components/DemoModal";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <DemoModal />
 
         <script
           dangerouslySetInnerHTML={{
