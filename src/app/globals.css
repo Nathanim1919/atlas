@@ -101,8 +101,8 @@
   --color-neutral-200: var(--neutral-200);
   --color-neutral-100: var(--neutral-100);
   --color-neutral-50: var(--neutral-50);
-  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: var(--font-lexend), 'Lexend', system-ui, sans-serif;
+  --font-display: var(--font-lexend), 'Lexend', system-ui, sans-serif;
   
   --animate-marquee: marquee 40s linear infinite;
   --animate-marquee2: marquee2 40s linear infinite;
@@ -147,7 +147,7 @@ body {
   box-sizing: border-box;
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-family: var(--font-lexend), 'Lexend', system-ui, sans-serif;
 
   overflow-x: hidden;
 }
@@ -170,11 +170,15 @@ body {
   background: var(--primary-600);
 }
 
-/* Typography */
+/* Typography - Force Lexend universally */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-family: var(--font-lexend), 'Lexend', system-ui, sans-serif;
   font-weight: 600;
   line-height: 1.2;
+}
+
+input, button, textarea, select {
+  font-family: var(--font-lexend), 'Lexend', system-ui, sans-serif;
 }
 
 /* Gradient Text */

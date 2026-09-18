@@ -16,12 +16,15 @@ import {
   Server,
   Building2,
   Send,
-  FileText
+  FileText,
+  Loader2
 } from "lucide-react";
+import { toast } from "sonner";
 
 export default function SupportPortalPage() {
   const [priority, setPriority] = useState<"P1" | "P2" | "P3" | "P4">("P2");
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [ticketId, setTicketId] = useState("");
   const [formData, setFormData] = useState({
     institution: "",
@@ -33,11 +36,44 @@ export default function SupportPortalPage() {
     description: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const generatedId = `ACT-TKT-${Math.floor(100000 + Math.random() * 900000)}`;
-    setTicketId(generatedId);
-    setFormSubmitted(true);
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/support-tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          institution: formData.institution,
+          contactName: formData.contactName,
+          email: formData.email,
+          phone: formData.phone,
+          priority,
+          system: formData.system,
+          subject: formData.subject,
+          description: formData.description,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error(result.error || "Failed to log support ticket.");
+      }
+
+      setTicketId(result.data.ticketNumber);
+      setFormSubmitted(true);
+      toast.success("Support Ticket Logged!", {
+        description: `Ticket #${result.data.ticketNumber} has been dispatched to Tier-1 NOC engineering.`,
+      });
+    } catch (err: any) {
+      console.error("Support ticket error:", err);
+      toast.error("Ticket Dispatch Failed", {
+        description: err.message || "Please call our emergency hotline +25111-5-32-91-39 immediately.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const slaTiers = [
@@ -305,10 +341,20 @@ export default function SupportPortalPage() {
 
                     <button
                       type="submit"
-                      className="w-full py-4 rounded-xl bg-[#3e7da2] text-white font-bold hover:bg-[#326685] transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer text-sm"
+                      disabled={isSubmitting}
+                      className="w-full py-4 rounded-xl bg-[#3e7da2] text-white font-bold hover:bg-[#326685] transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer text-sm disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                      <Send className="w-4 h-4" />
-                      Dispatch Priority Support Ticket
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Dispatching to Tier-1 NOC...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" />
+                          <span>Dispatch Priority Support Ticket</span>
+                        </>
+                      )}
                     </button>
                   </form>
                 )}

@@ -1,20 +1,16 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
+import { Lexend } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DemoModal from "@/components/DemoModal";
+import { Toaster } from "sonner";
 
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-sans",
+const lexend = Lexend({
+  variable: "--font-lexend",
   subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700", "800"],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -39,13 +35,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${plusJakarta.variable} ${spaceGrotesk.variable} antialiased`}
-        style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}
+        className={`${lexend.variable} ${lexend.className} font-sans antialiased`}
+        style={{ fontFamily: "var(--font-lexend), 'Lexend', system-ui, sans-serif" }}
       >
         <Navbar />
         <main>{children}</main>
         <Footer />
         <DemoModal />
+        <Toaster richColors position="top-right" closeButton />
 
         <script
           dangerouslySetInnerHTML={{

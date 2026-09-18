@@ -1,0 +1,129 @@
+// Prisma schema for Atlas Computer Technology (ACT)
+// Configured for Supabase PostgreSQL with connection pooling support
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Model: DemoRequest
+// Captures leads, solution demos, RFP proposals, and expert consultation requests
+model DemoRequest {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  fullName      String
+  organization  String   // Bank, Enterprise, Ministry, University
+  email         String
+  phone         String
+  
+  intent        String   @default("demo") // demo, expert, proposal, brochure
+  product       String   // unicash, vib, merchant, private-cloud, system-engineering, managed-services, ai-automation
+  
+  preferredDate String?
+  notes         String?  @db.Text
+
+  // Workflow & Status Tracking
+  status        String   @default("PENDING") // PENDING, CONTACTED, SCHEDULED, COMPLETED, ARCHIVED
+  adminNotes    String?  @db.Text
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+}
+
+// Model: SupportTicket
+// Captures mission-critical bank SLA incidents and technical support tickets
+model SupportTicket {
+  id             String    @id @default(cuid())
+  ticketNumber   String    @unique // Human-friendly ID, e.g., "ACT-TKT-892140"
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  institution    String    // e.g. Commercial Bank of Ethiopia, Dashen Bank
+  contactName    String    // Lead engineer or reporter
+  email          String
+  phone          String
+
+  priority       String    @default("P2") // P1 (Critical Outage), P2 (Major Impact), P3 (Minor Incident), P4 (Service Request)
+  system         String    // Uni-Cash Payment Gateway, Core DB RAC, Private Cloud, SAN Storage, etc.
+  subject        String
+  description    String    @db.Text
+
+  // Resolution & SLA Tracking
+  status         String    @default("OPEN") // OPEN, IN_PROGRESS, RESOLVED, CLOSED
+  internalNotes  String?   @db.Text
+  resolvedAt     DateTime?
+
+  @@index([ticketNumber])
+  @@index([status])
+  @@index([priority])
+  @@index([createdAt])
+}
+
+// --- Better Auth Models ---
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  role          String?   @default("admin")
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+
+  @@map("verification")
+}

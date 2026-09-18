@@ -18,6 +18,7 @@ import {
   CreditCard,
   Cloud
 } from "lucide-react";
+import { toast } from "sonner";
 
 export type DemoIntent = "demo" | "expert" | "proposal" | "brochure";
 
@@ -57,10 +58,40 @@ export default function DemoModal() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API lead submission
-    await new Promise((r) => setTimeout(r, 1200));
-    setIsSubmitting(false);
-    setIsSuccess(true);
+    try {
+      const res = await fetch("/api/demo-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          organization: formData.organization,
+          email: formData.email,
+          phone: formData.phone,
+          intent,
+          product,
+          preferredDate: formData.preferredDate || undefined,
+          notes: formData.notes || undefined,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error(result.error || "Failed to submit request.");
+      }
+
+      toast.success("Request Received Successfully!", {
+        description: `Thank you, ${formData.fullName}. Our solutions team will contact ${formData.organization} shortly.`,
+      });
+      setIsSuccess(true);
+    } catch (err: any) {
+      console.error("Demo submit error:", err);
+      toast.error("Submission Failed", {
+        description: err.message || "Please check your network connection and try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const productOptions = [
