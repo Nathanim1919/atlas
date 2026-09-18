@@ -43,3 +43,7 @@ next-env.d.ts
 config.bat
 temp_auto_push.bat
 temp_interactive_push.bat
+
+# deployment archives
+*.zip
+atlas-deploy.zip
