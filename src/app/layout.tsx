@@ -14,16 +14,78 @@ const lexend = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: "Atlas Computer Technology | Enterprise ICT Solutions",
-  description: "Atlas Computer Technology PLC - Professional ICT services including system engineering, enterprise software development, cloud solutions, and managed services in Ethiopia.",
-  keywords: "ICT solutions, software development, system engineering, cloud services, Ethiopia, enterprise applications, Uni-Cash, banking solutions",
-  authors: [{ name: "Atlas Computer Technology PLC" }],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.act.com.et"),
+  title: {
+    default: "Atlas Computer Technology | Enterprise ICT & Banking Solutions",
+    template: "%s | Atlas Computer Technology",
+  },
+  description: "Atlas Computer Technology PLC - Powering Ethiopian financial institutions, enterprises, and government agencies with Uni-Cash, Virtual Integrated Banking (VIB), cloud systems, and mission-critical ICT infrastructure.",
+  keywords: [
+    "Atlas Computer Technology",
+    "ACT",
+    "Uni-Cash",
+    "Virtual Integrated Banking",
+    "VIB",
+    "Ethiopia FinTech",
+    "Pay@Bank",
+    "Enterprise Software",
+    "Banking Solutions",
+    "Cloud Infrastructure",
+    "ICT Services Addis Ababa"
+  ],
+  authors: [{ name: "Atlas Computer Technology PLC", url: "https://www.act.com.et" }],
+  creator: "Atlas Computer Technology PLC",
+  publisher: "Atlas Computer Technology PLC",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
-    title: "Atlas Computer Technology | Enterprise ICT Solutions",
-    description: "Powering Your Business with innovative, cost-effective software and IT solutions",
     type: "website",
     locale: "en_US",
     url: "https://www.act.com.et",
+    siteName: "Atlas Computer Technology",
+    title: "Atlas Computer Technology | Enterprise ICT & Banking Solutions",
+    description: "Powering Your Business with innovative, cost-effective software, banking systems (Uni-Cash, VIB), and enterprise ICT infrastructure in Ethiopia.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Atlas Computer Technology - Enterprise ICT & Banking Solutions",
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Atlas Computer Technology | Enterprise ICT & Banking Solutions",
+    description: "Powering Ethiopian enterprises with Uni-Cash, Virtual Integrated Banking, and mission-critical ICT infrastructure.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Atlas Computer Technology - Enterprise ICT & Banking Solutions",
+      }
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/favicon.ico",
+    apple: "/logo.png",
   },
 };
 

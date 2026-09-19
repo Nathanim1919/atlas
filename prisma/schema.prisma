@@ -67,6 +67,62 @@ model SupportTicket {
   @@index([createdAt])
 }
 
+// Model: JobPosting
+// Manages corporate and technical job openings across ACT
+model JobPosting {
+  id           String           @id @default(cuid())
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  title        String
+  department   String           // Software Development, System Engineering, Product Delivery, Managed Services, etc.
+  location     String           @default("Addis Ababa, Ethiopia")
+  type         String           @default("Full-time") // Full-time, Contract, Internship, Part-time
+  level        String           @default("Mid-Senior") // Junior, Mid, Senior, Lead, Executive
+  
+  description  String           @db.Text
+  requirements String           @db.Text
+  tags         String           @default("[]") // JSON string of skill tags, e.g. ["React", "Node.js"]
+  status       String           @default("ACTIVE") // ACTIVE, DRAFT, CLOSED
+
+  applications JobApplication[]
+
+  @@index([status])
+  @@index([department])
+  @@index([createdAt])
+}
+
+// Model: JobApplication
+// Captures applicant submissions, resume document URLs, and questionnaires
+model JobApplication {
+  id             String      @id @default(cuid())
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  jobId          String
+  job            JobPosting  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  fullName       String
+  email          String
+  phone          String
+  
+  // Document storage
+  resumeUrl      String      // Supabase storage public URL or download endpoint
+  resumeFileName String?
+
+  // Candidate Questionnaire
+  fitReason      String      @db.Text // "Why do you think you fit this position?"
+  
+  // Recruitment Workflow & Review
+  status         String      @default("PENDING") // PENDING, REVIEWING, SHORTLISTED, REJECTED, HIRED
+  adminNotes     String?     @db.Text
+
+  @@index([jobId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+}
+
 // --- Better Auth Models ---
 
 model User {

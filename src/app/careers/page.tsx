@@ -39,6 +39,7 @@ import {
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import JobApplicationModal, { JobPositionInfo } from "@/components/JobApplicationModal";
 
 // CountUp Component
 interface CountUpProps {
@@ -263,11 +264,55 @@ const departments = ["All", "Software Development", "System Engineering", "Produ
 
 export default function CareersPage() {
   const [selectedDepartment, setSelectedDepartment] = useState("All");
-  const [hoveredPosition, setHoveredPosition] = useState<number | null>(null);
+  const [hoveredPosition, setHoveredPosition] = useState<string | number | null>(null);
+
+  const [liveJobs, setLiveJobs] = useState<any[]>([]);
+  const [isLoadingJobs, setIsLoadingJobs] = useState(true);
+  const [selectedJobToApply, setSelectedJobToApply] = useState<JobPositionInfo | null>(null);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+
+  useEffect(() => {
+    async function fetchLivePositions() {
+      try {
+        const res = await fetch("/api/careers/jobs");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.jobs) && data.jobs.length > 0) {
+          const formatted = data.jobs.map((j: any) => {
+            let parsedTags: string[] = [];
+            try {
+              parsedTags = JSON.parse(j.tags || "[]");
+            } catch {
+              parsedTags = [];
+            }
+            return {
+              id: j.id,
+              title: j.title,
+              department: j.department,
+              type: j.type || "Full-time",
+              location: j.location || "Addis Ababa",
+              icon: Code,
+              description: j.description,
+              tags: parsedTags.length > 0 ? parsedTags : ["Enterprise", "ACT", j.department],
+              level: j.level || "Mid-Senior",
+              posted: "Active Hiring",
+            };
+          });
+          setLiveJobs(formatted);
+        }
+      } catch (err) {
+        console.error("Error fetching careers:", err);
+      } finally {
+        setIsLoadingJobs(false);
+      }
+    }
+    fetchLivePositions();
+  }, []);
+
+  const activeJobsList = liveJobs.length > 0 ? liveJobs : positions;
 
   const filteredPositions = selectedDepartment === "All" 
-    ? positions 
-    : positions.filter(p => p.department === selectedDepartment);
+    ? activeJobsList 
+    : activeJobsList.filter(p => p.department === selectedDepartment);
 
   return (
     <div className="min-h-screen bg-white selection:bg-primary-500 selection:text-white w-[80%] mx-auto">
@@ -714,7 +759,7 @@ export default function CareersPage() {
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 mb-6">
-                      {position.tags.map((tag, i) => (
+                      {position.tags.map((tag: string, i: number) => (
                         <span 
                           key={i} 
                           className="px-3 py-1 rounded-lg bg-neutral-50 border border-neutral-100 text-xs font-medium text-neutral-600"
@@ -726,9 +771,20 @@ export default function CareersPage() {
                   </div>
 
                   {/* CTA */}
-                  <Link 
-                    href={`/careers/apply/${position.id}`}
-                    className={`w-full py-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 ${
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedJobToApply({
+                        id: position.id.toString(),
+                        title: position.title,
+                        department: position.department,
+                        location: position.location,
+                        type: position.type,
+                        level: position.level,
+                      });
+                      setIsApplyModalOpen(true);
+                    }}
+                    className={`w-full py-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${
                       hoveredPosition === position.id
                         ? "bg-primary-600 text-white"
                         : "bg-neutral-100 text-neutral-700 group-hover:bg-primary-600 group-hover:text-white"
@@ -736,7 +792,7 @@ export default function CareersPage() {
                   >
                     Apply Now
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </Link>
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -903,6 +959,13 @@ export default function CareersPage() {
 
       {/* Footer Space */}
       <div className="h-20 bg-white" />
+
+      {/* Career Application Modal */}
+      <JobApplicationModal
+        isOpen={isApplyModalOpen}
+        onClose={() => setIsApplyModalOpen(false)}
+        job={selectedJobToApply}
+      />
     </div>
   );
 }
