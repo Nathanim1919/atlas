@@ -33,7 +33,7 @@ import {
   Handshake,
   Briefcase
 } from "lucide-react";
-import Logo from "../../public/logo.png";
+import Logo from "../../public/final logo 3-02-01.png";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -194,19 +194,7 @@ export default function Navbar() {
                 </button>
               </div>
 
-              {/* Pillar 3: Case Studies (Direct Link) */}
-              <Link
-                href="/case-studies"
-                onMouseEnter={() => setActiveDropdown(null)}
-                className="px-3.5 py-2 rounded-lg font-semibold text-[14px] text-slate-700 hover:text-[#3e7da2] hover:bg-slate-50 transition-all flex items-center gap-1"
-              >
-                <span>Case Studies</span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 ml-0.5">
-                  EthSwitch
-                </span>
-              </Link>
-
-              {/* Pillar 4: Resources */}
+              {/* Pillar 3: Resources (merged with Case Studies) */}
               <div 
                 className="relative"
                 onMouseEnter={() => setActiveDropdown("resources")}
@@ -229,7 +217,8 @@ export default function Navbar() {
                 </button>
               </div>
 
-              {/* Pillar 5: Company */}
+              {/* Pillar 4: Company */}
+
               <div 
                 className="relative"
                 onMouseEnter={() => setActiveDropdown("company")}
@@ -292,138 +281,57 @@ export default function Navbar() {
                 transition={{ duration: 0.2 }}
                 className="absolute top-full left-1/2 -translate-x-1/2 pt-2 hidden lg:block z-50 w-[780px]"
               >
-                <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 p-6">
-                  <div className="grid grid-cols-2 gap-6">
+                <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
+                  <div className="grid grid-cols-2 gap-x-6">
                     {/* Left Column: Infrastructure & Cloud */}
                     <div>
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-[#3e7da2] mb-3 flex items-center gap-1.5 pb-2 border-b border-slate-100">
-                        <Server size={13} />
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-[#3e7da2] mb-2 pb-2 border-b border-slate-100 flex items-center gap-1.5">
+                        <Server size={11} />
                         Infrastructure & Cloud
                       </div>
-                      <div className="space-y-2">
-                        <Link
-                          href="/solutions/private-cloud"
-                          onClick={() => setActiveDropdown(null)}
-                          className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                        >
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center justify-between">
-                            <span>Private Cloud (OpenStack & Nutanix)</span>
-                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity" />
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5">
-                            Sovereign on-premise cloud infrastructure for banks & government.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/solutions/system-engineering"
-                          onClick={() => setActiveDropdown(null)}
-                          className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                        >
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center justify-between">
-                            <span>System Engineering</span>
-                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity" />
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5">
-                            High-density servers, Oracle RAC database clusters & SAN storage.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/solutions/cloud-solutions"
-                          onClick={() => setActiveDropdown(null)}
-                          className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                        >
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center justify-between">
-                            <span>Cloud Solutions</span>
-                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity" />
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5">
-                            Hybrid cloud integration, workload migration & automated DRaaS.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/solutions/managed-services"
-                          onClick={() => setActiveDropdown(null)}
-                          className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                        >
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center justify-between">
-                            <span>24/7 Managed Services & SLAs</span>
-                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity" />
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5">
-                            Continuous NOC telemetries, spare parts depot & 15-min P1 response.
-                          </p>
-                        </Link>
+                      <div className="space-y-0.5">
+                        {[
+                          { label: "Private Cloud (OpenStack & Nutanix)", href: "/solutions/private-cloud" },
+                          { label: "System Engineering", href: "/solutions/system-engineering" },
+                          { label: "Cloud Solutions", href: "/solutions/cloud-solutions" },
+                          { label: "24/7 Managed Services & SLAs", href: "/solutions/managed-services" },
+                        ].map((item) => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={() => setActiveDropdown(null)}
+                            className="group flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-slate-50 transition-colors"
+                          >
+                            <span className="text-[13px] text-slate-700 group-hover:text-[#3e7da2] font-medium transition-colors">{item.label}</span>
+                            <ArrowRight size={11} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity shrink-0" />
+                          </Link>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Right Column: Software & Strategy */}
+                    {/* Right Column: Software & Advisory */}
                     <div>
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-3 flex items-center gap-1.5 pb-2 border-b border-slate-100">
-                        <Code2 size={13} />
-                        Software, AI & Advisory
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 pb-2 border-b border-slate-100 flex items-center gap-1.5">
+                        <Code2 size={11} />
+                        Software & Advisory
                       </div>
-                      <div className="space-y-2">
-                        <Link
-                          href="/solutions/software-development"
-                          onClick={() => setActiveDropdown(null)}
-                          className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                        >
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center justify-between">
-                            <span>Enterprise Software Development</span>
-                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity" />
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5">
-                            360° product engineering, core banking connectors & mobile apps.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/solutions/ai-automation"
-                          onClick={() => setActiveDropdown(null)}
-                          className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                        >
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center justify-between">
-                            <span>AI & Intelligent Automation</span>
-                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity" />
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5">
-                            Sovereign on-premise AI, document processing & AML fraud detection.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/solutions/consultancy-training"
-                          onClick={() => setActiveDropdown(null)}
-                          className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                        >
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center justify-between">
-                            <span>Consultancy & Corporate Training</span>
-                            <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity" />
-                          </div>
-                          <p className="text-[11px] text-slate-500 mt-0.5">
-                            Enterprise IT roadmaps, security compliance & staff certifications.
-                          </p>
-                        </Link>
-
-                        <Link
-                          href="/how-we-work"
-                          onClick={() => setActiveDropdown(null)}
-                          className="group block p-2.5 rounded-xl bg-slate-50 hover:bg-[#3e7da2]/10 transition-colors border border-slate-100 hover:border-[#3e7da2]/20"
-                        >
-                          <div className="text-xs font-bold text-[#3e7da2] flex items-center justify-between">
-                            <span className="flex items-center gap-1.5">
-                              <Compass size={13} />
-                              How We Work: 6-Stage Methodology
-                            </span>
-                            <ArrowRight size={12} />
-                          </div>
-                          <p className="text-[11px] text-slate-600 mt-0.5">
-                            Discover → Design → Develop → Test → Deploy → Support
-                          </p>
-                        </Link>
+                      <div className="space-y-0.5">
+                        {[
+                          { label: "Enterprise Software Development", href: "/solutions/software-development" },
+                          { label: "AI & Intelligent Automation", href: "/solutions/ai-automation" },
+                          { label: "Consultancy & Corporate Training", href: "/solutions/consultancy-training" },
+                          { label: "How We Work", href: "/how-we-work" },
+                        ].map((item) => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={() => setActiveDropdown(null)}
+                            className="group flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-slate-50 transition-colors"
+                          >
+                            <span className="text-[13px] text-slate-700 group-hover:text-[#3e7da2] font-medium transition-colors">{item.label}</span>
+                            <ArrowRight size={11} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity shrink-0" />
+                          </Link>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -440,74 +348,31 @@ export default function Navbar() {
                 transition={{ duration: 0.2 }}
                 className="absolute top-full left-[30%] -translate-x-1/2 pt-2 hidden lg:block z-50 w-[460px]"
               >
-                <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 space-y-2">
-                  <Link
-                    href="/products/unicash"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-[#3e7da2]/10 text-[#3e7da2] flex items-center justify-center shrink-0 mt-0.5">
-                        <CreditCard size={18} />
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center gap-2">
-                          <span>Uni-Cash (Pay@Bank)</span>
-                          <span className="text-[10px] font-semibold px-2 py-0.2 rounded bg-[#dde325]/40 text-slate-900">
-                            500K+ monthly bills
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                          Unified biller ecosystem connecting universities, schools, and utilities to 20+ commercial banks.
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/products/vib"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 mt-0.5">
-                        <Building2 size={18} />
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2]">
-                          Virtual Integrated Banking (VIB)
-                        </div>
-                        <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                          Omnichannel internet banking, mobile app, and corporate batch payroll disbursement suite.
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/products/merchant-pay"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
-                        <Store size={18} />
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2]">
-                          Merchant Pay & Smart POS
-                        </div>
-                        <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                          Interoperable EMVCo dynamic QR code generation, Android Smart POS & multi-cashier management.
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
+                <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 px-2">Products</div>
+                  <div className="space-y-0.5">
+                    {[
+                      { label: "Uni-Cash (Pay@Bank)", href: "/products/unicash", icon: CreditCard },
+                      { label: "Virtual Integrated Banking (VIB)", href: "/products/vib", icon: Building2 },
+                      { label: "Merchant Pay & Smart POS", href: "/products/merchant-pay", icon: Store },
+                    ].map(({ label, href, icon: Icon }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        onClick={() => setActiveDropdown(null)}
+                        className="group flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-slate-50 transition-colors"
+                      >
+                        <Icon size={15} className="text-[#3e7da2] shrink-0" />
+                        <span className="text-[13px] text-slate-700 group-hover:text-[#3e7da2] font-medium transition-colors flex-1">{label}</span>
+                        <ArrowRight size={11} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity shrink-0" />
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             )}
 
-            {/* Dropdown 3: Resources */}
+            {/* Dropdown 3: Resources (includes Case Studies) */}
             {activeDropdown === "resources" && (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
@@ -516,69 +381,26 @@ export default function Navbar() {
                 transition={{ duration: 0.2 }}
                 className="absolute top-full left-[55%] -translate-x-1/2 pt-2 hidden lg:block z-50 w-[420px]"
               >
-                <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 space-y-2">
-                  <Link
-                    href="/resources"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-[#3e7da2]/10 text-[#3e7da2] flex items-center justify-center shrink-0 mt-0.5">
-                        <FileText size={18} />
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2]">
-                          Knowledge & Resources Center
-                        </div>
-                        <p className="text-[11px] text-slate-500 mt-1">
-                          Technical whitepapers, sovereign cloud blueprints, and architecture guides.
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/resources/downloads"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
-                        <Download size={18} />
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center gap-1.5">
-                          <span>Official Download Center</span>
-                          <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800">
-                            PDF
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-slate-500 mt-1">
-                          ACT Corporate Profile 2026, UniCash Brochure & RFP specifications.
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/news"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 mt-0.5">
-                        <Newspaper size={18} />
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2]">
-                          News, Articles & Insights
-                        </div>
-                        <p className="text-[11px] text-slate-500 mt-1">
-                          Company milestones, product announcements, and fintech industry analysis.
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
+                <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
+                  <div className="space-y-0.5">
+                    {[
+                      { label: "Case Studies", href: "/case-studies", icon: Layers },
+                      { label: "Knowledge & Resources", href: "/resources", icon: FileText },
+                      { label: "Download Center", href: "/resources/downloads", icon: Download },
+                      { label: "News & Insights", href: "/news", icon: Newspaper },
+                    ].map(({ label, href, icon: Icon }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        onClick={() => setActiveDropdown(null)}
+                        className="group flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-slate-50 transition-colors"
+                      >
+                        <Icon size={15} className="text-[#3e7da2] shrink-0" />
+                        <span className="text-[13px] text-slate-700 group-hover:text-[#3e7da2] font-medium transition-colors flex-1">{label}</span>
+                        <ArrowRight size={11} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity shrink-0" />
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -592,74 +414,39 @@ export default function Navbar() {
                 transition={{ duration: 0.2 }}
                 className="absolute top-full right-16 pt-2 hidden lg:block z-50 w-[380px]"
               >
-                <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 space-y-2">
-                  <Link
-                    href="/#about"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                  >
-                    <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center gap-2">
-                      <Building2 size={14} className="text-[#3e7da2]" />
-                      <span>About Atlas Computer Technology</span>
-                    </div>
-                    <p className="text-[11px] text-slate-500 mt-0.5 pl-5">
-                      18+ years powering national digital transformation.
-                    </p>
-                  </Link>
-
-                  <Link
-                    href="/#team"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                  >
-                    <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center gap-2">
-                      <Users size={14} className="text-[#3e7da2]" />
-                      <span>Executive Leadership</span>
-                    </div>
-                    <p className="text-[11px] text-slate-500 mt-0.5 pl-5">
-                      Managing Directors Merid Tilahun & Birhan Legi.
-                    </p>
-                  </Link>
-
-                  <Link
-                    href="/#partners"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                  >
-                    <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center gap-2">
-                      <Handshake size={14} className="text-[#3e7da2]" />
-                      <span>Global OEM Partners</span>
-                    </div>
-                    <p className="text-[11px] text-slate-500 mt-0.5 pl-5">
-                      Oracle, IBM, Lenovo, Nutanix, Red Hat, SUSE.
-                    </p>
-                  </Link>
-
-                  <Link
-                    href="/careers"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100"
-                  >
-                    <div className="text-xs font-bold text-slate-900 group-hover:text-[#3e7da2] flex items-center gap-2">
-                      <Briefcase size={14} className="text-[#3e7da2]" />
-                      <span>Careers at ACT</span>
-                    </div>
-                    <p className="text-[11px] text-slate-500 mt-0.5 pl-5">
-                      Join Ethiopia's top enterprise engineering team.
-                    </p>
-                  </Link>
-
-                  <Link
-                    href="/#contact"
-                    onClick={() => setActiveDropdown(null)}
-                    className="group block p-2.5 rounded-xl bg-slate-50 hover:bg-[#3e7da2]/10 transition-colors text-xs font-bold text-[#3e7da2] flex items-center justify-between"
-                  >
-                    <span>Contact & Office Locations</span>
+                <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
+                  <div className="space-y-0.5">
+                    {[
+                      { label: "About ACT", href: "/#about", icon: Building2 },
+                      { label: "Leadership", href: "/#team", icon: Users },
+                      { label: "Technology Partners", href: "/#partners", icon: Handshake },
+                      { label: "Careers", href: "/careers", icon: Briefcase },
+                    ].map(({ label, href, icon: Icon }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        onClick={() => setActiveDropdown(null)}
+                        className="group flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-slate-50 transition-colors"
+                      >
+                        <Icon size={15} className="text-[#3e7da2] shrink-0" />
+                        <span className="text-[13px] text-slate-700 group-hover:text-[#3e7da2] font-medium transition-colors flex-1">{label}</span>
+                        <ArrowRight size={11} className="opacity-0 group-hover:opacity-100 text-[#3e7da2] transition-opacity shrink-0" />
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-100">
+                    <Link
+                      href="/#contact"
+                      onClick={() => setActiveDropdown(null)}
+                      className="flex items-center justify-between px-3 py-2 rounded-lg bg-[#3e7da2] text-white hover:bg-[#306689] transition-colors"
+                    >
+                      <span className="text-[13px] font-semibold">Contact Us</span>
                     <ArrowRight size={12} />
                   </Link>
                 </div>
-              </motion.div>
-            )}
+              </div>
+            </motion.div>
+          )}
           </AnimatePresence>
         </nav>
 
@@ -785,7 +572,7 @@ export default function Navbar() {
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="block py-1 font-semibold text-slate-700 hover:text-[#3e7da2]"
                       >
-                        Uni-Cash (Pay@Bank) — 500K+ monthly bills
+                        Uni-Cash (Pay@Bank)
                       </Link>
                       <Link
                         href="/products/vib"
@@ -805,17 +592,7 @@ export default function Navbar() {
                   )}
                 </div>
 
-                {/* Section 3: Case Studies Direct Link */}
-                <div className="border-b border-slate-100 pb-3">
-                  <Link
-                    href="/case-studies"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center justify-between py-2 text-base font-bold text-slate-900 hover:text-[#3e7da2]"
-                  >
-                    <span>Case Studies (EthSwitch & 7 Banks)</span>
-                    <ArrowRight size={14} className="text-[#3e7da2]" />
-                  </Link>
-                </div>
+
 
                 {/* Section 4: Resources Accordion */}
                 <div className="border-b border-slate-100 pb-3">
@@ -835,6 +612,13 @@ export default function Navbar() {
                   {mobileExpandedSection === "resources" && (
                     <div className="pl-3 py-2 space-y-2 border-l-2 border-[#3e7da2]/30 text-xs">
                       <Link
+                        href="/case-studies"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="block py-1 font-semibold text-slate-700 hover:text-[#3e7da2]"
+                      >
+                        Case Studies
+                      </Link>
+                      <Link
                         href="/resources"
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="block py-1 font-semibold text-slate-700 hover:text-[#3e7da2]"
@@ -846,7 +630,7 @@ export default function Navbar() {
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="block py-1 font-semibold text-slate-700 hover:text-[#3e7da2]"
                       >
-                        Download Center (Profile 2026 & Brochures)
+                        Download Center (Company Profile & Brochures)
                       </Link>
                       <Link
                         href="/news"

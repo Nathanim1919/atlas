@@ -38,6 +38,29 @@ model DemoRequest {
   @@index([email])
 }
 
+// Model: ContactSubmission
+// Captures general website contact form inquiries
+model ContactSubmission {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  name        String
+  email       String
+  company     String?
+  phone       String?
+  service     String?  // Service area they are inquiring about
+  message     String   @db.Text
+
+  // Workflow tracking
+  status      String   @default("NEW") // NEW, READ, REPLIED, ARCHIVED
+  adminNotes  String?  @db.Text
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+}
+
 // Model: SupportTicket
 // Captures mission-critical bank SLA incidents and technical support tickets
 model SupportTicket {
@@ -121,6 +144,35 @@ model JobApplication {
   @@index([status])
   @@index([createdAt])
   @@index([email])
+}
+
+// Model: NewsArticle
+// Manages press releases, technical articles, product releases, and company updates
+model NewsArticle {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  slug          String   @unique
+  title         String
+  category      String   @default("company") // company, product, technical, events
+  categoryLabel String   @default("Company News")
+  date          String   // e.g., "January 18, 2026"
+  readTime      String   @default("5 min read")
+  imageUrl      String?  @db.Text
+  excerpt       String   @db.Text
+  content       String   @db.Text // Rich body text
+  featured      Boolean  @default(false)
+  
+  authorName    String   @default("Atlas Computer Technology")
+  authorRole    String   @default("Enterprise Solutions")
+  tags          String   @default("[]") // JSON string array of tags
+  status        String   @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
+
+  @@index([slug])
+  @@index([status])
+  @@index([category])
+  @@index([createdAt])
 }
 
 // --- Better Auth Models ---

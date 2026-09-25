@@ -1,36 +1,26 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   QrCode,
   Smartphone,
-  CreditCard,
-  Building2,
   Store,
-  Receipt,
   ArrowRight,
   CheckCircle2,
-  ShieldCheck,
-  TrendingUp,
   Sliders,
-  DollarSign,
-  Users,
-  Repeat,
-  Layers,
-  Lock,
-  Zap,
-  BarChart3,
-  Clock
+  ChevronRight,
+  ShieldCheck
 } from "lucide-react";
 
 export default function MerchantPayPage() {
   const triggerDemo = (service: string) => {
-    window.dispatchEvent(
-      new CustomEvent("open-demo-modal", {
-        detail: { service: `Merchant Pay - ${service}` }
-      })
-    );
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("open-demo-modal", {
+          detail: { intent: "demo", product: `Merchant Pay - ${service}` }
+        })
+      );
+    }
   };
 
   const channels = [
@@ -61,25 +51,25 @@ export default function MerchantPayPage() {
       title: "Multi-Store & Cashier Hierarchy",
       desc: "Organize businesses by enterprise headquarters, regional branch, store lane, and individual cashier with role-based access control and shift sign-offs.",
       metric: "Unlimited",
-      label: "Branches & Tills"
+      label: "Tills"
     },
     {
       title: "Instant Core Banking Settlement",
       desc: "Funds collected via QR or card are settled straight to the merchant's commercial bank account with zero intermediary float risk.",
       metric: "< 2 sec",
-      label: "Settlement Speed"
+      label: "Speed"
     },
     {
       title: "Automated Dispute & Void Handling",
       desc: "Built-in double-entry accounting reconciliation engine that automatically detects and resolves pending or reversed transactions across switches.",
       metric: "99.99%",
-      label: "Reconciliation Accuracy"
+      label: "Accuracy"
     },
     {
       title: "Developer APIs & ERP Plugins",
       desc: "RESTful webhook APIs and ready-made plugins for POS cash registers, e-commerce storefronts, and SAP/Oracle ERP enterprise backends.",
-      metric: "50+ ms",
-      label: "Average API Latency"
+      metric: "< 50ms",
+      label: "Latency"
     }
   ];
 
@@ -102,275 +92,193 @@ export default function MerchantPayPage() {
     }
   ];
 
-  return (
-    <main className="bg-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden bg-slate-900 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(62,125,162,0.3),transparent_60%)]" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[#dde325]/10 rounded-full blur-3xl pointer-events-none" />
+  const metrics = [
+    { value: "EMVCo", label: "National QR Standard" },
+    { value: "EthSwitch", label: "Direct Rail Integration" },
+    { value: "< 2 Sec", label: "Direct Bank Settlement" },
+    { value: "Zero Float", label: "No Escrow Delays" },
+  ];
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="lg:col-span-7"
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#dde325]/20 border border-[#dde325]/40 text-[#dde325] text-xs font-semibold uppercase tracking-wider mb-6">
-                <Store className="w-4 h-4" />
-                Next-Gen Merchant Acquiring Platform
+  return (
+    <div className="bg-white font-sans min-h-screen text-neutral-900 selection:bg-[#3e7da2] selection:text-white">
+      {/* Light Enterprise Hero */}
+      <section className="relative pt-24 pb-20 bg-neutral-50 border-b border-neutral-200 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-500 mb-6">
+            <Link href="/" className="hover:text-neutral-900 transition-colors">Home</Link>
+            <ChevronRight className="w-3 h-3 text-neutral-400" />
+            <Link href="/products" className="hover:text-neutral-900 transition-colors">Products</Link>
+            <ChevronRight className="w-3 h-3 text-neutral-400" />
+            <span className="text-[#3e7da2] font-semibold">Merchant Pay</span>
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white border border-neutral-200 shadow-xs text-neutral-700 text-xs font-mono mb-6">
+                <Store className="w-3.5 h-3.5 text-[#3e7da2]" />
+                <span>Next-Gen Merchant Acquiring Platform</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] mb-6">
-                Unified Payment Acceptance for <span className="text-[#dde325]">Modern Merchants</span>
+              <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-neutral-900 mb-6 leading-tight">
+                Unified Payment Acceptance for Modern Merchants
               </h1>
 
-              <p className="text-lg sm:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed">
-                Empower retail merchants, restaurant chains, fuel stations, and enterprise billers to accept national QR codes, bank debit cards, and mobile wallets seamlessly with real-time settlement into core banking ledgers.
+              <p className="text-base sm:text-lg text-neutral-600 leading-relaxed mb-8 max-w-2xl">
+                Empower retail chains, supermarket lanes, fuel stations, and enterprise billers to accept national QR codes, debit cards, and mobile wallets with real-time core banking settlement.
               </p>
 
               <div className="flex flex-wrap gap-4">
                 <button
+                  type="button"
                   onClick={() => triggerDemo("General Request")}
-                  className="px-7 py-3.5 rounded-xl bg-[#dde325] text-slate-950 font-bold hover:bg-[#c8ce20] transition-all duration-200 shadow-lg shadow-[#dde325]/20 flex items-center gap-2 cursor-pointer"
+                  className="px-6 py-3.5 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded shadow-sm transition-colors flex items-center gap-2 text-sm cursor-pointer"
                 >
-                  Schedule Solution Demo
+                  <span>Schedule Solution Demo</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
+
                 <Link
                   href="/contact"
-                  className="px-7 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-medium transition-all duration-200 backdrop-blur-sm"
+                  className="px-6 py-3.5 bg-white hover:bg-neutral-100 text-neutral-800 font-semibold rounded border border-neutral-300 transition-colors flex items-center gap-2 text-sm"
                 >
-                  Talk to a Payment Specialist
+                  <span>Talk with Acquiring Specialist</span>
                 </Link>
               </div>
+            </div>
 
-              {/* Badges */}
-              <div className="mt-10 pt-8 border-t border-white/10 grid grid-cols-3 gap-6">
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-[#dde325]">EMVCo</div>
-                  <div className="text-xs text-slate-400 mt-1">Interoperable QR Standards</div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-white">EthSwitch</div>
-                  <div className="text-xs text-slate-400 mt-1">Direct National Rail</div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-white">Zero Float</div>
-                  <div className="text-xs text-slate-400 mt-1">Instant Bank Ledger Credit</div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Interactive Visual Preview */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="lg:col-span-5"
-            >
-              <div className="rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700/80 p-6 shadow-2xl relative">
-                <div className="flex items-center justify-between border-b border-slate-700 pb-4 mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-[#3e7da2]/20 border border-[#3e7da2]/40 flex items-center justify-center text-[#dde325]">
-                      <QrCode className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="text-white font-bold text-sm">Merchant POS Console</div>
-                      <div className="text-xs text-emerald-400 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                        Core Banking Node Active
-                      </div>
-                    </div>
+            <div className="lg:col-span-5">
+              <div className="bg-white border border-neutral-200 p-6 rounded shadow-sm">
+                <div className="flex items-center justify-between pb-4 mb-4 border-b border-neutral-100">
+                  <div className="flex items-center gap-2">
+                    <QrCode className="w-4 h-4 text-[#3e7da2]" />
+                    <span className="text-xs font-mono uppercase text-neutral-500">Merchant Terminal #ETH-9021</span>
                   </div>
-                  <span className="text-[11px] font-mono bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700">
-                    Terminal #ETH-9021
-                  </span>
+                  <span className="text-xs font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-semibold">Active</span>
                 </div>
 
-                {/* Simulated Dynamic Payment Screen */}
-                <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 text-center mb-6">
-                  <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Payment Amount Due</p>
-                  <div className="text-3xl font-black text-white mb-4">ETB 1,850.00</div>
-
-                  {/* QR Box */}
-                  <div className="w-40 h-40 mx-auto bg-white p-3 rounded-xl shadow-inner flex flex-col items-center justify-center relative">
-                    <div className="w-full h-full border-2 border-dashed border-slate-300 rounded flex items-center justify-center">
-                      <QrCode className="w-28 h-28 text-slate-900" />
-                    </div>
-                    <div className="absolute bottom-1 text-[9px] font-bold text-[#3e7da2] bg-white px-1">
-                      EthSwitch EMVCo
-                    </div>
+                <div className="bg-neutral-50 border border-neutral-200/80 p-4 rounded text-center mb-4">
+                  <p className="text-[11px] font-mono text-neutral-500 uppercase">Payment Amount Due</p>
+                  <div className="text-2xl font-extrabold text-neutral-900 my-1">ETB 1,850.00</div>
+                  <div className="inline-flex items-center gap-1.5 text-xs font-mono text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>EthSwitch Interoperable QR Verified</span>
                   </div>
-
-                  <p className="text-xs text-slate-400 mt-4">
-                    Scan with any Ethiopian Mobile Banking or Telebirr app
-                  </p>
                 </div>
 
-                <div className="space-y-2.5">
-                  <div className="flex justify-between items-center text-xs p-2.5 rounded-lg bg-slate-800/60 border border-slate-700/50">
-                    <span className="text-slate-400">Store Lane:</span>
-                    <span className="text-white font-medium">Bole Medhanialem - Till 04</span>
+                <div className="space-y-2 text-xs font-mono">
+                  <div className="flex justify-between p-2 bg-neutral-50 rounded border border-neutral-200/60">
+                    <span className="text-neutral-500">Store Lane:</span>
+                    <span className="text-neutral-800 font-semibold">Bole Medhanialem - Till 04</span>
                   </div>
-                  <div className="flex justify-between items-center text-xs p-2.5 rounded-lg bg-slate-800/60 border border-slate-700/50">
-                    <span className="text-slate-400">Cashier:</span>
-                    <span className="text-white font-medium">Helen K. (#CK-109)</span>
-                  </div>
-                  <div className="flex justify-between items-center text-xs p-2.5 rounded-lg bg-slate-800/60 border border-slate-700/50">
-                    <span className="text-slate-400">Settlement Target:</span>
-                    <span className="text-[#dde325] font-semibold">Live Bank Current Account</span>
+                  <div className="flex justify-between p-2 bg-neutral-50 rounded border border-neutral-200/60">
+                    <span className="text-neutral-500">Settlement Target:</span>
+                    <span className="text-[#3e7da2] font-semibold">Live Bank Current Account</span>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Acceptance Channels */}
-      <section className="py-20 bg-slate-50 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#3e7da2] mb-3">Omnichannel Acquiring</h2>
-            <h3 className="text-3xl font-extrabold text-slate-900">
-              One Unified Engine, Every Payment Touchpoint
-            </h3>
-            <p className="mt-4 text-slate-600">
-              Whether over the retail counter, at the table, on the road, or online, Merchant Pay gives businesses full coverage without managing disparate terminals.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {channels.map((channel, i) => (
-              <motion.div
-                key={channel.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 hover:border-[#3e7da2]/40"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[#3e7da2]/10 text-[#3e7da2] flex items-center justify-center mb-5">
-                  <channel.icon className="w-6 h-6" />
-                </div>
-                <h4 className="text-lg font-bold text-slate-900 mb-3">{channel.title}</h4>
-                <p className="text-sm text-slate-600 leading-relaxed">{channel.desc}</p>
-              </motion.div>
+      {/* Metrics Bar */}
+      <section className="border-b border-neutral-200 bg-white py-10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {metrics.map((metric, idx) => (
+              <div key={idx} className="border-l-2 border-[#3e7da2] pl-4">
+                <div className="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight">{metric.value}</div>
+                <div className="text-xs font-mono text-neutral-500 mt-1">{metric.label}</div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Enterprise Capabilities */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-6">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-[#3e7da2] mb-3">Operational Control</h2>
-              <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
-                Designed for Commercial Banks & Multi-Location Chains
-              </h3>
-              <p className="text-slate-600 mb-8 leading-relaxed">
-                Atlas Computer Technology engineered Merchant Pay to solve the biggest headaches in Ethiopian merchant acquiring: branch bookkeeping chaos, untracked voids, cash float delays, and non-standard QR codes.
-              </p>
+      {/* Touchpoint Channels */}
+      <section className="py-20 bg-neutral-50 border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mb-12">
+            <span className="text-[#3e7da2] font-mono text-xs uppercase tracking-wider block mb-2 font-bold">
+              Omnichannel Touchpoints
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
+              One Engine, Every Payment Touchpoint
+            </h2>
+            <p className="text-sm sm:text-base text-neutral-600 mt-3">
+              Whether over the retail counter, at the table, on the road, or online, Merchant Pay gives businesses total acquiring coverage.
+            </p>
+          </div>
 
-              <div className="space-y-6">
-                {keyFeatures.map((feat) => (
-                  <div key={feat.title} className="flex gap-4 items-start">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0 mt-1">
-                      <CheckCircle2 className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-bold text-slate-900 flex items-center gap-3">
-                        {feat.title}
-                        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-[#3e7da2]">
-                          {feat.metric} {feat.label}
-                        </span>
-                      </h4>
-                      <p className="text-sm text-slate-600 mt-1 leading-relaxed">{feat.desc}</p>
-                    </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {channels.map((chan) => (
+              <div key={chan.title} className="p-6 bg-white border border-neutral-200 rounded flex flex-col justify-between shadow-xs">
+                <div>
+                  <div className="w-9 h-9 rounded bg-neutral-50 border border-neutral-200 text-[#3e7da2] flex items-center justify-center mb-4 shadow-xs">
+                    <chan.icon className="w-4 h-4" />
                   </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="lg:col-span-6">
-              <div className="bg-slate-900 text-white rounded-3xl p-8 border border-slate-800 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#3e7da2]/20 rounded-full blur-3xl" />
-                <h4 className="text-xl font-bold text-white mb-2">Live End-to-End Flow</h4>
-                <p className="text-xs text-slate-400 mb-6">How transactions travel through ACT Merchant Pay</p>
-
-                <div className="space-y-4 relative">
-                  <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center gap-4">
-                    <div className="w-8 h-8 rounded-full bg-[#dde325] text-slate-950 font-black flex items-center justify-center text-sm shrink-0">
-                      1
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-white">Payer Scans or Taps</div>
-                      <div className="text-xs text-slate-400">Mobile banking QR app or contactless NFC debit card.</div>
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center gap-4">
-                    <div className="w-8 h-8 rounded-full bg-[#3e7da2] text-white font-black flex items-center justify-center text-sm shrink-0">
-                      2
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-white">ACT Switching & Validation</div>
-                      <div className="text-xs text-slate-400">Authenticates ISO 8583 / 20022 message with EthSwitch rail.</div>
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center gap-4">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500 text-white font-black flex items-center justify-center text-sm shrink-0">
-                      3
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-white">Direct Core Banking Credit</div>
-                      <div className="text-xs text-slate-400">Merchant's bank account credited immediately without escrow delay.</div>
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center gap-4">
-                    <div className="w-8 h-8 rounded-full bg-indigo-500 text-white font-black flex items-center justify-center text-sm shrink-0">
-                      4
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-white">Instant Confirmation & Receipt</div>
-                      <div className="text-xs text-slate-400">Cashier POS screen updates & e-receipt SMS pushed in under 2s.</div>
-                    </div>
-                  </div>
+                  <h3 className="text-sm font-bold text-neutral-900 mb-2">
+                    {chan.title}
+                  </h3>
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    {chan.desc}
+                  </p>
                 </div>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Operational Features */}
+      <section className="py-20 bg-white border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mb-12">
+            <span className="text-[#3e7da2] font-mono text-xs uppercase tracking-wider block mb-2 font-bold">
+              Acquiring Control
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
+              Designed for Commercial Banks & Multi-Location Chains
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-6">
+            {keyFeatures.map((feat) => (
+              <div key={feat.title} className="p-6 bg-neutral-50 border border-neutral-200 rounded flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-base font-bold text-neutral-900">{feat.title}</h3>
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-neutral-200 text-neutral-700">
+                      {feat.metric} {feat.label}
+                    </span>
+                  </div>
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    {feat.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Target Industries */}
-      <section className="py-20 bg-slate-50 border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#3e7da2] mb-3">Industry Solutions</h2>
-            <h3 className="text-3xl font-extrabold text-slate-900">Tailored to Real Commercial Operations</h3>
-            <p className="mt-4 text-slate-600">
-              Each sector has distinct cashier speeds and bookkeeping requirements. Merchant Pay adapts seamlessly.
-            </p>
+      <section className="py-20 bg-neutral-50 border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mb-12">
+            <span className="text-[#3e7da2] font-mono text-xs uppercase tracking-wider block mb-2 font-bold">
+              Industry Verticals
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
+              Tailored to Real Commercial Operations
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-2 gap-6">
             {targetIndustries.map((ind) => (
-              <div key={ind.name} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-                <div>
-                  <h4 className="text-lg font-bold text-slate-900 mb-2">{ind.name}</h4>
-                  <p className="text-sm text-slate-600">{ind.useCase}</p>
-                </div>
-                <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-[#3e7da2] font-semibold">
-                  <span>Customizable POS Profile</span>
-                  <ArrowRight className="w-4 h-4" />
-                </div>
+              <div key={ind.name} className="p-6 bg-white border border-neutral-200 rounded shadow-xs">
+                <h3 className="text-sm font-bold text-neutral-900 mb-2">{ind.name}</h3>
+                <p className="text-xs text-neutral-600 leading-relaxed">{ind.useCase}</p>
               </div>
             ))}
           </div>
@@ -378,30 +286,29 @@ export default function MerchantPayPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-[#3e7da2] to-slate-900 text-white text-center relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-6">
-            Equip Your Merchant Network with Ethiopia's Most Reliable Acquiring Platform
-          </h2>
-          <p className="text-lg text-slate-200 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Atlas Computer Technology partners directly with commercial banks and payment facilitators to deploy white-labeled merchant acquiring suites at scale.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => triggerDemo("Bank Partnership")}
-              className="px-8 py-4 rounded-xl bg-[#dde325] text-slate-950 font-bold hover:bg-[#c8ce20] transition-all duration-200 shadow-xl cursor-pointer"
-            >
-              Request Bank Deployment Pilot
-            </button>
-            <Link
-              href="/resources/downloads"
-              className="px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-medium transition-all duration-200"
-            >
-              Download Merchant Pay Specs
-            </Link>
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="bg-neutral-50 border border-neutral-200 p-8 sm:p-12 rounded flex flex-col md:flex-row items-center justify-between gap-8 shadow-xs">
+            <div className="max-w-2xl">
+              <h3 className="text-xl sm:text-2xl font-bold text-neutral-900 mb-2">
+                Equip Your Merchant Network with Merchant Pay
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+                Atlas Computer Technology partners directly with commercial banks and payment facilitators to deploy white-labeled merchant acquiring suites at scale.
+              </p>
+            </div>
+            <div className="flex gap-4 shrink-0">
+              <button
+                type="button"
+                onClick={() => triggerDemo("Bank Partnership")}
+                className="px-6 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded text-xs uppercase font-mono tracking-wider transition-colors cursor-pointer"
+              >
+                Request Bank Deployment Pilot
+              </button>
+            </div>
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

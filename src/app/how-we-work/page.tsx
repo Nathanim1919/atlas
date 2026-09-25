@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   Search,
@@ -11,116 +10,104 @@ import {
   Headphones,
   ShieldCheck,
   FileCheck,
-  Users,
   Clock,
   ArrowRight,
-  Sparkles,
-  GitBranch,
+  ChevronRight,
+  Settings,
+  Cpu,
   Layers,
-  Settings
+  Award
 } from "lucide-react";
 
 export default function HowWeWorkPage() {
   const steps = [
     {
       number: "01",
-      title: "Discover & Assess",
-      tagline: "Uncompromising Deep Dive & Technical Audit",
+      title: "Discovery & Infrastructure Audit",
+      tagline: "Uncompromising Technical Assessment",
       icon: Search,
-      color: "from-blue-500/20 to-cyan-500/20",
-      accent: "text-blue-600",
       description:
-        "Every mission-critical project begins with on-site stakeholder alignment, deep infrastructure telemetry analysis, capacity planning, and regulatory compliance benchmarking.",
+        "Every enterprise project begins with on-site stakeholder alignment, deep infrastructure telemetry analysis, IOPS/capacity benchmarking, and regulatory compliance auditing.",
       deliverables: [
-        "Comprehensive As-Is Architecture & Gap Analysis Report",
-        "Capacity, IOPS & Bandwidth Sizing Matrix",
-        "Regulatory & National Bank Compliance Checklist (NBE / PCI-DSS)",
-        "Feasibility & Total Cost of Ownership (TCO) Projections"
+        "As-Is Technical Architecture & Gap Analysis Report",
+        "Compute, IOPS & Storage Sizing Matrix",
+        "Regulatory & National Bank Compliance Audit (NBE / PCI-DSS)",
+        "Total Cost of Ownership (TCO) & ROI Roadmap"
       ],
-      timeframe: "Week 1 - 2"
+      timeframe: "Week 1 – 2"
     },
     {
       number: "02",
-      title: "Design & Architect",
-      tagline: "Resilient, Cloud-Agnostic Blueprinting",
+      title: "Architecture & System Design",
+      tagline: "Resilient, High-Availability Blueprinting",
       icon: Compass,
-      color: "from-indigo-500/20 to-blue-500/20",
-      accent: "text-indigo-600",
       description:
-        "Our certified enterprise architects draft modular High-Level (HLD) and Low-Level Designs (LLD) with built-in zero-trust security, active-active failover, and zero single points of failure.",
+        "Senior solution architects draft modular High-Level (HLD) and Low-Level Designs (LLD) with zero-trust security boundaries, active-active failover, and zero single points of failure.",
       deliverables: [
         "Low-Level Technical Design (LLD) & Cabling Schematics",
         "Disaster Recovery & Data Replication Runbooks (RPO < 5m, RTO < 15m)",
         "Component Specification & Bill of Materials (BOM)",
-        "Security Demarcation & Network Zone Topology"
+        "Network Segmentation & Firewall Zone Topology"
       ],
-      timeframe: "Week 2 - 4"
+      timeframe: "Week 2 – 4"
     },
     {
       number: "03",
-      title: "Develop & Configure",
-      tagline: "Precision Engineering & Modern DevSecOps",
+      title: "Agile Development & Configuration",
+      tagline: "Infrastructure as Code & Microservices Engineering",
       icon: Code2,
-      color: "from-teal-500/20 to-emerald-500/20",
-      accent: "text-teal-600",
       description:
-        "Whether deploying hyperconverged private cloud fabrics, microservices payment APIs, or bare-metal Oracle clusters, we build under strict version-controlled infrastructure-as-code paradigms.",
+        "Whether building OpenStack private clouds, payment gateway APIs, or core database clusters, we engineer under version-controlled Infrastructure-as-Code (IaC) paradigms.",
       deliverables: [
-        "Automated Deployment Scripts & CI/CD Pipelines",
+        "Automated Ansible & Terraform Infrastructure Pipelines",
         "Core Banking Connectors & ISO 8583 / 20022 Gateway APIs",
-        "High-Availability Clustering & Synchronous Storage Pools",
-        "Audited Clean Codebase & Complete API Documentation"
+        "Synchronous Multi-Datacenter Storage & Compute Pools",
+        "Peer-Reviewed Codebase & API Documentation"
       ],
-      timeframe: "Week 4 - 8"
+      timeframe: "Week 4 – 8"
     },
     {
       number: "04",
-      title: "Test & Validate",
-      tagline: "Simulating Worst-Case Scenarios",
+      title: "Verification & Chaos Testing",
+      tagline: "Simulating Worst-Case Failure Scenarios",
       icon: CheckCircle2,
-      color: "from-amber-500/20 to-yellow-500/20",
-      accent: "text-amber-600",
       description:
-        "Before any workload goes live, we run exhaustive stress tests: simulated power loss, fiber cuts, synthetic peak load surges, penetration testing, and User Acceptance Testing (UAT).",
+        "Before production deployment, we execute exhaustive stress tests: simulated power loss, fiber cuts, synthetic peak load surges, penetration testing, and User Acceptance Testing (UAT).",
       deliverables: [
         "User Acceptance Testing (UAT) Sign-Off Protocol",
-        "Chaos & Disaster Recovery Failover Simulation Sign-Off",
-        "Performance Benchmarking & Latency Profiling",
-        "Third-Party Security Vulnerability & Pen-Test Clearance"
+        "Disaster Recovery & Chaos Failover Simulation Sign-Off",
+        "Performance Benchmarking & Microsecond Latency Profiling",
+        "Third-Party Security Penetration Clearance Certificate"
       ],
-      timeframe: "Week 7 - 9"
+      timeframe: "Week 7 – 9"
     },
     {
       number: "05",
-      title: "Deploy & Cutover",
-      tagline: "Zero-Downtime Live Production Transition",
+      title: "Production Cutover & Deployment",
+      tagline: "Zero-Downtime Live Migration",
       icon: Rocket,
-      color: "from-rose-500/20 to-orange-500/20",
-      accent: "text-rose-600",
       description:
-        "Deploying with zero business interruption requires minute-by-minute cutover orchestration. Our senior engineers supervise live migration during pre-agreed maintenance windows.",
+        "Deploying with zero business interruption requires minute-by-minute cutover orchestration. Senior engineers execute live migration during scheduled low-traffic maintenance windows.",
       deliverables: [
         "Minute-by-Minute Cutover Execution Checklist",
         "Automated Rollback & Fallback Contingency Protocols",
-        "Live Post-Cutover Operational Sanity Testing",
-        "System Handover & Executive Sign-Off Certificate"
+        "Post-Cutover Operational Sanity Testing",
+        "Executive Handover & System Acceptance Certificate"
       ],
-      timeframe: "Week 9 - 10"
+      timeframe: "Week 9 – 10"
     },
     {
       number: "06",
-      title: "Support & SLA",
-      tagline: "24/7 Proactive NOC & Tier-1 Escalation",
+      title: "24/7 SLA & Lifetime Operations",
+      tagline: "Proactive NOC Telemetry & Tier 1–4 Escalation",
       icon: Headphones,
-      color: "from-emerald-500/20 to-teal-500/20",
-      accent: "text-emerald-600",
       description:
-        "Go-live is just the beginning. ACT provides contracted Service Level Agreements (SLA), 24/7 telemetry monitoring, preventative maintenance, and 2-hour on-site dispatch across Ethiopia.",
+        "Go-live is just the beginning. ACT provides contractually bound Service Level Agreements (SLA), 24/7 telemetry monitoring, preventative maintenance, and 2-hour on-site dispatch.",
       deliverables: [
-        "Dedicated Tier-1 to Tier-4 Escalation Matrix",
-        "Guaranteed 15-Minute Emergency P1 Response SLA",
+        "Tier-1 to Tier-4 Certified NOC Escalation Matrix",
+        "Guaranteed 15-Minute Emergency P1 Incident SLA",
         "Quarterly Preventive Maintenance & Firmware Audits",
-        "On-Site Hands-and-Feet Certified Field Support"
+        "On-Site Certified Field Support Roster"
       ],
       timeframe: "Ongoing 24/7/365"
     }
@@ -128,145 +115,188 @@ export default function HowWeWorkPage() {
 
   const standards = [
     {
+      icon: Award,
       title: "Certified Enterprise Engineers",
       desc: "Our engineering team holds direct certifications from Oracle, Red Hat, Nutanix, IBM, Cisco, and SUSE."
     },
     {
+      icon: ShieldCheck,
       title: "EthSwitch & NBE Compliance",
-      desc: "Every banking connector and payment platform is aligned with National Bank of Ethiopia security and clearing guidelines."
+      desc: "Every payment connector and banking platform is strictly aligned with National Bank of Ethiopia security guidelines."
     },
     {
-      title: "Zero-Downtime Methodologies",
-      desc: "Proven live cutover protocols honed across 80+ enterprise implementations, including the EthSwitch data center migration."
+      icon: Layers,
+      title: "Zero-Downtime Cutover Record",
+      desc: "Proven live migration protocols honed across 80+ enterprise implementations, including national clearing rails."
     },
     {
-      title: "Local Presence & Fast Dispatch",
-      desc: "Direct Addis Ababa headquarters and branch dispatch teams ensure physical on-site presence within minutes, not days."
+      icon: Cpu,
+      title: "Rapid Local Dispatch",
+      desc: "Headquarters and field dispatch teams in Addis Ababa guarantee physical on-site response within contract SLAs."
     }
   ];
 
+  const openDemoModal = (product: string) => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("open-demo-modal", { detail: { intent: "expert", product } }));
+    }
+  };
+
   return (
-    <main className="bg-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 bg-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(62,125,162,0.3),transparent_60%)]" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="bg-white font-sans min-h-screen text-neutral-900 selection:bg-[#3e7da2] selection:text-white">
+      {/* Light Enterprise Hero */}
+      <section className="relative pt-24 pb-20 bg-neutral-50 border-b border-neutral-200 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-500 mb-6">
+            <Link href="/" className="hover:text-neutral-900 transition-colors">Home</Link>
+            <ChevronRight className="w-3 h-3 text-neutral-400" />
+            <span className="text-[#3e7da2] font-semibold">How We Work</span>
+          </div>
+
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#dde325]/20 border border-[#dde325]/40 text-[#dde325] text-xs font-semibold uppercase tracking-wider mb-6">
-              <Settings className="w-4 h-4" />
-              Delivery Methodology
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white border border-neutral-200 shadow-xs text-neutral-700 text-xs font-mono mb-6">
+              <Settings className="w-3.5 h-3.5 text-[#3e7da2]" />
+              <span>Engineering Lifecycle & Methodology</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
-              How We Work: Engineered for <span className="text-[#dde325]">Zero-Failure Execution</span>
+
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-neutral-900 mb-6 leading-tight">
+              Engineered for Zero-Failure Execution & Uptime
             </h1>
-            <p className="text-lg sm:text-xl text-slate-300 leading-relaxed">
-              When national financial rails, commercial bank core databases, and multi-million dollar transactions are on the line, improvisation is not an option. Our 6-stage lifecycle guarantees predictable outcomes every single time.
+
+            <p className="text-base sm:text-lg text-neutral-600 leading-relaxed mb-8">
+              When national financial rails, core banking databases, and enterprise transactions are on the line, guesswork is not an option. Our 6-stage engineering lifecycle delivers predictable, zero-downtime execution every time.
             </p>
+
+            <div className="flex flex-wrap gap-4">
+              <button
+                type="button"
+                onClick={() => openDemoModal("discovery-workshop")}
+                className="px-6 py-3.5 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded shadow-sm transition-colors flex items-center gap-2 text-sm cursor-pointer"
+              >
+                <span>Schedule Discovery Workshop</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <Link
+                href="/case-studies"
+                className="px-6 py-3.5 bg-white hover:bg-neutral-100 text-neutral-800 font-semibold rounded border border-neutral-300 transition-colors flex items-center gap-2 text-sm"
+              >
+                <span>View Enterprise Case Studies</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 6-Stage Timeline Section */}
-      <section className="py-24 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#3e7da2] mb-3">
-              End-to-End Enterprise Lifecycle
+      {/* 6-Phase Engineering Stepper Timeline */}
+      <section className="py-20 bg-neutral-50 border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mb-16">
+            <span className="text-[#3e7da2] font-mono text-xs uppercase tracking-wider block mb-2 font-bold">
+              6-Stage Delivery Framework
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
+              Six Phases from Audit to Lifetime SLA
             </h2>
-            <h3 className="text-3xl font-extrabold text-slate-900">
-              Six Phases from Discovery to Lifetime SLA
-            </h3>
-            <p className="mt-4 text-slate-600">
-              Each stage produces verifiable artifacts, peer-reviewed architecture documents, and formal client sign-offs before moving forward.
+            <p className="text-sm sm:text-base text-neutral-600 mt-3">
+              Every stage produces peer-reviewed architectural artifacts, gate clearance documentation, and executive sign-offs before advancing.
             </p>
           </div>
 
-          <div className="space-y-12">
-            {steps.map((step, idx) => (
-              <motion.div
+          <div className="space-y-8">
+            {steps.map((step) => (
+              <div
                 key={step.number}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+                className="bg-white border border-neutral-200 p-8 rounded shadow-xs hover:border-neutral-300 transition-colors"
               >
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                  {/* Phase & Title Column */}
-                  <div className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-slate-100 pb-6 lg:pb-0 lg:pr-8">
-                    <div className="flex items-center gap-4 mb-4">
-                      <span className="text-4xl sm:text-5xl font-black text-slate-200 font-mono">
-                        {step.number}
+                <div className="grid lg:grid-cols-12 gap-8 items-start">
+                  {/* Left Column: Number & Title */}
+                  <div className="lg:col-span-4 lg:border-r border-neutral-100 lg:pr-8 pb-6 lg:pb-0 border-b lg:border-b-0">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-xs font-mono font-bold text-[#3e7da2] bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded">
+                        [STAGE {step.number}]
                       </span>
-                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center ${step.accent}`}>
-                        <step.icon className="w-6 h-6" />
+                      <div className="w-8 h-8 rounded bg-neutral-50 border border-neutral-200 text-neutral-700 flex items-center justify-center">
+                        <step.icon className="w-4 h-4 text-[#3e7da2]" />
                       </div>
                     </div>
-                    <h4 className="text-2xl font-bold text-slate-900 mb-2">{step.title}</h4>
-                    <p className={`text-xs font-bold uppercase tracking-wider ${step.accent} mb-4`}>
+
+                    <h3 className="text-xl font-bold text-neutral-900 mb-1">
+                      {step.title}
+                    </h3>
+                    <p className="text-xs font-mono text-neutral-500 mb-4">
                       {step.tagline}
                     </p>
-                    <div className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full bg-slate-100 text-slate-700">
-                      <Clock className="w-3.5 h-3.5" />
-                      Timeline: {step.timeframe}
+
+                    <div className="inline-flex items-center gap-2 text-xs font-mono text-neutral-600 bg-neutral-50 border border-neutral-200 px-3 py-1 rounded">
+                      <Clock className="w-3.5 h-3.5 text-neutral-400" />
+                      <span>Timeline: {step.timeframe}</span>
                     </div>
                   </div>
 
-                  {/* Description & Deliverables Column */}
+                  {/* Right Column: Description & Deliverables */}
                   <div className="lg:col-span-8">
-                    <p className="text-base text-slate-700 leading-relaxed mb-6">
+                    <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed mb-6">
                       {step.description}
                     </p>
 
                     <div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
-                        <FileCheck className="w-4 h-4 text-[#3e7da2]" />
-                        Key Stage Deliverables & Gate Criteria
+                      <div className="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-3 flex items-center gap-2">
+                        <FileCheck className="w-3.5 h-3.5 text-[#3e7da2]" />
+                        <span>Key Deliverables & Gate Criteria</span>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {step.deliverables.map((del) => (
+
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {step.deliverables.map((item, idx) => (
                           <div
-                            key={del}
-                            className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-700 font-medium"
+                            key={idx}
+                            className="flex items-start gap-2.5 p-3 rounded bg-neutral-50 border border-neutral-200/80 text-xs text-neutral-700 font-medium"
                           >
                             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                            <span>{del}</span>
+                            <span>{item}</span>
                           </div>
                         ))}
                       </div>
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Enterprise Assurance Principles */}
-      <section className="py-20 bg-white border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-[#3e7da2] mb-3">
-              Why Tier-1 Banks Trust Our Delivery
+      {/* Enterprise Assurance Benchmarks */}
+      <section className="py-20 bg-white border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mb-12">
+            <span className="text-[#3e7da2] font-mono text-xs uppercase tracking-wider block mb-2 font-bold">
+              Engineering Guarantees
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
+              Why Enterprise Clients Trust Our Process
             </h2>
-            <h3 className="text-3xl font-extrabold text-slate-900">
-              The ACT Engineering Benchmark
-            </h3>
+            <p className="text-sm sm:text-base text-neutral-600 mt-3">
+              Standardized engineering practices honed across 80+ mission-critical infrastructure deployments in East Africa.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {standards.map((std) => (
               <div
                 key={std.title}
-                className="p-6 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm flex flex-col justify-between"
+                className="p-6 bg-neutral-50 border border-neutral-200 rounded flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-[#3e7da2]/10 text-[#3e7da2] flex items-center justify-center mb-4">
-                    <ShieldCheck className="w-5 h-5" />
+                  <div className="w-9 h-9 rounded bg-white border border-neutral-200 text-[#3e7da2] flex items-center justify-center mb-4 shadow-xs">
+                    <std.icon className="w-4 h-4" />
                   </div>
-                  <h4 className="text-base font-bold text-slate-900 mb-2">{std.title}</h4>
-                  <p className="text-xs text-slate-600 leading-relaxed">{std.desc}</p>
+                  <h3 className="text-sm font-bold text-neutral-900 mb-2">
+                    {std.title}
+                  </h3>
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    {std.desc}
+                  </p>
                 </div>
               </div>
             ))}
@@ -275,36 +305,29 @@ export default function HowWeWorkPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-slate-900 text-white text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-6">
-            Have an Upcoming Infrastructure or Software Project?
-          </h2>
-          <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Let our senior solution architects run an initial discovery workshop to review your requirements, timelines, and technical constraints.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => {
-                window.dispatchEvent(
-                  new CustomEvent("open-demo-modal", {
-                    detail: { service: "Discovery Workshop Request" }
-                  })
-                );
-              }}
-              className="px-8 py-4 rounded-xl bg-[#dde325] text-slate-950 font-bold hover:bg-[#c8ce20] transition-all duration-200 shadow-xl cursor-pointer"
-            >
-              Book a Technical Discovery Workshop
-            </button>
-            <Link
-              href="/case-studies"
-              className="px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-medium transition-all duration-200"
-            >
-              Review Completed Client Projects
-            </Link>
+      <section className="py-16 bg-neutral-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="bg-white border border-neutral-200 p-8 sm:p-12 rounded flex flex-col md:flex-row items-center justify-between gap-8 shadow-xs">
+            <div className="max-w-2xl">
+              <h3 className="text-xl sm:text-2xl font-bold text-neutral-900 mb-2">
+                Have an Upcoming Infrastructure or Software Project?
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+                Connect with our senior solution architects to run an initial discovery workshop, review technical specifications, and establish project timelines.
+              </p>
+            </div>
+            <div className="flex gap-4 shrink-0">
+              <button
+                type="button"
+                onClick={() => openDemoModal("discovery-workshop")}
+                className="px-6 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded text-xs uppercase font-mono tracking-wider transition-colors cursor-pointer"
+              >
+                Book Discovery Workshop
+              </button>
+            </div>
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

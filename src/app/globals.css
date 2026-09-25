@@ -103,6 +103,7 @@
   --color-neutral-50: var(--neutral-50);
   --font-sans: var(--font-lexend), 'Lexend', system-ui, sans-serif;
   --font-display: var(--font-lexend), 'Lexend', system-ui, sans-serif;
+  --font-mono: var(--font-lexend), 'Lexend', system-ui, sans-serif;
   
   --animate-marquee: marquee 40s linear infinite;
   --animate-marquee2: marquee2 40s linear infinite;

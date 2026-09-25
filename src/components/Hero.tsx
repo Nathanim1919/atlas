@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, Terminal } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -38,78 +38,72 @@ export default function Hero() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const steps = [
-    { text: "act init --environment enterprise-banking", type: "command" },
-    { text: "Initializing secure infrastructure...", type: "output", color: "text-neutral-500" },
-    { text: "✓ Core banking modules loaded", type: "output", color: "text-primary-400" },
-    { text: "✓ Database connectors ready", type: "output", color: "text-primary-400" },
-
-    { text: "act install --pkg uni-cash-engine --version latest", type: "command" },
-    { text: "Resolving dependencies...", type: "output", color: "text-neutral-500" },
-    { text: "✓ Middleware installed", type: "output", color: "text-emerald-400" },
-    { text: "✓ Security patches applied", type: "output", color: "text-emerald-400" },
-
-    { text: "act security --scan --compliance pci-dss", type: "command" },
-    { text: "Running deep packet inspection...", type: "output", color: "text-neutral-500" },
-    { 
-      text: `COMPLIANCE AUDIT
-[PCI-DSS]  PASS  [ISO-27001] PASS
-[GDPR]     PASS  [OWASP]     PASS
----------------------------------
-Encryption: AES-256   Keys: Rotated`, 
-      type: "output", 
-      color: "text-emerald-400",
-      isGraph: true 
+    { text: "kubectl get pods -n uni-cash-prod --field-selector=status.phase=Running", type: "command" },
+    { text: "Connecting to cluster act-prod-et-01...", type: "output", color: "text-neutral-500" },
+    {
+      text: `NAME                          READY  STATUS   RESTARTS  AGE
+uni-cash-gateway-7d9f8-x2pkq  1/1    Running  0         18d
+uni-cash-gateway-7d9f8-r9mnc  1/1    Running  0         18d
+core-banking-api-6c4b9-wqtlz  1/1    Running  0         12d
+ussd-engine-5f7d2-hkpxv       1/1    Running  0         9d
+notif-svc-3a1c8-bnzqr         1/1    Running  2         22d`,
+      type: "output", color: "text-emerald-400", isGraph: true
     },
 
-    { text: "act simulate --traffic high-concurrency --users 100k", type: "command" },
-    { text: "Injecting synthetic load (100,000 req/s)...", type: "output", color: "text-neutral-500" },
-    { text: "✓ Throughput: 98.4% success", type: "output", color: "text-secondary-400" },
-    { text: "✓ P99 Latency: 12ms", type: "output", color: "text-secondary-400" },
-
-    { text: "act scale --service transaction-layer --replicas auto", type: "command" },
-    { text: "Detecting load spike...", type: "output", color: "text-neutral-500" },
-    { text: "✓ Spawning 50 microservice pods", type: "output", color: "text-primary-400" },
-    
-    // ASCII Graph Step
-    { 
-      text: `CLUSTER LOAD DISTRIBUTION
-████████████████████ 100% [Primary]
-███████████████░░░░░ 75%  [Replica-1]
-████████████░░░░░░░░ 60%  [Replica-2]
-████████░░░░░░░░░░░░ 40%  [Replica-3]`, 
-      type: "output", 
-      color: "text-blue-400",
-      isGraph: true 
+    { text: "act-cli metrics --service uni-cash --window 1h --format table", type: "command" },
+    { text: "Fetching live transaction telemetry...", type: "output", color: "text-neutral-500" },
+    {
+      text: `UNI-CASH LIVE METRICS  [ 60-min window ]
+────────────────────────────────────────
+  Transactions Processed :  1,247,803
+  Success Rate           :  99.94 %
+  Avg Response Time      :  8 ms
+  Peak TPS               :  3,420 tx/s
+  Auto-retried (failed)  :  748
+────────────────────────────────────────`,
+      type: "output", color: "text-secondary-400", isGraph: true
     },
 
-    { text: "act integrate --gateway ethio-telecom", type: "command" },
-    { text: "Handshaking with external API...", type: "output", color: "text-neutral-500" },
-    { 
-      text: `API GATEWAY HANDSHAKE
-ACT Core ◄═══ TLS 1.3 ═══► EthioTelecom
-[Key Exch] [Auth] [Token] [Stream]
-Connection: ESTABLISHED`, 
-      type: "output", 
-      color: "text-emerald-400",
-      isGraph: true 
+    { text: "act-cli audit --compliance pci-dss,iso-27001 --verbose", type: "command" },
+    { text: "Running compliance scan on production environment...", type: "output", color: "text-neutral-500" },
+    {
+      text: `COMPLIANCE AUDIT REPORT
+────────────────────────────────────────
+  PCI-DSS v4.0    [PASS]  98 / 100
+  ISO 27001:2022  [PASS]  96 / 100
+  OWASP Top-10    [PASS]  0 critical CVEs
+  Encryption      [PASS]  AES-256-GCM
+  Key Rotation    [PASS]  Last: 6h ago
+────────────────────────────────────────`,
+      type: "output", color: "text-emerald-400", isGraph: true
     },
 
-    { text: "act deploy --region et-cloud --strategy blue-green", type: "command" },
-    { text: "Routing traffic to new cluster...", type: "output", color: "text-neutral-500" },
-    { 
-      text: `DEPLOYMENT PIPELINE
-Build   [####################] 100%
-Test    [####################] 100%
-Stage   [####################] 100%
-Prod    [##############......] 72%`, 
-      type: "output", 
-      color: "text-emerald-400",
-      isGraph: true 
+    { text: "kubectl rollout status deployment/uni-cash-gateway -n uni-cash-prod", type: "command" },
+    { text: "Blue-green cutover in progress...", type: "output", color: "text-neutral-500" },
+    {
+      text: `DEPLOYMENT  [ blue-green strategy ]
+────────────────────────────────────────
+  Build   [████████████████████] 100 %
+  Test    [████████████████████] 100 %
+  Stage   [████████████████████] 100 %
+  Prod    [████████████████░░░░]  82 %
+────────────────────────────────────────
+  ETA: ~45s  ·  0 downtime events`,
+      type: "output", color: "text-primary-400", isGraph: true
     },
-    
-    { text: "act monitor --dashboard live", type: "command" },
-    { text: "System Status: OPTIMAL", type: "output", color: "text-emerald-400" },
-    { text: "Uptime: 99.9999%", type: "output", color: "text-emerald-400" },
+
+    { text: "act-cli cluster status --detail", type: "command" },
+    {
+      text: `CLUSTER LOAD  [ act-prod-et-01 ]
+████████████████████  100 %  Primary
+███████████████░░░░░   78 %  Replica-1
+████████████░░░░░░░░   61 %  Replica-2
+████████░░░░░░░░░░░░   39 %  Replica-3`,
+      type: "output", color: "text-blue-400", isGraph: true
+    },
+
+    { text: "act-cli monitor --svc all --uptime", type: "command" },
+    { text: "✓  All services nominal.  SLA: 99.99 %  Uptime: 99.9999 %", type: "output", color: "text-emerald-400" },
   ];
 
   useEffect(() => {
@@ -135,7 +129,7 @@ Prod    [##############......] 72%`,
         const timeout = setTimeout(() => {
           setCurrentCommand((prev) => prev + currentStep.text[charIndex]);
           setCharIndex((prev) => prev + 1);
-        }, 30 + Math.random() * 40); // Faster typing
+        }, 30 + Math.random() * 40);
         return () => clearTimeout(timeout);
       } else {
         const timeout = setTimeout(() => {
@@ -162,15 +156,13 @@ Prod    [##############......] 72%`,
           },
         ]);
         setStepIndex((prev) => prev + 1);
-      }, currentStep.isGraph ? 800 : 300); // Pause longer after graph
+      }, currentStep.isGraph ? 800 : 300);
       return () => clearTimeout(timeout);
     }
   }, [stepIndex, charIndex]);
 
   return (
     <section className="relative w-full md:w-[95%] md:py-10 py-4 mx-auto  flex flex-col justify-center overflow-hidden bg-white">
-      {/* Background Gradients - Neon Inspired */}
-    
 
       <div className="container relative mx-auto px-4 lg:px-6 z-10 pt-4 lg:pt-0">
         <div className="grid lg:grid-cols-[55%_45%] items-center">
@@ -182,9 +174,8 @@ Prod    [##############......] 72%`,
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-50 border border-primary-200/60 text-primary-800 text-xs font-bold mb-4"
+              className="inline-flex items-center gap-2 border-l-2 border-[#dde325] pl-3 text-xs font-bold text-neutral-500 mb-4"
             >
-              <span className="w-2 h-2 rounded-full bg-secondary-500 animate-pulse" />
               <span>Established 2011 • Powering 20+ Commercial Banks in Ethiopia</span>
             </motion.div>
 
@@ -227,7 +218,7 @@ Prod    [##############......] 72%`,
                     window.dispatchEvent(new CustomEvent("open-demo-modal", { detail: { intent: "demo" } }));
                   }
                 }}
-                className="group w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-white bg-primary-600 rounded-xl overflow-hidden transition-all hover:bg-primary-700 shadow-lg shadow-primary-600/20 hover:shadow-primary-600/30 font-bold text-sm sm:text-base cursor-pointer"
+                className="group w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-white bg-[#3e7da2] hover:bg-[#306689] rounded-xl transition-colors font-bold text-sm sm:text-base cursor-pointer"
               >
                 <span>Request a Demo</span>
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -235,7 +226,7 @@ Prod    [##############......] 72%`,
               
               <Link
                 href="/#services"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-neutral-800 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 rounded-xl transition-all font-semibold text-sm sm:text-base"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-neutral-700 bg-white hover:bg-neutral-50 border border-neutral-200 hover:border-neutral-300 rounded-xl transition-colors font-semibold text-sm sm:text-base"
               >
                 Explore Solutions
               </Link>

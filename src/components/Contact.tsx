@@ -1,53 +1,53 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState } from "react";
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
+import {
+  Building2,
+  MapPin,
+  Phone,
+  Mail,
   Clock,
+  ArrowRight,
   Send,
   CheckCircle2,
-  Building2,
-  ArrowRight
+  AlertCircle,
 } from "lucide-react";
 
 const contactInfo = [
   {
     icon: Building2,
-    title: "Location 1 - Head Office",
+    title: "Head Office",
     details: ["Airport Road, Aberus Complex, 9th Floor", "Addis Ababa, Ethiopia"],
     action: "Get Directions",
-    link: "https://maps.google.com/?q=Aberus+Complex+Addis+Ababa"
+    link: "https://maps.google.com/?q=Aberus+Complex+Addis+Ababa",
   },
   {
     icon: MapPin,
-    title: "Location 2 - Branch Office",
-    details: ["Kirkos Sub-city, Near Lancha Train Station", "Zefco Building, 3rd Floor, Addis Ababa"],
+    title: "Branch Office",
+    details: ["Lancha Train Station, Zefco Building, 3rd Floor", "Addis Ababa, Ethiopia"],
     action: "Get Directions",
-    link: "https://maps.google.com/?q=Kirkos+Lancha+Addis+Ababa"
+    link: "https://maps.google.com/?q=Kirkos+Lancha+Addis+Ababa",
   },
   {
     icon: Phone,
-    title: "Direct Line",
-    details: ["+25111-5-32-91-39"],
+    title: "Phone",
+    details: ["+25111-5-32-91-39", "+251 929 906251"],
     action: "Call Now",
-    link: "tel:+251115329139"
+    link: "tel:+251115329139",
   },
   {
     icon: Mail,
-    title: "Official Email & Web",
+    title: "Email",
     details: ["info@act.com.et", "www.act.com.et"],
     action: "Send Email",
-    link: "mailto:info@act.com.et"
+    link: "mailto:info@act.com.et",
   },
   {
     icon: Clock,
-    title: "Support & Office Hours",
-    details: ["Mon - Fri: 8:30 AM - 5:30 PM", "24/7 SLA NOC Hotline for Banks"],
+    title: "Office Hours",
+    details: ["Mon – Fri: 8:30 AM – 5:30 PM", "24/7 SLA NOC Hotline for Banks"],
     action: null,
-    link: null
+    link: null,
   },
 ];
 
@@ -63,6 +63,8 @@ const services = [
   "Other Enterprise Inquiries",
 ];
 
+type Status = "idle" | "submitting" | "success" | "error";
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -72,299 +74,264 @@ export default function Contact() {
     service: "",
     message: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [activeField, setActiveField] = useState<string | null>(null);
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    // Reset form after showing success
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        phone: "",
-        service: "",
-        message: "",
-      });
-    }, 3000);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("submitting");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Submission failed.");
+      }
+
+      setStatus("success");
+    } catch (err: any) {
+      setStatus("error");
+      setErrorMsg(err.message || "Something went wrong. Please try again.");
+    }
+  };
+
+  const reset = () => {
+    setStatus("idle");
+    setErrorMsg("");
+    setFormData({ name: "", email: "", company: "", phone: "", service: "", message: "" });
+  };
+
   return (
-    <section id="contact" className="py-32 bg-neutral-50 relative overflow-hidden">
-      {/* Abstract Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-[500px] bg-linear-to-b from-white to-transparent" />
-        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-[var(--secondary-50)]/50 rounded-full blur-3xl translate-y-1/2 translate-x-1/4" />
-      </div>
+    <section id="contact" className="py-16 md:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
 
-      <div className="relative max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
-          
-          {/* Left Column: Context & Info */}
-          <div className="lg:col-span-5 space-y-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="text-[var(--secondary-600)] font-semibold tracking-wider uppercase text-sm mb-4 block">Contact Us</span>
-              <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 tracking-tight mb-6">
-                Let's Build the <br />
-                <span className="text-[var(--secondary-600)]">Future Together</span>
-              </h2>
-              <p className="text-lg text-neutral-500 font-light leading-relaxed">
-                Whether you have a question about features, pricing, need a demo, or anything else, our team is ready to answer all your questions.
-              </p>
-            </motion.div>
+        {/* Section Header */}
+        <div className="mb-14 border-b border-neutral-200 pb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <p className="text-xs font-mono uppercase tracking-widest text-[#3e7da2] font-semibold mb-2">
+              Direct Contact
+            </p>
+            <h1 className="text-3xl md:text-5xl font-bold text-neutral-900 tracking-tight">
+              Get in Touch
+            </h1>
+          </div>
+          <p className="text-sm text-neutral-600 max-w-md leading-relaxed">
+            Reach out for enterprise inquiries, partnership proposals, or to schedule a technical consultation with our engineering team in Addis Ababa.
+          </p>
+        </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-8">
-              {contactInfo.map((info, index) => (
-                <motion.div
-                  key={info.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="group flex gap-6 p-6 rounded-2xl bg-white border border-neutral-100 hover:border-[var(--secondary-100)] hover:shadow-lg hover:shadow-[var(--secondary-900)]/5 transition-all duration-300"
-                >
-                  <div className="w-12 h-12 bg-neutral-50 rounded-xl flex items-center justify-center text-neutral-400 group-hover:bg-[var(--secondary-50)] group-hover:text-[var(--secondary-600)] transition-colors duration-300 shrink-0">
-                    <info.icon size={24} strokeWidth={1.5} />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-neutral-900 mb-2">{info.title}</h4>
-                    <div className="space-y-1 mb-3">
-                      {info.details.map((detail, i) => (
-                        <p key={i} className="text-sm text-neutral-500">{detail}</p>
-                      ))}
-                    </div>
-                    {info.link && (
-                      <a 
-                        href={info.link} 
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--secondary-600)] hover:text-[var(--secondary-700)] transition-colors"
-                      >
-                        {info.action} <ArrowRight size={12} />
-                      </a>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+        <div className="grid lg:grid-cols-12 gap-12">
+
+          {/* Left — Contact Info */}
+          <div className="lg:col-span-4 space-y-4">
+            {contactInfo.map((info) => (
+              <div
+                key={info.title}
+                className="flex gap-4 p-4 bg-white border border-neutral-200 rounded-xl"
+              >
+                <div className="w-9 h-9 bg-neutral-50 border border-neutral-200 rounded-lg flex items-center justify-center shrink-0">
+                  <info.icon size={16} className="text-[#3e7da2]" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-neutral-400 uppercase tracking-wider mb-1">
+                    {info.title}
+                  </p>
+                  {info.details.map((d, i) => (
+                    <p key={i} className="text-sm text-neutral-700 leading-snug">
+                      {d}
+                    </p>
+                  ))}
+                  {info.link && (
+                    <a
+                      href={info.link}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-[#3e7da2] hover:text-[#306689] transition-colors mt-1.5"
+                    >
+                      {info.action} <ArrowRight size={11} />
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Right Column: Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-7"
-          >
-            <div className="bg-white rounded-4xl p-8 md:p-12 border border-neutral-200 shadow-xl shadow-neutral-100/50 relative overflow-hidden">
-              {/* Decorative Top Line */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-[var(--secondary-400)] via-[var(--secondary-300)] to-[var(--secondary-400)]" />
+          {/* Right — Form */}
+          <div className="lg:col-span-8">
+            <div className="bg-white border border-neutral-200 rounded-2xl p-8">
 
-              {isSubmitted ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-20 flex flex-col items-center justify-center h-full"
-                >
-                  <div className="w-20 h-20 bg-[var(--secondary-50)] rounded-full flex items-center justify-center mb-6 text-[var(--secondary-600)]">
-                    <CheckCircle2 size={40} />
+              {status === "success" ? (
+                <div className="py-16 flex flex-col items-center text-center">
+                  <div className="w-12 h-12 rounded-full bg-[#3e7da2]/10 flex items-center justify-center mb-4">
+                    <CheckCircle2 size={24} className="text-[#3e7da2]" />
                   </div>
-                  <h3 className="text-2xl font-bold text-neutral-900 mb-3">Message Received</h3>
-                  <p className="text-neutral-500 max-w-xs mx-auto">
-                    Thank you for contacting us. One of our specialists will get back to you shortly.
+                  <h3 className="text-xl font-bold text-neutral-900 mb-2">
+                    Message Received
+                  </h3>
+                  <p className="text-sm text-neutral-500 max-w-xs mb-6">
+                    Thank you for contacting us. One of our specialists will
+                    respond within 1–2 business days.
                   </p>
-                </motion.div>
+                  <button
+                    onClick={reset}
+                    className="text-xs font-semibold text-[#3e7da2] hover:text-[#306689] transition-colors"
+                  >
+                    Send another message
+                  </button>
+                </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-8">
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="relative">
-                      <label 
-                        htmlFor="name" 
-                        className={`absolute left-0 transition-all duration-200 ${
-                          activeField === "name" || formData.name 
-                            ? "-top-6 text-xs text-[var(--secondary-600)] font-semibold" 
-                            : "top-3 text-neutral-400"
-                        }`}
-                      >
-                        Full Name
+                <form onSubmit={handleSubmit} className="space-y-6">
+
+                  {/* Row 1 */}
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <label htmlFor="name" className="block text-xs font-semibold text-neutral-500 mb-1.5">
+                        Full Name <span className="text-red-400">*</span>
                       </label>
                       <input
-                        type="text"
                         id="name"
                         name="name"
+                        type="text"
+                        required
                         value={formData.name}
                         onChange={handleChange}
-                        onFocus={() => setActiveField("name")}
-                        onBlur={() => setActiveField(null)}
-                        required
-                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-[var(--secondary-400)] outline-none transition-colors text-neutral-900 placeholder-transparent"
-                        placeholder="John Doe"
+                        placeholder="Your full name"
+                        className="w-full px-3 py-2.5 text-sm border border-neutral-200 rounded-lg bg-neutral-50 focus:bg-white focus:border-[#3e7da2] focus:outline-none transition-colors"
                       />
                     </div>
-                    <div className="relative">
-                      <label 
-                        htmlFor="email" 
-                        className={`absolute left-0 transition-all duration-200 ${
-                          activeField === "email" || formData.email 
-                            ? "-top-6 text-xs text-[var(--secondary-600)] font-semibold" 
-                            : "top-3 text-neutral-400"
-                        }`}
-                      >
-                        Email Address
+                    <div>
+                      <label htmlFor="email" className="block text-xs font-semibold text-neutral-500 mb-1.5">
+                        Email Address <span className="text-red-400">*</span>
                       </label>
                       <input
-                        type="email"
                         id="email"
                         name="email"
+                        type="email"
+                        required
                         value={formData.email}
                         onChange={handleChange}
-                        onFocus={() => setActiveField("email")}
-                        onBlur={() => setActiveField(null)}
-                        required
-                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-[var(--secondary-400)] outline-none transition-colors text-neutral-900 placeholder-transparent"
-                        placeholder="john@company.com"
+                        placeholder="you@organization.com"
+                        className="w-full px-3 py-2.5 text-sm border border-neutral-200 rounded-lg bg-neutral-50 focus:bg-white focus:border-[#3e7da2] focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="relative">
-                      <label 
-                        htmlFor="company" 
-                        className={`absolute left-0 transition-all duration-200 ${
-                          activeField === "company" || formData.company 
-                            ? "-top-6 text-xs text-[var(--secondary-600)] font-semibold" 
-                            : "top-3 text-neutral-400"
-                        }`}
-                      >
-                        Company Name
+                  {/* Row 2 */}
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <label htmlFor="company" className="block text-xs font-semibold text-neutral-500 mb-1.5">
+                        Organization
                       </label>
                       <input
-                        type="text"
                         id="company"
                         name="company"
+                        type="text"
                         value={formData.company}
                         onChange={handleChange}
-                        onFocus={() => setActiveField("company")}
-                        onBlur={() => setActiveField(null)}
-                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-[var(--secondary-400)] outline-none transition-colors text-neutral-900 placeholder-transparent"
-                        placeholder="Acme Inc."
+                        placeholder="Bank / Enterprise / Ministry"
+                        className="w-full px-3 py-2.5 text-sm border border-neutral-200 rounded-lg bg-neutral-50 focus:bg-white focus:border-[#3e7da2] focus:outline-none transition-colors"
                       />
                     </div>
-                    <div className="relative">
-                      <label 
-                        htmlFor="phone" 
-                        className={`absolute left-0 transition-all duration-200 ${
-                          activeField === "phone" || formData.phone 
-                            ? "-top-6 text-xs text-[var(--secondary-600)] font-semibold" 
-                            : "top-3 text-neutral-400"
-                        }`}
-                      >
-                        Phone Number
+                    <div>
+                      <label htmlFor="phone" className="block text-xs font-semibold text-neutral-500 mb-1.5">
+                        Phone
                       </label>
                       <input
-                        type="tel"
                         id="phone"
                         name="phone"
+                        type="tel"
                         value={formData.phone}
                         onChange={handleChange}
-                        onFocus={() => setActiveField("phone")}
-                        onBlur={() => setActiveField(null)}
-                        className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-[var(--secondary-400)] outline-none transition-colors text-neutral-900 placeholder-transparent"
                         placeholder="+251..."
+                        className="w-full px-3 py-2.5 text-sm border border-neutral-200 rounded-lg bg-neutral-50 focus:bg-white focus:border-[#3e7da2] focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
 
-                  <div className="relative">
-                    <label 
-                      htmlFor="service" 
-                      className="block text-xs font-semibold text-neutral-500 mb-3 uppercase tracking-wider"
-                    >
-                      I'm interested in...
+                  {/* Service Tags */}
+                  <div>
+                    <label className="block text-xs font-semibold text-neutral-500 mb-2.5">
+                      Area of Interest
                     </label>
-                    <div className="flex flex-wrap gap-3">
-                      {services.map((service) => (
+                    <div className="flex flex-wrap gap-2">
+                      {services.map((s) => (
                         <button
-                          key={service}
+                          key={s}
                           type="button"
-                          onClick={() => setFormData({ ...formData, service })}
-                          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border ${
-                            formData.service === service
-                              ? "bg-[var(--secondary-400)] text-neutral-900 border-[var(--secondary-400)] shadow-md shadow-[var(--secondary-400)]/20"
-                              : "bg-white text-neutral-600 border-neutral-200 hover:border-[var(--secondary-300)] hover:text-[var(--secondary-700)]"
+                          onClick={() =>
+                            setFormData({ ...formData, service: formData.service === s ? "" : s })
+                          }
+                          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                            formData.service === s
+                              ? "bg-[#3e7da2] text-white border-[#3e7da2]"
+                              : "bg-white text-neutral-600 border-neutral-200 hover:border-[#3e7da2]/50"
                           }`}
                         >
-                          {service}
+                          {s}
                         </button>
                       ))}
                     </div>
                   </div>
 
-                  <div className="relative">
-                    <label 
-                      htmlFor="message" 
-                      className={`absolute left-0 transition-all duration-200 ${
-                        activeField === "message" || formData.message 
-                          ? "-top-6 text-xs text-[var(--secondary-600)] font-semibold" 
-                          : "top-3 text-neutral-400"
-                      }`}
-                    >
-                      Project Details
+                  {/* Message */}
+                  <div>
+                    <label htmlFor="message" className="block text-xs font-semibold text-neutral-500 mb-1.5">
+                      Message <span className="text-red-400">*</span>
                     </label>
                     <textarea
                       id="message"
                       name="message"
+                      required
+                      rows={4}
                       value={formData.message}
                       onChange={handleChange}
-                      onFocus={() => setActiveField("message")}
-                      onBlur={() => setActiveField(null)}
-                      required
-                      rows={3}
-                      className="w-full py-3 bg-transparent border-b border-neutral-200 focus:border-[var(--secondary-400)] outline-none transition-colors text-neutral-900 placeholder-transparent resize-none"
-                      placeholder="Tell us about your project..."
+                      placeholder="Describe your project, requirement, or question..."
+                      className="w-full px-3 py-2.5 text-sm border border-neutral-200 rounded-lg bg-neutral-50 focus:bg-white focus:border-[#3e7da2] focus:outline-none transition-colors resize-none"
                     />
                   </div>
 
-                  <div className="pt-4">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full py-4 bg-neutral-900 text-white rounded-xl font-semibold hover:bg-neutral-800 transition-all shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
-                    >
-                      {isSubmitting ? (
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      ) : (
-                        <>
-                          Send Message
-                          <Send size={18} className="group-hover:translate-x-1 transition-transform" />
-                        </>
-                      )}
-                    </button>
-                  </div>
+                  {/* Error */}
+                  {status === "error" && (
+                    <div className="flex items-start gap-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <AlertCircle size={15} className="text-red-500 mt-0.5 shrink-0" />
+                      <p className="text-xs text-red-700">{errorMsg}</p>
+                    </div>
+                  )}
+
+                  {/* Submit */}
+                  <button
+                    type="submit"
+                    disabled={status === "submitting"}
+                    className="w-full py-3 bg-[#3e7da2] hover:bg-[#306689] disabled:bg-[#3e7da2]/60 text-white text-sm font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
+                  >
+                    {status === "submitting" ? (
+                      <span className="flex items-center gap-2">
+                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Sending...
+                      </span>
+                    ) : (
+                      <>
+                        Send Message <Send size={14} />
+                      </>
+                    )}
+                  </button>
                 </form>
               )}
+
             </div>
-          </motion.div>
+          </div>
+
         </div>
       </div>
     </section>

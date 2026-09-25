@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Logo from "@/../public/logo.png";
+import Logo from "@/../public/final logo 3-02-01.png";
 import { 
   ShieldCheck, 
   Lock, 

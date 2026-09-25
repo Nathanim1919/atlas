@@ -1,20 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { 
   Smartphone, 
   Globe, 
   Wifi, 
   Server, 
-  Cpu, 
-  ShieldCheck, 
   ArrowRight, 
   CheckCircle2, 
-  Download, 
-  Building2,
-  Lock,
-  Zap
+  ChevronRight,
+  ShieldCheck
 } from "lucide-react";
 
 export default function VIBProductPage() {
@@ -41,6 +36,13 @@ export default function VIBProductPage() {
     }
   ];
 
+  const metrics = [
+    { value: "1M+", label: "Active Banking Users" },
+    { value: "< 50ms", label: "Transaction Latency" },
+    { value: "Microservices", label: "Modular Architecture" },
+    { value: "PCI-DSS", label: "Certified Core Security" },
+  ];
+
   const openDemoModal = () => {
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("open-demo-modal", { detail: { intent: "demo", product: "vib" } }));
@@ -48,92 +50,152 @@ export default function VIBProductPage() {
   };
 
   return (
-    <div className="bg-white min-h-screen">
-      <section className="relative pt-28 pb-20 overflow-hidden bg-primary-950 text-white">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto px-6">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-secondary-300 text-xs font-bold uppercase tracking-wider mb-6">
-              <Smartphone size={14} className="text-secondary-400" />
-              <span>Omnichannel Digital Banking Suite</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display tracking-tight text-white mb-6 leading-[1.1]">
-              Virtual Integrated Banking <br />
-              <span className="text-secondary-400">(VIB) Suite</span>
-            </h1>
-
-            <p className="text-lg text-blue-100 leading-relaxed font-light mb-8 max-w-2xl">
-              An enterprise-grade, microservices-based omnichannel banking solution engineered to empower banks with unified web, mobile, USSD, and back-office services for millions of customers.
-            </p>
-
-            <div className="flex flex-wrap gap-4">
-              <button
-                type="button"
-                onClick={openDemoModal}
-                className="px-8 py-4 bg-secondary-400 hover:bg-secondary-300 text-primary-950 font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-sm cursor-pointer"
-              >
-                <span>Request VIB Banking Demo</span>
-                <ArrowRight size={16} />
-              </button>
-
-              <Link
-                href="/case-studies"
-                className="px-7 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all flex items-center gap-2 text-sm"
-              >
-                <span>See Wegagen & Siinqee Deployments</span>
-              </Link>
-            </div>
+    <div className="bg-white font-sans min-h-screen text-neutral-900 selection:bg-[#3e7da2] selection:text-white">
+      {/* Light Enterprise Hero */}
+      <section className="relative pt-24 pb-20 bg-neutral-50 border-b border-neutral-200 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-500 mb-6">
+            <Link href="/" className="hover:text-neutral-900 transition-colors">Home</Link>
+            <ChevronRight className="w-3 h-3 text-neutral-400" />
+            <Link href="/products" className="hover:text-neutral-900 transition-colors">Products</Link>
+            <ChevronRight className="w-3 h-3 text-neutral-400" />
+            <span className="text-[#3e7da2] font-semibold">Virtual Integrated Banking (VIB)</span>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-10 border-t border-white/10">
-            <div>
-              <div className="text-3xl font-bold text-secondary-300 font-display">1M+</div>
-              <div className="text-xs text-blue-200 mt-1 uppercase tracking-wider">Active Banking Users</div>
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white border border-neutral-200 shadow-xs text-neutral-700 text-xs font-mono mb-6">
+                <Smartphone className="w-3.5 h-3.5 text-[#3e7da2]" />
+                <span>Omnichannel Digital Banking Suite</span>
+              </div>
+
+              <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-neutral-900 mb-6 leading-tight">
+                Virtual Integrated Banking (VIB) Suite
+              </h1>
+
+              <p className="text-base sm:text-lg text-neutral-600 leading-relaxed mb-8 max-w-2xl">
+                An enterprise-grade, microservices-based omnichannel banking solution engineered to empower banks with unified web, mobile, USSD, and back-office services for millions of customers.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <button
+                  type="button"
+                  onClick={openDemoModal}
+                  className="px-6 py-3.5 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded shadow-sm transition-colors flex items-center gap-2 text-sm cursor-pointer"
+                >
+                  <span>Request VIB Banking Demo</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+
+                <Link
+                  href="/case-studies"
+                  className="px-6 py-3.5 bg-white hover:bg-neutral-100 text-neutral-800 font-semibold rounded border border-neutral-300 transition-colors flex items-center gap-2 text-sm"
+                >
+                  <span>See Wegagen & Siinqee Deployments</span>
+                </Link>
+              </div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-secondary-300 font-display">&lt; 50ms</div>
-              <div className="text-xs text-blue-200 mt-1 uppercase tracking-wider">Transaction Latency</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-secondary-300 font-display">Microservices</div>
-              <div className="text-xs text-blue-200 mt-1 uppercase tracking-wider">Modular Architecture</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-secondary-300 font-display">PCI-DSS</div>
-              <div className="text-xs text-blue-200 mt-1 uppercase tracking-wider">Certified Core Security</div>
+
+            <div className="lg:col-span-5">
+              <div className="bg-white border border-neutral-200 p-6 rounded shadow-sm">
+                <div className="flex items-center justify-between pb-4 mb-4 border-b border-neutral-100">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-[#3e7da2]" />
+                    <span className="text-xs font-mono uppercase text-neutral-500">Omnichannel Core</span>
+                  </div>
+                  <span className="text-xs font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-semibold">Active Production</span>
+                </div>
+
+                <div className="space-y-3">
+                  {[
+                    "Unified Retail & Corporate Web Banking Portals",
+                    "Native Biometric iOS & Android Apps + USSD Gateway",
+                    "Real-Time Anti-Fraud & Transaction Limits Engine",
+                    "FlexCube, Finacle & Temenos Switch Adapters",
+                    "24/7 Core Availability & Low-Latency API Bridge"
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3 p-3 bg-neutral-50 border border-neutral-200/80 rounded">
+                      <CheckCircle2 className="w-4 h-4 text-[#3e7da2] shrink-0 mt-0.5" />
+                      <span className="text-xs font-medium text-neutral-700">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-primary-600 font-bold text-xs uppercase tracking-wider block mb-3">
-              Omnichannel Architecture
+      {/* Metrics Bar */}
+      <section className="border-b border-neutral-200 bg-white py-10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {metrics.map((metric, idx) => (
+              <div key={idx} className="border-l-2 border-[#3e7da2] pl-4">
+                <div className="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight">{metric.value}</div>
+                <div className="text-xs font-mono text-neutral-500 mt-1">{metric.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Channels Section */}
+      <section className="py-20 bg-neutral-50 border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mb-12">
+            <span className="text-[#3e7da2] font-mono text-xs uppercase tracking-wider block mb-2 font-bold">
+              Omnichannel Channels
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 font-display">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
               Four Unified Banking Channels
             </h2>
+            <p className="text-sm sm:text-base text-neutral-600 mt-3">
+              Engage customers across web, mobile, feature-phone USSD, and administrative back-office portals under one core engine.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {channels.map((channel) => (
-              <div key={channel.title} className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-xs flex gap-5">
-                <div className="w-12 h-12 rounded-2xl bg-primary-50 text-primary-600 flex items-center justify-center shrink-0">
-                  <channel.icon size={24} />
+          <div className="grid sm:grid-cols-2 gap-6">
+            {channels.map((chan) => (
+              <div key={chan.title} className="p-8 bg-white border border-neutral-200 rounded flex gap-5 shadow-xs">
+                <div className="w-10 h-10 rounded bg-neutral-50 border border-neutral-200 text-[#3e7da2] flex items-center justify-center shrink-0 shadow-xs">
+                  <chan.icon className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-neutral-900 mb-2 font-display">
-                    {channel.title}
+                  <h3 className="text-base font-bold text-neutral-900 mb-2">
+                    {chan.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
-                    {channel.desc}
+                    {chan.desc}
                   </p>
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="bg-neutral-50 border border-neutral-200 p-8 sm:p-12 rounded flex flex-col md:flex-row items-center justify-between gap-8 shadow-xs">
+            <div className="max-w-2xl">
+              <h3 className="text-xl sm:text-2xl font-bold text-neutral-900 mb-2">
+                Empower Your Bank with VIB Omnichannel Suite
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+                Schedule a demonstration with our digital banking team to see live core integration, USSD routing, and mobile banking capabilities.
+              </p>
+            </div>
+            <div className="flex gap-4 shrink-0">
+              <button
+                type="button"
+                onClick={openDemoModal}
+                className="px-6 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded text-xs uppercase font-mono tracking-wider transition-colors cursor-pointer"
+              >
+                Schedule VIB Demo
+              </button>
+            </div>
           </div>
         </div>
       </section>

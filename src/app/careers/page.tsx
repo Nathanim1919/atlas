@@ -221,8 +221,8 @@ const values = [
 ];
 
 const stats = [
-  { value: 14, suffix: "+", label: "Years of Excellence" },
-  { value: 90, suffix: "+", label: "Team Members" },
+  { value: 15, suffix: "+", label: "Years of Excellence" },
+  { value: 120, suffix: "+", label: "Team Members" },
   { value: 50, suffix: "+", label: "Enterprise Clients" },
   { value: 100, suffix: "%", label: "Growth Mindset" },
 ];

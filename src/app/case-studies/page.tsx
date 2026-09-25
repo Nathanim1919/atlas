@@ -1,24 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import {
-  Building2,
-  ShieldCheck,
-  Zap,
-  ArrowRight,
-  Server,
-  Database,
-  Layers,
-  CheckCircle2,
-  Quote,
-  Clock,
-  TrendingUp,
-  FileCheck,
-  ChevronRight,
-  Briefcase
-} from "lucide-react";
+import { Building2, ChevronRight, CheckCircle2, ArrowRight } from "lucide-react";
 
 interface CaseStudy {
   id: string;
@@ -26,7 +10,6 @@ interface CaseStudy {
   category: "datacenter" | "banking" | "payments";
   title: string;
   client: string;
-  clientRole?: string;
   testimonial?: {
     quote: string;
     author: string;
@@ -37,6 +20,13 @@ interface CaseStudy {
   technologies: string[];
   results: { metric: string; label: string }[];
 }
+
+const TABS = [
+  { id: "all",        label: "All Engagements" },
+  { id: "banking",    label: "Core Banking & Infrastructure" },
+  { id: "datacenter", label: "Data Center & DR" },
+  { id: "payments",   label: "Payment Modernization" },
+];
 
 export default function CaseStudiesPage() {
   const [activeTab, setActiveTab] = useState<string>("all");
@@ -57,10 +47,10 @@ export default function CaseStudiesPage() {
       solution: "Engineered an end-to-end multi-phase data center migration program: pre-failover replication to the Disaster Recovery (DR) data center, running 3 consecutive days of flawless live national switching purely from the DR site, precision physical and virtual workload relocation to the new facility, redundant optical fabric cutover, and validated live re-failover with zero transaction loss.",
       technologies: ["IBM & Lenovo High-Availability Servers", "Oracle Database RAC", "Fibre Channel SAN Fabrics", "Red Hat Enterprise Linux", "Network Security Appliances"],
       results: [
-        { metric: "0 min", label: "Unplanned Downtime" },
-        { metric: "100%", label: "Data Integrity Across All Banks" },
+        { metric: "0 min",  label: "Unplanned Downtime" },
+        { metric: "100%",   label: "Data Integrity Across All Banks" },
         { metric: "3 Days", label: "Continuous Live DR Operation" },
-        { metric: "20+", label: "Financial Institutions Seamlessly Migrated" }
+        { metric: "20+",    label: "Financial Institutions Migrated" }
       ]
     },
     {
@@ -77,9 +67,9 @@ export default function CaseStudiesPage() {
       solution: "Architected a comprehensive system engineering overhaul: Oracle RAC database performance tuning, low-latency all-flash SAN storage array migration, high-throughput blade compute provisioning, and continuous 24/7 SLA tier-1 engineering support.",
       technologies: ["Oracle Database RAC", "Enterprise Blade Compute", "All-Flash SAN Storage", "24/7 Proactive NOC Monitoring"],
       results: [
-        { metric: "45%", label: "Faster Batch Processing" },
-        { metric: "99.99%", label: "Database Cluster Uptime" },
-        { metric: "24/7", label: "Dedicated On-Call SLAs" }
+        { metric: "45%",   label: "Faster Batch Processing" },
+        { metric: "99.99%",label: "Database Cluster Uptime" },
+        { metric: "24/7",  label: "Dedicated On-Call SLAs" }
       ]
     },
     {
@@ -96,9 +86,9 @@ export default function CaseStudiesPage() {
       solution: "Standardized bank infrastructure onto an enterprise Nutanix Hyperconverged (HCI) Private Cloud platform, implementing automated synchronous data replication and orchestrated failover between Primary and Secondary Data Centers.",
       technologies: ["Nutanix Enterprise Cloud Platform", "Software-Defined Storage (AOS)", "Prism Central Orchestration", "Enterprise Backup Automation"],
       results: [
-        { metric: "< 5 min", label: "Recovery Point Objective (RPO)" },
+        { metric: "< 5 min",  label: "Recovery Point Objective (RPO)" },
         { metric: "< 15 min", label: "Recovery Time Objective (RTO)" },
-        { metric: "60%", label: "Rack Space & Power Savings" }
+        { metric: "60%",      label: "Rack Space & Power Savings" }
       ]
     },
     {
@@ -115,9 +105,9 @@ export default function CaseStudiesPage() {
       solution: "Supplied and configured resilient data center server clusters, unified enterprise network fabrics, and rolled out the Uni-Cash core payment gateway connecting university, school, and utility billers directly into the bank's digital channels.",
       technologies: ["Private Cloud HCI", "Red Hat Enterprise Linux", "Uni-Cash Bank Gateway", "Enterprise Core Network"],
       results: [
-        { metric: "400+", label: "Branches Interconnected" },
+        { metric: "400+",  label: "Branches Interconnected" },
         { metric: "500K+", label: "New Digital Account Inflow" },
-        { metric: "100%", label: "On-Time Commercial Regulatory Compliance" }
+        { metric: "100%",  label: "On-Time Regulatory Compliance" }
       ]
     },
     {
@@ -134,9 +124,9 @@ export default function CaseStudiesPage() {
       solution: "Deployed the Uni-Cash Pay@Bank multi-biller platform across all branch teller terminals and online channels, enabling instant student ID verification, automated ledger crediting, and real-time electronic receipt issuance.",
       technologies: ["Uni-Cash Multi-Biller Gateway", "Core Banking API Connector", "Teller Web Portal", "Automated Reconciliation Engine"],
       results: [
-        { metric: "300%", label: "Monthly Bill Volume Growth" },
-        { metric: "0 Hrs", label: "End-of-Day Reconciliation Backlog" },
-        { metric: "50+", label: "Corporate Billers Onboarded" }
+        { metric: "300%",  label: "Monthly Bill Volume Growth" },
+        { metric: "0 Hrs", label: "Reconciliation Backlog" },
+        { metric: "50+",   label: "Corporate Billers Onboarded" }
       ]
     },
     {
@@ -154,8 +144,8 @@ export default function CaseStudiesPage() {
       technologies: ["Oracle Database RAC", "Enterprise Blade Servers", "High-Performance SAN", "Hardware Security Modules (HSMs)"],
       results: [
         { metric: "Day 1", label: "Flawless Commercial Go-Live" },
-        { metric: "100%", label: "Regulatory Compliance (NBE)" },
-        { metric: "Zero", label: "Critical Vulnerabilities in Independent Audit" }
+        { metric: "100%",  label: "Regulatory Compliance (NBE)" },
+        { metric: "Zero",  label: "Critical Vulnerabilities Found" }
       ]
     },
     {
@@ -172,8 +162,8 @@ export default function CaseStudiesPage() {
       solution: "Migrated mission-critical volumes to enterprise all-flash SAN storage fabrics with automated deduplication, real-time snapshot replication to off-site disaster recovery facilities, and 24/7 SLA maintenance.",
       technologies: ["Enterprise All-Flash Storage Arrays", "Fibre Channel SAN Switches", "Continuous Replication Engine"],
       results: [
-        { metric: "4x", label: "Faster Backup Windows" },
-        { metric: "Zero", label: "Data Loss Incidents" },
+        { metric: "4x",     label: "Faster Backup Windows" },
+        { metric: "Zero",   label: "Data Loss Incidents" },
         { metric: "Sub-ms", label: "Storage I/O Latency" }
       ]
     },
@@ -193,75 +183,121 @@ export default function CaseStudiesPage() {
       results: [
         { metric: "99.98%", label: "Branch Infrastructure Availability" },
         { metric: "< 2 Hrs", label: "Emergency On-Site Response" },
-        { metric: "100%", label: "Preventive Maintenance Compliance" }
+        { metric: "100%",   label: "Preventive Maintenance Compliance" }
       ]
     }
   ];
 
-  const filteredStudies = activeTab === "all" 
-    ? caseStudies 
+  const filteredStudies = activeTab === "all"
+    ? caseStudies
     : caseStudies.filter((s) => s.category === activeTab);
 
   const featured = caseStudies.find((s) => s.featured);
+  const grid = filteredStudies.filter((s) => !s.featured);
+
+  const openDemoModal = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("open-demo-modal", {
+          detail: { intent: "proposal", product: "Case Study Architecture Review" }
+        })
+      );
+    }
+  };
 
   return (
-    <main className="bg-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 bg-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(62,125,162,0.3),transparent_60%)]" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="bg-white font-sans min-h-screen text-neutral-900 selection:bg-[#3e7da2] selection:text-white">
+      {/* Light Enterprise Hero */}
+      <section className="relative pt-24 pb-20 bg-neutral-50 border-b border-neutral-200 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-500 mb-6">
+            <Link href="/" className="hover:text-neutral-900 transition-colors">Home</Link>
+            <ChevronRight className="w-3 h-3 text-neutral-400" />
+            <span className="text-[#3e7da2] font-semibold">Case Studies</span>
+          </div>
+
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#dde325]/20 border border-[#dde325]/40 text-[#dde325] text-xs font-semibold uppercase tracking-wider mb-6">
-              <Briefcase className="w-4 h-4" />
-              Proven Enterprise Track Record
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white border border-neutral-200 shadow-xs text-neutral-700 text-xs font-mono mb-6">
+              <Building2 className="w-3.5 h-3.5 text-[#3e7da2]" />
+              <span>Verified Enterprise Implementations</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
-              Case Studies: Empowering <span className="text-[#dde325]">Ethiopia's Financial Backbone</span>
+
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-neutral-900 mb-6 leading-tight">
+              Case Studies: Empowering National Infrastructure & Banking
             </h1>
-            <p className="text-lg sm:text-xl text-slate-300 leading-relaxed">
-              Explore how Atlas Computer Technology architects, deploys, and manages mission-critical infrastructure, private clouds, and payment platforms for leading national institutions.
+
+            <p className="text-base sm:text-lg text-neutral-600 leading-relaxed mb-8">
+              Explore how Atlas Computer Technology architects, deploys, and maintains mission-critical infrastructure, private clouds, and payment platforms for leading national institutions.
             </p>
+
+            <div className="flex flex-wrap gap-4">
+              <button
+                type="button"
+                onClick={openDemoModal}
+                className="px-6 py-3.5 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded shadow-sm transition-colors flex items-center gap-2 text-sm cursor-pointer"
+              >
+                <span>Request Architecture Review</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <Link
+                href="/contact"
+                className="px-6 py-3.5 bg-white hover:bg-neutral-100 text-neutral-800 font-semibold rounded border border-neutral-300 transition-colors flex items-center gap-2 text-sm"
+              >
+                <span>Contact Enterprise Team</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Featured National Case Study: EthSwitch */}
+      {/* Featured National Milestone */}
       {featured && (
-        <section className="py-16 bg-slate-950 text-white border-b border-slate-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider">
-                National Milestone
+        <section className="py-20 bg-white border-b border-neutral-200">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="flex items-center gap-3 mb-8">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#3e7da2]">
+                National Reference Architecture
               </span>
-              <span className="text-xs text-slate-400">Published Reference Architecture</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-neutral-300 inline-block" />
+              <span className="text-xs font-mono text-neutral-500">EthSwitch S.C. Case Reference</span>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            <div className="grid lg:grid-cols-12 gap-12 items-start">
               <div className="lg:col-span-7">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-4 leading-snug">
+                <p className="text-xs font-mono font-bold text-[#3e7da2] mb-2 flex items-center gap-1.5">
+                  <Building2 className="w-3.5 h-3.5" />
+                  {featured.client}
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 mb-8 leading-tight">
                   {featured.title}
                 </h2>
-                <div className="text-sm font-semibold text-[#dde325] mb-6 flex items-center gap-2">
-                  <Building2 className="w-4 h-4" />
-                  Client: {featured.client}
-                </div>
 
-                <div className="space-y-6 text-slate-300">
-                  <div className="bg-slate-900/80 p-5 rounded-xl border border-slate-800">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-rose-400 mb-2">The Challenge</h3>
-                    <p className="text-sm leading-relaxed">{featured.challenge}</p>
+                <div className="space-y-6">
+                  <div className="border-l-2 border-neutral-200 pl-5">
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-500 mb-2">
+                      The Challenge
+                    </h3>
+                    <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">{featured.challenge}</p>
                   </div>
 
-                  <div className="bg-slate-900/80 p-5 rounded-xl border border-slate-800">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2">The ACT Solution</h3>
-                    <p className="text-sm leading-relaxed">{featured.solution}</p>
+                  <div className="border-l-2 border-[#3e7da2] pl-5">
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-500 mb-2">
+                      The ACT Solution
+                    </h3>
+                    <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">{featured.solution}</p>
                   </div>
 
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Enterprise Stack Deployed</h3>
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-500 mb-3">
+                      Enterprise Technology Stack
+                    </h3>
                     <div className="flex flex-wrap gap-2">
                       {featured.technologies.map((tech) => (
-                        <span key={tech} className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">
+                        <span
+                          key={tech}
+                          className="text-xs font-mono px-3 py-1 rounded border border-neutral-200 text-neutral-700 bg-neutral-50"
+                        >
                           {tech}
                         </span>
                       ))}
@@ -270,26 +306,29 @@ export default function CaseStudiesPage() {
                 </div>
               </div>
 
-              {/* Stats & Testimonial Card */}
               <div className="lg:col-span-5 space-y-6">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   {featured.results.map((res) => (
-                    <div key={res.label} className="p-5 rounded-xl bg-slate-900 border border-slate-800 text-center">
-                      <div className="text-2xl sm:text-3xl font-black text-[#dde325]">{res.metric}</div>
-                      <div className="text-xs text-slate-400 mt-1 font-medium">{res.label}</div>
+                    <div
+                      key={res.label}
+                      className="p-5 border border-neutral-200 bg-neutral-50 rounded text-center"
+                    >
+                      <div className="text-2xl font-extrabold text-neutral-900">{res.metric}</div>
+                      <div className="text-xs font-mono text-neutral-500 mt-1 leading-tight">{res.label}</div>
                     </div>
                   ))}
                 </div>
 
                 {featured.testimonial && (
-                  <div className="p-6 rounded-2xl bg-gradient-to-br from-[#3e7da2]/20 to-slate-900 border border-[#3e7da2]/40 relative">
-                    <Quote className="w-8 h-8 text-[#dde325]/40 mb-3" />
-                    <p className="text-sm text-slate-200 italic leading-relaxed mb-4">
-                      "{featured.testimonial.quote}"
+                  <div className="p-6 border-l-4 border-[#3e7da2] bg-neutral-50 rounded-r">
+                    <p className="text-xs sm:text-sm text-neutral-700 italic leading-relaxed mb-4">
+                      &ldquo;{featured.testimonial.quote}&rdquo;
                     </p>
-                    <div className="border-t border-white/10 pt-3">
-                      <div className="text-sm font-bold text-white">{featured.testimonial.author}</div>
-                      <div className="text-xs text-[#dde325]">{featured.testimonial.position}</div>
+                    <div className="text-xs font-bold text-neutral-900">
+                      {featured.testimonial.author}
+                    </div>
+                    <div className="text-[11px] font-mono text-neutral-500 mt-0.5">
+                      {featured.testimonial.position}
                     </div>
                   </div>
                 )}
@@ -299,30 +338,26 @@ export default function CaseStudiesPage() {
         </section>
       )}
 
-      {/* Interactive Tabs & Case Studies Grid */}
-      <section className="py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
+      {/* Grid Engagements */}
+      <section className="py-20 bg-neutral-50 border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12">
             <div>
-              <h2 className="text-xs font-bold uppercase tracking-wider text-[#3e7da2] mb-2">Verified Engagements</h2>
-              <h3 className="text-3xl font-extrabold text-slate-900">Commercial Bank Engagements</h3>
+              <span className="text-[#3e7da2] font-mono text-xs uppercase tracking-wider block mb-2 font-bold">
+                Verified Client Portfolio
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">Commercial Bank Engagements</h2>
             </div>
 
-            {/* Filter Tabs */}
-            <div className="flex flex-wrap gap-2 bg-white p-1.5 rounded-xl border border-slate-200 shadow-sm">
-              {[
-                { id: "all", label: "All Engagements" },
-                { id: "banking", label: "Core Banking & Infrastructure" },
-                { id: "datacenter", label: "Data Center & DR" },
-                { id: "payments", label: "Payment Modernization" }
-              ].map((tab) => (
+            <div className="flex gap-2 border-b border-neutral-200 pb-1">
+              {TABS.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-200 cursor-pointer ${
+                  className={`px-3 py-1.5 text-xs font-mono font-semibold transition-colors cursor-pointer rounded ${
                     activeTab === tab.id
-                      ? "bg-[#3e7da2] text-white shadow-sm"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      ? "bg-neutral-900 text-white"
+                      : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200/60"
                   }`}
                 >
                   {tab.label}
@@ -331,126 +366,109 @@ export default function CaseStudiesPage() {
             </div>
           </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <AnimatePresence>
-              {filteredStudies
-                .filter((s) => !s.featured)
-                .map((study) => (
-                  <motion.div
-                    key={study.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.3 }}
-                    className="bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-3">
-                        <span className="text-xs font-bold uppercase tracking-wider text-[#3e7da2] flex items-center gap-1.5">
-                          <Building2 className="w-3.5 h-3.5" />
-                          {study.client}
-                        </span>
-                        <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 capitalize">
-                          {study.category}
-                        </span>
-                      </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {grid.map((study) => (
+              <div
+                key={study.id}
+                className="bg-white border border-neutral-200 rounded p-8 shadow-xs flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-neutral-100">
+                    <p className="text-xs font-mono font-bold text-[#3e7da2] flex items-center gap-1.5">
+                      <Building2 className="w-3.5 h-3.5" />
+                      {study.client}
+                    </p>
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded border border-neutral-200 text-neutral-600 capitalize bg-neutral-50">
+                      {study.category}
+                    </span>
+                  </div>
 
-                      <h4 className="text-xl font-bold text-slate-900 mb-4 leading-snug">
-                        {study.title}
-                      </h4>
+                  <h3 className="text-lg font-bold text-neutral-900 mb-4 leading-snug">
+                    {study.title}
+                  </h3>
 
-                      <div className="space-y-4 mb-6 text-sm">
-                        <div>
-                          <span className="font-bold text-rose-700 block text-xs uppercase tracking-wide mb-1">
-                            Challenge
-                          </span>
-                          <p className="text-slate-600 leading-relaxed">{study.challenge}</p>
-                        </div>
-                        <div>
-                          <span className="font-bold text-emerald-700 block text-xs uppercase tracking-wide mb-1">
-                            Solution
-                          </span>
-                          <p className="text-slate-600 leading-relaxed">{study.solution}</p>
-                        </div>
-                      </div>
-
-                      {/* Technologies */}
-                      <div className="mb-6">
-                        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                          Technologies Used
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {study.technologies.map((tech) => (
-                            <span
-                              key={tech}
-                              className="text-[11px] font-medium px-2.5 py-1 rounded bg-slate-100 text-slate-700"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
+                  <div className="space-y-4 mb-6">
+                    <div className="border-l-2 border-neutral-200 pl-4">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 block mb-1">
+                        Challenge
+                      </span>
+                      <p className="text-xs text-neutral-600 leading-relaxed">{study.challenge}</p>
                     </div>
-
-                    {/* Results & Testimonial Footer */}
-                    <div className="pt-6 border-t border-slate-100 space-y-4">
-                      <div className="grid grid-cols-3 gap-2">
-                        {study.results.map((res) => (
-                          <div key={res.label} className="text-center p-2.5 rounded-lg bg-slate-50 border border-slate-100">
-                            <div className="text-base font-extrabold text-[#3e7da2]">{res.metric}</div>
-                            <div className="text-[10px] text-slate-500 mt-0.5 leading-tight">{res.label}</div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {study.testimonial && (
-                        <div className="p-4 rounded-xl bg-slate-50 border-l-4 border-[#3e7da2] text-xs">
-                          <p className="text-slate-700 italic mb-2">"{study.testimonial.quote}"</p>
-                          <div className="font-bold text-slate-900">{study.testimonial.author}</div>
-                          <div className="text-[11px] text-slate-500">{study.testimonial.position}</div>
-                        </div>
-                      )}
+                    <div className="border-l-2 border-[#3e7da2] pl-4">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 block mb-1">
+                        Solution
+                      </span>
+                      <p className="text-xs text-neutral-600 leading-relaxed">{study.solution}</p>
                     </div>
-                  </motion.div>
-                ))}
-            </AnimatePresence>
+                  </div>
+
+                  <div className="mb-6">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 block mb-2">
+                      Technologies
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {study.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-[10px] font-mono px-2 py-0.5 rounded border border-neutral-200 text-neutral-600 bg-neutral-50"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-neutral-100">
+                  <div className="grid grid-cols-3 gap-2 mb-4">
+                    {study.results.map((res) => (
+                      <div key={res.label} className="text-center bg-neutral-50 p-2 rounded border border-neutral-200/60">
+                        <div className="text-sm font-bold text-neutral-900">{res.metric}</div>
+                        <div className="text-[10px] font-mono text-neutral-500 mt-0.5">{res.label}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {study.testimonial && (
+                    <div className="p-3 bg-neutral-50 border-l-2 border-[#3e7da2] rounded-r text-xs">
+                      <p className="text-neutral-700 italic mb-1 text-[11px] leading-relaxed">
+                        &ldquo;{study.testimonial.quote}&rdquo;
+                      </p>
+                      <div className="font-bold text-neutral-900 text-[11px]">{study.testimonial.author}</div>
+                      <div className="text-neutral-500 text-[10px] font-mono">{study.testimonial.position}</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-slate-900 text-white text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-6">
-            Ready to Architect Your Enterprise Success Story?
-          </h2>
-          <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-            From critical data center migrations to high-volume payment aggregation, our senior certified engineers ensure 99.99% operational continuity.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => {
-                window.dispatchEvent(
-                  new CustomEvent("open-demo-modal", {
-                    detail: { service: "Case Study Inquiry / Architecture Review" }
-                  })
-                );
-              }}
-              className="px-8 py-4 rounded-xl bg-[#dde325] text-slate-950 font-bold hover:bg-[#c8ce20] transition-all duration-200 shadow-xl cursor-pointer"
-            >
-              Request Architecture Consultation
-            </button>
-            <Link
-              href="/contact"
-              className="px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-medium transition-all duration-200"
-            >
-              Contact Our Enterprise Team
-            </Link>
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="bg-neutral-50 border border-neutral-200 p-8 sm:p-12 rounded flex flex-col md:flex-row items-center justify-between gap-8 shadow-xs">
+            <div className="max-w-2xl">
+              <h3 className="text-xl sm:text-2xl font-bold text-neutral-900 mb-2">
+                Ready to Architect Your Enterprise Success Story?
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+                From national data center migrations to high-volume payment aggregation, our senior certified engineers ensure 99.999% operational continuity.
+              </p>
+            </div>
+            <div className="flex gap-4 shrink-0">
+              <button
+                type="button"
+                onClick={openDemoModal}
+                className="px-6 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded text-xs uppercase font-mono tracking-wider transition-colors cursor-pointer"
+              >
+                Schedule Architecture Consultation
+              </button>
+            </div>
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

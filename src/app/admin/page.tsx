@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import Logo from "@/../public/logo.png";
+import Logo from "@/../public/final logo 3-02-01.png";
 import { 
   Building2, 
   Mail, 
@@ -48,12 +48,15 @@ import {
   DownloadCloud,
   FolderOpen,
   MapPin,
-  FileCheck
+  FileCheck,
+  Newspaper
 } from "lucide-react";
 import { toast } from "sonner";
 import { useSession, signOut } from "@/lib/auth-client";
 import AdminSecurityModal from "@/components/AdminSecurityModal";
 import AdminJobPostModal, { JobPostingData } from "@/components/AdminJobPostModal";
+import AdminNewsModal from "@/components/AdminNewsModal";
+import { NewsArticleItem } from "@/lib/news-data";
 
 export interface AdminJobPosting {
   id: string;
@@ -128,11 +131,12 @@ export default function AdminDashboardPage() {
   const router = useRouter();
   const { data: session, isPending: isAuthPending } = useSession();
 
-  const [activeTab, setActiveTab] = useState<"demos" | "tickets" | "careers" | "applications" | "analytics">("demos");
+  const [activeTab, setActiveTab] = useState<"demos" | "tickets" | "careers" | "applications" | "news" | "analytics">("demos");
   const [demoRequests, setDemoRequests] = useState<DemoRequest[]>([]);
   const [supportTickets, setSupportTickets] = useState<SupportTicket[]>([]);
   const [jobPostings, setJobPostings] = useState<AdminJobPosting[]>([]);
   const [jobApplications, setJobApplications] = useState<AdminJobApplication[]>([]);
+  const [newsArticles, setNewsArticles] = useState<NewsArticleItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -145,6 +149,7 @@ export default function AdminDashboardPage() {
   const [jobDepartmentFilter, setJobDepartmentFilter] = useState("ALL");
   const [appJobFilter, setAppJobFilter] = useState("ALL");
   const [appStatusFilter, setAppStatusFilter] = useState("ALL");
+  const [newsCategoryFilter, setNewsCategoryFilter] = useState("ALL");
 
   // Inspection Drawer State
   const [selectedDemo, setSelectedDemo] = useState<DemoRequest | null>(null);
@@ -160,6 +165,10 @@ export default function AdminDashboardPage() {
   // Career Job Post Modal State
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
   const [jobToEdit, setJobToEdit] = useState<JobPostingData | null>(null);
+
+  // News Article Modal State
+  const [isNewsModalOpen, setIsNewsModalOpen] = useState(false);
+  const [newsToEdit, setNewsToEdit] = useState<NewsArticleItem | null>(null);
 
   // Security Modal State
   const [isSecurityModalOpen, setIsSecurityModalOpen] = useState(false);
@@ -184,22 +193,25 @@ export default function AdminDashboardPage() {
     if (!silent) setIsLoading(true);
     setIsRefreshing(true);
     try {
-      const [demosRes, ticketsRes, jobsRes, appsRes] = await Promise.all([
+      const [demosRes, ticketsRes, jobsRes, appsRes, newsRes] = await Promise.all([
         fetch("/api/demo-requests"),
         fetch("/api/support-tickets"),
         fetch("/api/careers/jobs?all=true"),
         fetch("/api/careers/applications"),
+        fetch("/api/news"),
       ]);
 
       const demosData = await demosRes.json();
       const ticketsData = await ticketsRes.json();
       const jobsData = await jobsRes.json();
       const appsData = await appsRes.json();
+      const newsData = await newsRes.json();
 
       if (demosData.success) setDemoRequests(demosData.data || []);
       if (ticketsData.success) setSupportTickets(ticketsData.data || []);
       if (jobsData.success) setJobPostings(jobsData.jobs || []);
       if (appsData.success) setJobApplications(appsData.applications || []);
+      if (newsData.success) setNewsArticles(newsData.data || []);
 
       if (silent) toast.success("Records updated from Supabase");
     } catch (err) {
@@ -208,6 +220,20 @@ export default function AdminDashboardPage() {
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
+    }
+  };
+
+  const handleDeleteNews = async (id: string) => {
+    if (!confirm("Are you sure you want to remove this news article?")) return;
+    try {
+      const res = await fetch(`/api/news/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("News article removed");
+        setNewsArticles(prev => prev.filter(n => n.id !== id && n.slug !== id));
+      }
+    } catch {
+      toast.error("Failed to delete news article");
     }
   };
 
@@ -510,6 +536,21 @@ export default function AdminDashboardPage() {
     });
   }, [jobApplications, searchQuery, appJobFilter, appStatusFilter]);
 
+  // Filtered News
+  const filteredNews = useMemo(() => {
+    return newsArticles.filter(article => {
+      const matchSearch = searchQuery === "" || 
+        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        article.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (article.authorName && article.authorName.toLowerCase().includes(searchQuery.toLowerCase()));
+
+      const matchCategory = newsCategoryFilter === "ALL" || article.category === newsCategoryFilter;
+
+      return matchSearch && matchCategory;
+    });
+  }, [newsArticles, searchQuery, newsCategoryFilter]);
+
   // Metric Computations
   const stats = useMemo(() => {
     const pendingDemos = demoRequests.filter(d => d.status === "PENDING").length;
@@ -537,7 +578,7 @@ export default function AdminDashboardPage() {
   }, [demoRequests, supportTickets, jobPostings, jobApplications]);
 
   // CSV Exporter
-  const exportToCSV = (type: "demos" | "tickets" | "careers" | "applications") => {
+  const exportToCSV = (type: "demos" | "tickets" | "careers" | "applications" | "news") => {
     let csvContent = "";
     if (type === "demos") {
       csvContent = "data:text/csv;charset=utf-8," + 
@@ -567,6 +608,13 @@ export default function AdminDashboardPage() {
           `"${a.id}","${a.createdAt}","${a.fullName.replace(/"/g, '""')}","${a.email}","${a.phone}","${(a.job?.title || "").replace(/"/g, '""')}","${a.job?.department || ""}","${a.status}","${a.resumeUrl}","${(a.fitReason || "").replace(/"/g, '""')}"`
         ))
         .join("\n");
+    } else if (type === "news") {
+      csvContent = "data:text/csv;charset=utf-8," + 
+        ["ID,Date,Title,Category,Author,ReadTime,Featured,Slug"]
+        .concat(newsArticles.map(n => 
+          `"${n.id}","${n.date}","${n.title.replace(/"/g, '""')}","${n.categoryLabel}","${n.authorName}","${n.readTime}","${n.featured ? "Yes" : "No"}","${n.slug}"`
+        ))
+        .join("\n");
     }
 
     const encodedUri = encodeURI(csvContent);
@@ -582,7 +630,7 @@ export default function AdminDashboardPage() {
   // Auth Loading Screen
   if (isAuthPending || !session) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center font-sans">
+      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center font-sans">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-3 border-slate-200 border-t-[#1b4965] rounded-full animate-spin" />
           <p className="text-slate-600 text-sm font-medium">Verifying administrator session...</p>
@@ -592,9 +640,9 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-[#3e7da2]/20 selection:text-[#1b4965]">
-      {/* Enterprise Top Navigation Bar - Light Mode */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col font-sans selection:bg-[#3e7da2]/20 selection:text-[#1b4965]">
+      {/* Enterprise Top Navigation Bar - Figma/Stripe Light Glassmorphism */}
+      <header className="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-3 group shrink-0">
@@ -604,16 +652,16 @@ export default function AdminDashboardPage() {
                 width={200}
                 height={60}
                 priority
-                className="object-contain w-auto h-10"
+                className="object-contain w-auto h-9"
               />
-              <span className="hidden xl:inline text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+              <span className="hidden xl:inline text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200/80">
                 Operations Console
               </span>
             </Link>
 
-            <span className="text-slate-300 hidden sm:inline">|</span>
+            <span className="text-slate-200 hidden sm:inline">|</span>
 
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md text-xs font-medium">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-emerald-50/80 text-emerald-700 border border-emerald-200/80 rounded-full text-xs font-semibold">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>Supabase Connected</span>
             </div>
@@ -623,7 +671,7 @@ export default function AdminDashboardPage() {
             <button
               onClick={() => fetchData(true)}
               disabled={isRefreshing}
-              className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer disabled:opacity-50"
+              className="p-2 rounded-xl bg-slate-100/80 hover:bg-slate-200/80 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer disabled:opacity-50 border border-slate-200/60"
               title="Refresh Data"
             >
               <RefreshCw size={15} className={isRefreshing ? "animate-spin text-[#1b4965]" : ""} />
@@ -632,20 +680,20 @@ export default function AdminDashboardPage() {
             <Link
               href="/"
               target="_blank"
-              className="hidden md:flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+              className="hidden md:flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 px-3.5 py-2 rounded-xl bg-slate-100/70 hover:bg-slate-200/80 border border-slate-200/60 transition-colors"
             >
               <span>View Website</span>
               <ExternalLink size={13} />
             </Link>
 
             {/* Profile Info, Security Settings & Sign Out */}
-            <div className="flex items-center gap-2.5 pl-3 border-l border-slate-200">
+            <div className="flex items-center gap-2 pl-3 border-l border-slate-200/80">
               <button
                 onClick={() => setIsSecurityModalOpen(true)}
-                className="flex items-center gap-2 text-left p-1 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer group"
+                className="flex items-center gap-2 text-left p-1 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer group"
                 title="Manage Admin Security & Profile"
               >
-                <div className="w-8 h-8 rounded-full bg-[#1b4965] text-white flex items-center justify-center text-xs font-bold group-hover:ring-2 group-hover:ring-[#1b4965]/20 transition-all">
+                <div className="w-8 h-8 rounded-full bg-[#1b4965] text-white flex items-center justify-center text-xs font-bold group-hover:ring-2 group-hover:ring-[#1b4965]/20 transition-all shadow-xs">
                   AD
                 </div>
                 <div className="hidden lg:flex flex-col text-left">
@@ -660,7 +708,7 @@ export default function AdminDashboardPage() {
 
               <button
                 onClick={() => setIsSecurityModalOpen(true)}
-                className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
                 title="Change Admin Password"
               >
                 <KeyRound size={13} className="text-[#1b4965]" />
@@ -669,7 +717,7 @@ export default function AdminDashboardPage() {
 
               <button
                 onClick={handleSignOut}
-                className="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="px-2.5 py-1.5 rounded-xl bg-rose-50/80 hover:bg-rose-100 text-rose-700 border border-rose-200/80 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
                 title="Sign Out"
               >
                 <LogOut size={13} />
@@ -685,173 +733,244 @@ export default function AdminDashboardPage() {
         {/* Page Title & Action Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-              Operations & SLA Dashboard
-            </h1>
-            <p className="text-sm text-slate-500 mt-1">
-              Live tracking of institutional solution requests and mission-critical bank incidents
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+                Operations & SLA Console
+              </h1>
+              <span className="px-2.5 py-0.5 rounded-full bg-slate-200/80 text-slate-700 text-xs font-semibold border border-slate-300/60">
+                Live Data
+              </span>
+            </div>
+            <p className="text-sm text-slate-500 mt-1 font-sans">
+              Real-time management of enterprise leads, high-availability incidents, careers, and news insights
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <button
-              onClick={() => exportToCSV(activeTab === "tickets" ? "tickets" : activeTab === "careers" ? "careers" : activeTab === "applications" ? "applications" : "demos")}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+              onClick={() => exportToCSV(activeTab === "tickets" ? "tickets" : activeTab === "careers" ? "careers" : activeTab === "applications" ? "applications" : activeTab === "news" ? "news" : "demos")}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-200/90 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-xs transition-colors cursor-pointer"
             >
-              <Download size={14} />
+              <Download size={14} className="text-slate-500" />
               <span>Export CSV</span>
             </button>
+
+            {activeTab === "news" && (
+              <button
+                onClick={() => {
+                  setNewsToEdit(null);
+                  setIsNewsModalOpen(true);
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1b4965] hover:bg-[#153950] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+              >
+                <Plus size={14} />
+                <span>Create News Article</span>
+              </button>
+            )}
+
+            {activeTab === "careers" && (
+              <button
+                onClick={() => {
+                  setJobToEdit(null);
+                  setIsJobModalOpen(true);
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1b4965] hover:bg-[#153950] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+              >
+                <Plus size={14} />
+                <span>Post New Career</span>
+              </button>
+            )}
           </div>
         </div>
 
         {/* Executive KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           {/* Card 1: Demos */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 transition-all">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                 Demo Requests
               </span>
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1b4965] flex items-center justify-center">
-                <Sparkles size={16} />
+              <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#1b4965] flex items-center justify-center border border-blue-100/60">
+                <Sparkles size={17} />
               </div>
             </div>
-            <div className="text-3xl font-bold text-slate-900">{stats.totalDemos}</div>
-            <div className="flex items-center gap-3 mt-2 text-xs text-slate-500">
-              <span className="text-amber-700 font-medium">{stats.pendingDemos} Pending</span>
-              <span>•</span>
-              <span className="text-blue-700 font-medium">{stats.scheduledDemos} Scheduled</span>
+            <div className="text-3xl font-bold text-slate-900 tracking-tight">{stats.totalDemos}</div>
+            <div className="flex items-center gap-2 mt-2 text-xs">
+              <span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-semibold border border-amber-200/60">
+                {stats.pendingDemos} Pending
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold border border-blue-200/60">
+                {stats.scheduledDemos} Scheduled
+              </span>
             </div>
           </div>
 
           {/* Card 2: Support Tickets */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 transition-all">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                 Support Tickets
               </span>
-              <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center">
-                <LifeBuoy size={16} />
+              <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center border border-purple-100/60">
+                <LifeBuoy size={17} />
               </div>
             </div>
-            <div className="text-3xl font-bold text-slate-900">{stats.totalTickets}</div>
-            <div className="flex items-center gap-3 mt-2 text-xs text-slate-500">
-              <span className="text-purple-700 font-medium">{stats.openTickets} Active</span>
-              <span>•</span>
-              <span className="text-emerald-700 font-medium">{stats.totalTickets - stats.openTickets} Resolved</span>
+            <div className="text-3xl font-bold text-slate-900 tracking-tight">{stats.totalTickets}</div>
+            <div className="flex items-center gap-2 mt-2 text-xs">
+              <span className="px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 font-semibold border border-purple-200/60">
+                {stats.openTickets} Active
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200/60">
+                {stats.totalTickets - stats.openTickets} Resolved
+              </span>
             </div>
           </div>
 
           {/* Card 3: P1 Outages */}
-          <div className={`bg-white rounded-2xl border p-5 shadow-xs ${stats.criticalP1 > 0 ? "border-red-300 bg-red-50/20" : "border-slate-200"}`}>
+          <div className={`bg-white rounded-2xl border p-5 shadow-xs hover:border-slate-300 transition-all ${stats.criticalP1 > 0 ? "border-red-300 bg-red-50/20" : "border-slate-200/80"}`}>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                 P1 Critical Outages
               </span>
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${stats.criticalP1 > 0 ? "bg-red-100 text-red-700" : "bg-slate-100 text-slate-500"}`}>
-                <AlertTriangle size={16} />
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center border ${stats.criticalP1 > 0 ? "bg-red-100 text-red-700 border-red-200" : "bg-slate-100 text-slate-500 border-slate-200"}`}>
+                <AlertTriangle size={17} />
               </div>
             </div>
-            <div className={`text-3xl font-bold ${stats.criticalP1 > 0 ? "text-red-700" : "text-slate-900"}`}>
+            <div className={`text-3xl font-bold tracking-tight ${stats.criticalP1 > 0 ? "text-red-700" : "text-slate-900"}`}>
               {stats.criticalP1}
             </div>
             <div className="flex items-center gap-1.5 mt-2 text-xs">
               {stats.criticalP1 > 0 ? (
-                <span className="text-red-700 font-medium">Immediate SLA response needed</span>
+                <span className="px-2.5 py-0.5 rounded-full bg-red-100 text-red-800 font-bold border border-red-200">
+                  Immediate SLA response needed
+                </span>
               ) : (
-                <span className="text-emerald-700 font-medium">No critical outages active</span>
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200/60">
+                  All systems operational
+                </span>
               )}
             </div>
           </div>
 
-          {/* Card 4: SLA Resolution Rate */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+          {/* Card 4: News Articles & Content */}
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 transition-all">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                SLA Compliance
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                News & Insights
               </span>
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                <CheckCircle2 size={16} />
+              <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-100/60">
+                <Newspaper size={17} />
               </div>
             </div>
-            <div className="text-3xl font-bold text-slate-900">{stats.resolutionRate}%</div>
-            <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-700 font-medium">
-              <span>99.98% High-availability SLA</span>
+            <div className="text-3xl font-bold text-slate-900 tracking-tight">{newsArticles.length}</div>
+            <div className="flex items-center gap-2 mt-2 text-xs">
+              <span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 font-semibold border border-amber-200/60">
+                {newsArticles.filter(n => n.featured).length} Spotlight
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">
+                Published
+              </span>
             </div>
           </div>
         </div>
 
         {/* Tab Switcher & Search Bar */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 mb-6 shadow-xs">
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-3.5 mb-6 shadow-xs">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            {/* Tabs */}
-            <div className="flex flex-wrap items-center gap-1 bg-slate-100 p-1 rounded-xl w-fit">
+            {/* Tabs - Modern Segmented Control */}
+            <div className="flex flex-wrap items-center gap-1 bg-slate-100/80 p-1.5 rounded-xl w-fit border border-slate-200/60">
               <button
                 onClick={() => setActiveTab("demos")}
-                className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 ${
+                className={`relative px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                   activeTab === "demos" 
                     ? "bg-white text-slate-900 shadow-xs" 
-                    : "text-slate-600 hover:text-slate-900"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
                 }`}
               >
                 <Sparkles size={14} className={activeTab === "demos" ? "text-[#1b4965]" : "text-slate-400"} />
                 <span>Demo Leads</span>
-                <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-700 font-bold">
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  activeTab === "demos" ? "bg-blue-50 text-[#1b4965]" : "bg-slate-200 text-slate-700"
+                }`}>
                   {demoRequests.length}
                 </span>
               </button>
 
               <button
                 onClick={() => setActiveTab("tickets")}
-                className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 ${
+                className={`relative px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                   activeTab === "tickets" 
                     ? "bg-white text-slate-900 shadow-xs" 
-                    : "text-slate-600 hover:text-slate-900"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
                 }`}
               >
                 <LifeBuoy size={14} className={activeTab === "tickets" ? "text-purple-600" : "text-slate-400"} />
                 <span>Support Incidents</span>
-                <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-700 font-bold">
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  activeTab === "tickets" ? "bg-purple-50 text-purple-700" : "bg-slate-200 text-slate-700"
+                }`}>
                   {supportTickets.length}
                 </span>
               </button>
 
               <button
                 onClick={() => setActiveTab("careers")}
-                className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 ${
+                className={`relative px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                   activeTab === "careers" 
                     ? "bg-white text-slate-900 shadow-xs" 
-                    : "text-slate-600 hover:text-slate-900"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
                 }`}
               >
                 <Briefcase size={14} className={activeTab === "careers" ? "text-[#1b4965]" : "text-slate-400"} />
                 <span>Career Postings</span>
-                <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-700 font-bold">
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  activeTab === "careers" ? "bg-blue-50 text-[#1b4965]" : "bg-slate-200 text-slate-700"
+                }`}>
                   {jobPostings.length}
                 </span>
               </button>
 
               <button
                 onClick={() => setActiveTab("applications")}
-                className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 ${
+                className={`relative px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                   activeTab === "applications" 
                     ? "bg-white text-slate-900 shadow-xs" 
-                    : "text-slate-600 hover:text-slate-900"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
                 }`}
               >
                 <Users size={14} className={activeTab === "applications" ? "text-indigo-600" : "text-slate-400"} />
                 <span>Applications</span>
-                <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-indigo-100 text-indigo-800 font-bold">
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  activeTab === "applications" ? "bg-indigo-100 text-indigo-800" : "bg-slate-200 text-slate-700"
+                }`}>
                   {jobApplications.length}
                 </span>
               </button>
 
               <button
+                onClick={() => setActiveTab("news")}
+                className={`relative px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+                  activeTab === "news" 
+                    ? "bg-white text-slate-900 shadow-xs" 
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
+                }`}
+              >
+                <Newspaper size={14} className={activeTab === "news" ? "text-amber-600" : "text-slate-400"} />
+                <span>News & Insights</span>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  activeTab === "news" ? "bg-amber-100 text-amber-800" : "bg-slate-200 text-slate-700"
+                }`}>
+                  {newsArticles.length}
+                </span>
+              </button>
+
+              <button
                 onClick={() => setActiveTab("analytics")}
-                className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 ${
+                className={`relative px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                   activeTab === "analytics" 
                     ? "bg-white text-slate-900 shadow-xs" 
-                    : "text-slate-600 hover:text-slate-900"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
                 }`}
               >
                 <Activity size={14} className={activeTab === "analytics" ? "text-emerald-600" : "text-slate-400"} />
@@ -872,10 +991,20 @@ export default function AdminDashboardPage() {
                       ? "Search job role, department..."
                       : activeTab === "applications"
                       ? "Search candidate, role, skills..."
+                      : activeTab === "news"
+                      ? "Search news title, topic..."
                       : "Search organization, name, email..."
                   }
-                  className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1b4965] focus:bg-white transition-all font-sans"
+                  className="w-full pl-9 pr-8 py-2 bg-slate-50/80 border border-slate-200/80 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1b4965] focus:bg-white transition-all font-sans"
                 />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  >
+                    <X size={13} />
+                  </button>
+                )}
               </div>
 
               {/* Status Filter for Demos */}
@@ -883,7 +1012,7 @@ export default function AdminDashboardPage() {
                 <select
                   value={demoStatusFilter}
                   onChange={(e) => setDemoStatusFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-medium focus:outline-none focus:border-[#1b4965] cursor-pointer"
+                  className="px-3 py-2 bg-slate-50/80 border border-slate-200/80 rounded-xl text-xs text-slate-700 font-semibold focus:outline-none focus:border-[#1b4965] cursor-pointer"
                 >
                   <option value="ALL">All Statuses</option>
                   <option value="PENDING">Pending</option>
@@ -898,7 +1027,7 @@ export default function AdminDashboardPage() {
                 <select
                   value={ticketStatusFilter}
                   onChange={(e) => setTicketStatusFilter(e.target.value)}
-                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-medium focus:outline-none focus:border-[#1b4965] cursor-pointer"
+                  className="px-3 py-2 bg-slate-50/80 border border-slate-200/80 rounded-xl text-xs text-slate-700 font-semibold focus:outline-none focus:border-[#1b4965] cursor-pointer"
                 >
                   <option value="ALL">All Statuses</option>
                   <option value="OPEN">Open</option>
@@ -908,32 +1037,35 @@ export default function AdminDashboardPage() {
                 </select>
               )}
 
-              {/* Department Filter & Post Button for Careers */}
+              {/* Department Filter for Careers */}
               {activeTab === "careers" && (
-                <>
-                  <select
-                    value={jobDepartmentFilter}
-                    onChange={(e) => setJobDepartmentFilter(e.target.value)}
-                    className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-medium focus:outline-none focus:border-[#1b4965] cursor-pointer"
-                  >
-                    <option value="ALL">All Departments</option>
-                    <option value="Software Development">Software Development</option>
-                    <option value="System Engineering">System Engineering</option>
-                    <option value="Product Delivery">Product Delivery</option>
-                    <option value="Managed Services">Managed Services</option>
-                  </select>
+                <select
+                  value={jobDepartmentFilter}
+                  onChange={(e) => setJobDepartmentFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-50/80 border border-slate-200/80 rounded-xl text-xs text-slate-700 font-semibold focus:outline-none focus:border-[#1b4965] cursor-pointer"
+                >
+                  <option value="ALL">All Departments</option>
+                  <option value="Software Development">Software Development</option>
+                  <option value="System Engineering">System Engineering</option>
+                  <option value="Product Delivery">Product Delivery</option>
+                  <option value="Managed Services">Managed Services</option>
+                </select>
+              )}
 
-                  <button
-                    onClick={() => {
-                      setJobToEdit(null);
-                      setIsJobModalOpen(true);
-                    }}
-                    className="px-3.5 py-2 rounded-xl bg-[#1b4965] hover:bg-[#153950] text-white text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
-                  >
-                    <Plus size={14} />
-                    <span>Post New Career</span>
-                  </button>
-                </>
+              {/* Category Filter for News */}
+              {activeTab === "news" && (
+                <select
+                  value={newsCategoryFilter}
+                  onChange={(e) => setNewsCategoryFilter(e.target.value)}
+                  className="px-3 py-2 bg-slate-50/80 border border-slate-200/80 rounded-xl text-xs text-slate-700 font-semibold focus:outline-none focus:border-[#1b4965] cursor-pointer"
+                >
+                  <option value="ALL">All Categories</option>
+                  <option value="company">Company News</option>
+                  <option value="fintech">FinTech & Banking</option>
+                  <option value="security">Security & SLA</option>
+                  <option value="infrastructure">Infrastructure</option>
+                  <option value="events">Events & Expos</option>
+                </select>
               )}
 
               {/* Job & Status Filter for Applications */}
@@ -942,7 +1074,7 @@ export default function AdminDashboardPage() {
                   <select
                     value={appJobFilter}
                     onChange={(e) => setAppJobFilter(e.target.value)}
-                    className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-medium focus:outline-none focus:border-[#1b4965] cursor-pointer max-w-[180px] truncate"
+                    className="px-3 py-2 bg-slate-50/80 border border-slate-200/80 rounded-xl text-xs text-slate-700 font-semibold focus:outline-none focus:border-[#1b4965] cursor-pointer max-w-[180px] truncate"
                   >
                     <option value="ALL">All Job Roles</option>
                     {jobPostings.map(j => (
@@ -953,7 +1085,7 @@ export default function AdminDashboardPage() {
                   <select
                     value={appStatusFilter}
                     onChange={(e) => setAppStatusFilter(e.target.value)}
-                    className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-medium focus:outline-none focus:border-[#1b4965] cursor-pointer"
+                    className="px-3 py-2 bg-slate-50/80 border border-slate-200/80 rounded-xl text-xs text-slate-700 font-semibold focus:outline-none focus:border-[#1b4965] cursor-pointer"
                   >
                     <option value="ALL">All Stages</option>
                     <option value="PENDING">Pending Review</option>
@@ -970,10 +1102,10 @@ export default function AdminDashboardPage() {
 
         {/* Tab 1: Demo Requests Table */}
         {activeTab === "demos" && (
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
+              <table className="w-full text-left text-xs border-collapse font-sans">
+                <thead className="bg-slate-50/80 border-b border-slate-200/80 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
                   <tr>
                     <th className="py-3.5 px-4">Organization & Contact</th>
                     <th className="py-3.5 px-4">Product / Solution</th>
@@ -983,62 +1115,64 @@ export default function AdminDashboardPage() {
                     <th className="py-3.5 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-800">
+                <tbody className="divide-y divide-slate-100 text-slate-800 font-normal">
                   {isLoading ? (
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-slate-500">
                         <div className="flex flex-col items-center gap-2">
                           <div className="w-6 h-6 border-2 border-slate-200 border-t-[#1b4965] rounded-full animate-spin" />
-                          <span>Loading demo requests from Supabase...</span>
+                          <span className="font-semibold text-xs text-slate-600">Loading demo requests from Supabase...</span>
                         </div>
                       </td>
                     </tr>
                   ) : filteredDemos.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-slate-500">
-                        No demo requests matching your search criteria.
+                        <Sparkles size={32} className="mx-auto text-slate-300 mb-2" />
+                        <p className="font-semibold text-sm text-slate-700">No demo requests matching filter</p>
+                        <p className="text-xs text-slate-400 mt-1">Institutional request forms submitted on /contact will show up here</p>
                       </td>
                     </tr>
                   ) : (
                     filteredDemos.map((demo) => (
-                      <tr key={demo.id} className="hover:bg-slate-50/80 transition-colors">
+                      <tr key={demo.id} className="hover:bg-slate-50/70 transition-colors">
                         <td className="py-3.5 px-4">
-                          <div className="font-semibold text-slate-900">{demo.organization}</div>
-                          <div className="text-slate-500 flex items-center gap-2 mt-0.5">
-                            <span>{demo.fullName}</span>
+                          <div className="font-bold text-slate-900 text-sm">{demo.organization}</div>
+                          <div className="text-slate-500 text-xs flex items-center gap-2 mt-0.5">
+                            <span className="font-medium text-slate-700">{demo.fullName}</span>
                             <span>•</span>
-                            <span className="font-mono">{demo.phone}</span>
+                            <span className="font-mono text-slate-500">{demo.phone}</span>
                           </div>
                         </td>
                         <td className="py-3.5 px-4">
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-medium">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-[#1b4965] font-bold text-xs border border-slate-200/60">
                             {demo.product}
                           </span>
                         </td>
                         <td className="py-3.5 px-4">
-                          <span className="capitalize font-medium text-slate-600">{demo.intent}</span>
+                          <span className="capitalize font-semibold text-slate-700">{demo.intent}</span>
                         </td>
-                        <td className="py-3.5 px-4 text-slate-500">
-                          {demo.preferredDate || "Immediate"}
+                        <td className="py-3.5 px-4 text-slate-500 font-medium">
+                          {demo.preferredDate || "Immediate Request"}
                         </td>
                         <td className="py-3.5 px-4">
                           <select
                             value={demo.status}
                             onChange={(e) => handleUpdateDemoStatus(demo.id, e.target.value)}
-                            className={`px-2.5 py-1 rounded-lg text-xs font-semibold border cursor-pointer ${
+                            className={`px-3 py-1 rounded-full text-xs font-bold border cursor-pointer transition-all ${
                               demo.status === "PENDING"
-                                ? "bg-amber-50 text-amber-800 border-amber-200"
+                                ? "bg-amber-50 text-amber-800 border-amber-200/80"
                                 : demo.status === "SCHEDULED"
-                                ? "bg-blue-50 text-blue-800 border-blue-200"
+                                ? "bg-blue-50 text-blue-800 border-blue-200/80"
                                 : demo.status === "CONTACTED"
-                                ? "bg-purple-50 text-purple-800 border-purple-200"
-                                : "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                ? "bg-purple-50 text-purple-800 border-purple-200/80"
+                                : "bg-emerald-50 text-emerald-800 border-emerald-200/80"
                             }`}
                           >
-                            <option value="PENDING">PENDING</option>
-                            <option value="CONTACTED">CONTACTED</option>
-                            <option value="SCHEDULED">SCHEDULED</option>
-                            <option value="COMPLETED">COMPLETED</option>
+                            <option value="PENDING">● PENDING</option>
+                            <option value="CONTACTED">● CONTACTED</option>
+                            <option value="SCHEDULED">● SCHEDULED</option>
+                            <option value="COMPLETED">● COMPLETED</option>
                           </select>
                         </td>
                         <td className="py-3.5 px-4 text-right">
@@ -1048,8 +1182,8 @@ export default function AdminDashboardPage() {
                                 setSelectedDemo(demo);
                                 setEditAdminNotes(demo.adminNotes || "");
                               }}
-                              className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
-                              title="Inspect Details"
+                              className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+                              title="Inspect Lead Details"
                             >
                               <Eye size={14} />
                             </button>
@@ -1073,10 +1207,10 @@ export default function AdminDashboardPage() {
 
         {/* Tab 2: Support Tickets Table */}
         {activeTab === "tickets" && (
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
+              <table className="w-full text-left text-xs border-collapse font-sans">
+                <thead className="bg-slate-50/80 border-b border-slate-200/80 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
                   <tr>
                     <th className="py-3.5 px-4">Ticket ID</th>
                     <th className="py-3.5 px-4">Institution & System</th>
@@ -1086,42 +1220,44 @@ export default function AdminDashboardPage() {
                     <th className="py-3.5 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-800">
+                <tbody className="divide-y divide-slate-100 text-slate-800 font-normal">
                   {isLoading ? (
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-slate-500">
                         <div className="flex flex-col items-center gap-2">
                           <div className="w-6 h-6 border-2 border-slate-200 border-t-[#1b4965] rounded-full animate-spin" />
-                          <span>Loading tickets from Supabase...</span>
+                          <span className="font-semibold text-xs text-slate-600">Loading tickets from Supabase...</span>
                         </div>
                       </td>
                     </tr>
                   ) : filteredTickets.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-slate-500">
-                        No support tickets found matching criteria.
+                        <LifeBuoy size={32} className="mx-auto text-slate-300 mb-2" />
+                        <p className="font-semibold text-sm text-slate-700">No support incidents found</p>
+                        <p className="text-xs text-slate-400 mt-1">Bank support tickets submitted via /support will appear here</p>
                       </td>
                     </tr>
                   ) : (
                     filteredTickets.map((ticket) => (
-                      <tr key={ticket.id} className="hover:bg-slate-50/80 transition-colors">
+                      <tr key={ticket.id} className="hover:bg-slate-50/70 transition-colors">
                         <td className="py-3.5 px-4 font-mono font-bold text-slate-900">
                           {ticket.ticketNumber}
                         </td>
                         <td className="py-3.5 px-4">
-                          <div className="font-semibold text-slate-900">{ticket.institution}</div>
+                          <div className="font-bold text-slate-900">{ticket.institution}</div>
                           <div className="text-slate-500 text-[11px] mt-0.5">{ticket.system}</div>
                         </td>
-                        <td className="py-3.5 px-4 max-w-xs truncate text-slate-700 font-medium">
+                        <td className="py-3.5 px-4 max-w-xs truncate text-slate-700 font-semibold">
                           {ticket.subject}
                         </td>
                         <td className="py-3.5 px-4">
-                          <span className={`px-2 py-0.5 rounded-md font-bold text-[11px] ${
+                          <span className={`px-2.5 py-0.5 rounded-full font-extrabold text-[11px] border ${
                             ticket.priority === "P1" 
-                              ? "bg-red-100 text-red-800" 
+                              ? "bg-red-100 text-red-800 border-red-200" 
                               : ticket.priority === "P2"
-                              ? "bg-amber-100 text-amber-800"
-                              : "bg-blue-100 text-blue-800"
+                              ? "bg-amber-100 text-amber-800 border-amber-200"
+                              : "bg-blue-100 text-blue-800 border-blue-200"
                           }`}>
                             {ticket.priority}
                           </span>
@@ -1130,18 +1266,18 @@ export default function AdminDashboardPage() {
                           <select
                             value={ticket.status}
                             onChange={(e) => handleUpdateTicketStatus(ticket.id, e.target.value)}
-                            className={`px-2.5 py-1 rounded-lg text-xs font-semibold border cursor-pointer ${
+                            className={`px-3 py-1 rounded-full text-xs font-bold border cursor-pointer transition-all ${
                               ticket.status === "OPEN"
-                                ? "bg-sky-50 text-sky-800 border-sky-200"
+                                ? "bg-sky-50 text-sky-800 border-sky-200/80"
                                 : ticket.status === "IN_PROGRESS"
-                                ? "bg-indigo-50 text-indigo-800 border-indigo-200"
-                                : "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                ? "bg-indigo-50 text-indigo-800 border-indigo-200/80"
+                                : "bg-emerald-50 text-emerald-800 border-emerald-200/80"
                             }`}
                           >
-                            <option value="OPEN">OPEN</option>
-                            <option value="IN_PROGRESS">IN_PROGRESS</option>
-                            <option value="RESOLVED">RESOLVED</option>
-                            <option value="CLOSED">CLOSED</option>
+                            <option value="OPEN">● OPEN</option>
+                            <option value="IN_PROGRESS">● IN PROGRESS</option>
+                            <option value="RESOLVED">● RESOLVED</option>
+                            <option value="CLOSED">● CLOSED</option>
                           </select>
                         </td>
                         <td className="py-3.5 px-4 text-right">
@@ -1151,15 +1287,15 @@ export default function AdminDashboardPage() {
                                 setSelectedTicket(ticket);
                                 setEditAdminNotes(ticket.internalNotes || "");
                               }}
-                              className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
-                              title="Inspect Details"
+                              className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+                              title="Inspect SLA Details"
                             >
                               <Eye size={14} />
                             </button>
                             <button
                               onClick={() => handleDeleteTicket(ticket.id)}
                               className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 transition-colors cursor-pointer"
-                              title="Delete Ticket"
+                              title="Delete Incident"
                             >
                               <Trash2 size={14} />
                             </button>
@@ -1178,19 +1314,19 @@ export default function AdminDashboardPage() {
         {activeTab === "analytics" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Box 1: Product Breakdown */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-              <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider">
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs">
+              <h3 className="text-xs font-bold text-slate-900 mb-4 uppercase tracking-wider">
                 Demo Requests by Solution Area
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-3.5">
                 {["unicash", "vib", "private-cloud", "system-engineering", "merchant"].map((prod) => {
                   const count = demoRequests.filter(d => d.product === prod).length;
                   const pct = demoRequests.length > 0 ? Math.round((count / demoRequests.length) * 100) : 0;
                   return (
                     <div key={prod}>
-                      <div className="flex justify-between text-xs font-medium text-slate-700 mb-1">
+                      <div className="flex justify-between text-xs font-semibold text-slate-700 mb-1.5">
                         <span className="capitalize">{prod.replace("-", " ")}</span>
-                        <span>{count} ({pct}%)</span>
+                        <span className="font-mono text-slate-500">{count} ({pct}%)</span>
                       </div>
                       <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div 
@@ -1205,11 +1341,11 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Box 2: Support Ticket Priorities */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-              <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider">
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs">
+              <h3 className="text-xs font-bold text-slate-900 mb-4 uppercase tracking-wider">
                 Support Incidents by Severity
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-3.5">
                 {[
                   { p: "P1", label: "P1 - Critical Outage", color: "bg-red-500" },
                   { p: "P2", label: "P2 - Major Impact", color: "bg-amber-500" },
@@ -1220,9 +1356,9 @@ export default function AdminDashboardPage() {
                   const pct = supportTickets.length > 0 ? Math.round((count / supportTickets.length) * 100) : 0;
                   return (
                     <div key={item.p}>
-                      <div className="flex justify-between text-xs font-medium text-slate-700 mb-1">
+                      <div className="flex justify-between text-xs font-semibold text-slate-700 mb-1.5">
                         <span>{item.label}</span>
-                        <span>{count} ({pct}%)</span>
+                        <span className="font-mono text-slate-500">{count} ({pct}%)</span>
                       </div>
                       <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div 
@@ -1240,10 +1376,10 @@ export default function AdminDashboardPage() {
 
         {/* Tab 3: Career Postings Table */}
         {activeTab === "careers" && (
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
+              <table className="w-full text-left text-xs border-collapse font-sans">
+                <thead className="bg-slate-50/80 border-b border-slate-200/80 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
                   <tr>
                     <th className="py-3.5 px-4">Role & Department</th>
                     <th className="py-3.5 px-4">Level & Type</th>
@@ -1275,26 +1411,26 @@ export default function AdminDashboardPage() {
                     </tr>
                   ) : (
                     filteredJobs.map((job) => (
-                      <tr key={job.id} className="hover:bg-slate-50/75 transition-colors">
+                      <tr key={job.id} className="hover:bg-slate-50/70 transition-colors">
                         <td className="py-3.5 px-4">
                           <div className="font-bold text-slate-900 text-sm hover:text-[#1b4965] transition-colors">
                             {job.title}
                           </div>
                           <div className="text-slate-500 text-xs mt-0.5 flex items-center gap-2">
-                            <span>{job.department}</span>
+                            <span className="font-medium text-slate-700">{job.department}</span>
                           </div>
                         </td>
                         <td className="py-3.5 px-4">
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <span className="px-2 py-0.5 rounded-md bg-blue-50 text-[#1b4965] font-semibold text-[11px] border border-blue-100">
+                            <span className="px-2.5 py-0.5 rounded-full bg-blue-50 text-[#1b4965] font-bold text-[11px] border border-blue-100">
                               {job.level}
                             </span>
-                            <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-medium text-[11px]">
+                            <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium text-[11px]">
                               {job.type}
                             </span>
                           </div>
                         </td>
-                        <td className="py-3.5 px-4 text-slate-600">
+                        <td className="py-3.5 px-4 text-slate-600 font-medium">
                           <div className="flex items-center gap-1">
                             <MapPin size={12} className="text-slate-400 shrink-0" />
                             <span>{job.location}</span>
@@ -1304,7 +1440,7 @@ export default function AdminDashboardPage() {
                           <button
                             onClick={() => handleToggleJobStatus(job.id, job.status)}
                             title="Click to toggle status"
-                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold border transition-all cursor-pointer ${
+                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all cursor-pointer ${
                               job.status === "ACTIVE"
                                 ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
                                 : job.status === "DRAFT"
@@ -1324,14 +1460,14 @@ export default function AdminDashboardPage() {
                               setAppJobFilter(job.id);
                               setActiveTab("applications");
                             }}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold transition-colors cursor-pointer border border-indigo-100/60"
                             title="View applicants for this role"
                           >
                             <Users size={12} />
                             <span>{job._count?.applications || 0} candidate{(job._count?.applications || 0) === 1 ? "" : "s"}</span>
                           </button>
                         </td>
-                        <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
+                        <td className="py-3.5 px-4 text-slate-500 font-medium whitespace-nowrap">
                           {new Date(job.createdAt).toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
@@ -1385,10 +1521,10 @@ export default function AdminDashboardPage() {
 
         {/* Tab 4: Job Applications Table */}
         {activeTab === "applications" && (
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
+              <table className="w-full text-left text-xs border-collapse font-sans">
+                <thead className="bg-slate-50/80 border-b border-slate-200/80 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
                   <tr>
                     <th className="py-3.5 px-4">Candidate Details</th>
                     <th className="py-3.5 px-4">Applied Position</th>
@@ -1410,7 +1546,7 @@ export default function AdminDashboardPage() {
                     </tr>
                   ) : (
                     filteredApplications.map((app) => (
-                      <tr key={app.id} className="hover:bg-slate-50/75 transition-colors">
+                      <tr key={app.id} className="hover:bg-slate-50/70 transition-colors">
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-2.5">
                             <div className="w-8 h-8 rounded-full bg-[#1b4965]/10 text-[#1b4965] font-bold flex items-center justify-center shrink-0 text-xs">
@@ -1419,7 +1555,7 @@ export default function AdminDashboardPage() {
                             <div>
                               <div className="font-bold text-slate-900">{app.fullName}</div>
                               <div className="flex items-center gap-2 text-[11px] text-slate-500 mt-0.5">
-                                <a href={`mailto:${app.email}`} className="hover:text-[#1b4965] hover:underline">
+                                <a href={`mailto:${app.email}`} className="hover:text-[#1b4965] hover:underline font-medium">
                                   {app.email}
                                 </a>
                                 <span>•</span>
@@ -1431,25 +1567,25 @@ export default function AdminDashboardPage() {
                           </div>
                         </td>
                         <td className="py-3.5 px-4">
-                          <div className="font-semibold text-slate-900">{app.job?.title || "Role Unavailable"}</div>
-                          <div className="text-[11px] text-slate-500">{app.job?.department || "Department"}</div>
+                          <div className="font-bold text-slate-900">{app.job?.title || "Role Unavailable"}</div>
+                          <div className="text-[11px] text-slate-500 font-medium">{app.job?.department || "Department"}</div>
                         </td>
                         <td className="py-3.5 px-4">
                           <a
                             href={app.resumeUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-[#1b4965] font-semibold text-xs border border-slate-200 transition-colors"
-                            title="Open resume in Supabase Storage"
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-[#1b4965] font-bold text-xs border border-slate-200/80 transition-colors"
+                            title="Open resume document"
                           >
                             <FileCheck size={13} className="text-[#1b4965]" />
-                            <span className="max-w-[120px] truncate">{app.resumeFileName || "Candidate Resume.pdf"}</span>
+                            <span className="max-w-[120px] truncate">{app.resumeFileName || "Resume.pdf"}</span>
                             <DownloadCloud size={12} className="text-slate-400" />
                           </a>
                         </td>
                         <td className="py-3.5 px-4 max-w-xs">
                           <p 
-                            className="text-slate-600 line-clamp-2 italic hover:text-slate-900 cursor-pointer"
+                            className="text-slate-600 line-clamp-2 italic hover:text-slate-900 cursor-pointer font-sans"
                             onClick={() => {
                               setSelectedApplication(app);
                               setEditAppNotes(app.adminNotes || "");
@@ -1463,26 +1599,26 @@ export default function AdminDashboardPage() {
                           <select
                             value={app.status}
                             onChange={(e) => handleUpdateAppStatus(app.id, e.target.value)}
-                            className={`px-2.5 py-1 rounded-lg text-xs font-semibold border focus:outline-none cursor-pointer ${
+                            className={`px-3 py-1 rounded-full text-xs font-bold border cursor-pointer transition-all ${
                               app.status === "PENDING"
-                                ? "bg-amber-50 text-amber-800 border-amber-200"
+                                ? "bg-amber-50 text-amber-800 border-amber-200/80"
                                 : app.status === "REVIEWING"
-                                ? "bg-blue-50 text-blue-800 border-blue-200"
+                                ? "bg-blue-50 text-blue-800 border-blue-200/80"
                                 : app.status === "SHORTLISTED"
-                                ? "bg-purple-50 text-purple-800 border-purple-200"
+                                ? "bg-purple-50 text-purple-800 border-purple-200/80"
                                 : app.status === "HIRED"
-                                ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                ? "bg-emerald-50 text-emerald-800 border-emerald-200/80"
                                 : "bg-slate-100 text-slate-700 border-slate-200"
                             }`}
                           >
-                            <option value="PENDING">Pending Review</option>
-                            <option value="REVIEWING">Under Review</option>
-                            <option value="SHORTLISTED">Shortlisted</option>
-                            <option value="REJECTED">Archived / Rejected</option>
-                            <option value="HIRED">Hired</option>
+                            <option value="PENDING">● Pending Review</option>
+                            <option value="REVIEWING">● Under Review</option>
+                            <option value="SHORTLISTED">● Shortlisted</option>
+                            <option value="REJECTED">● Archived / Rejected</option>
+                            <option value="HIRED">● Hired</option>
                           </select>
                         </td>
-                        <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
+                        <td className="py-3.5 px-4 text-slate-500 font-medium whitespace-nowrap">
                           {new Date(app.createdAt).toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
@@ -1505,6 +1641,129 @@ export default function AdminDashboardPage() {
                               onClick={() => handleDeleteApplication(app.id)}
                               className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                               title="Delete Submission"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 5: News & Articles Table */}
+        {activeTab === "news" && (
+          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse font-sans">
+                <thead className="bg-slate-50/80 border-b border-slate-200/80 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                  <tr>
+                    <th className="py-3.5 px-4">Article & Cover</th>
+                    <th className="py-3.5 px-4">Category</th>
+                    <th className="py-3.5 px-4">Author & Date</th>
+                    <th className="py-3.5 px-4">Featured</th>
+                    <th className="py-3.5 px-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-slate-800 font-normal">
+                  {isLoading ? (
+                    <tr>
+                      <td colSpan={5} className="py-12 text-center text-slate-500">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="w-6 h-6 border-2 border-slate-200 border-t-[#1b4965] rounded-full animate-spin" />
+                          <span className="font-semibold text-xs text-slate-600">Loading news & insights...</span>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : filteredNews.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-12 text-center text-slate-500">
+                        <Newspaper size={36} className="mx-auto text-slate-300 mb-2" />
+                        <p className="font-semibold text-sm text-slate-700">No news articles matching filter</p>
+                        <p className="text-xs text-slate-400 mt-1">Create a news article to publish announcements and tech insights</p>
+                        <button
+                          onClick={() => {
+                            setNewsToEdit(null);
+                            setIsNewsModalOpen(true);
+                          }}
+                          className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-[#1b4965] hover:bg-[#153950] text-white text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer"
+                        >
+                          <Plus size={14} />
+                          <span>Create News Article</span>
+                        </button>
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredNews.map((article) => (
+                      <tr key={article.id} className="hover:bg-slate-50/70 transition-colors">
+                        <td className="py-3.5 px-4">
+                          <div className="flex items-center gap-3">
+                            {article.imageUrl && (
+                              <div className="w-12 h-9 rounded-xl overflow-hidden relative shrink-0 border border-slate-200 bg-slate-100">
+                                <img
+                                  src={article.imageUrl}
+                                  alt={article.title}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            )}
+                            <div className="min-w-0">
+                              <div className="font-bold text-slate-900 truncate max-w-md">
+                                {article.title}
+                              </div>
+                              <div className="text-slate-500 text-[11px] truncate max-w-md mt-0.5">
+                                {article.excerpt}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-blue-50 text-[#1b4965] font-bold text-[11px] border border-blue-100">
+                            {article.categoryLabel || article.category}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <div className="font-bold text-slate-900">{article.authorName}</div>
+                          <div className="text-slate-500 text-[11px] font-medium">{article.date}</div>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          {article.featured ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 text-[11px] font-extrabold border border-amber-200">
+                              <Sparkles size={11} />
+                              Spotlight
+                            </span>
+                          ) : (
+                            <span className="text-slate-400 text-[11px] font-medium">Standard</span>
+                          )}
+                        </td>
+                        <td className="py-3.5 px-4 text-right">
+                          <div className="flex items-center justify-end gap-1.5">
+                            <Link
+                              href={`/news/${article.slug}`}
+                              target="_blank"
+                              className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+                              title="Preview Article Page"
+                            >
+                              <ExternalLink size={14} />
+                            </Link>
+                            <button
+                              onClick={() => {
+                                setNewsToEdit(article);
+                                setIsNewsModalOpen(true);
+                              }}
+                              className="p-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#1b4965] transition-colors cursor-pointer"
+                              title="Edit Article"
+                            >
+                              <Edit2 size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteNews(article.id)}
+                              className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 transition-colors cursor-pointer"
+                              title="Delete Article"
                             >
                               <Trash2 size={14} />
                             </button>
@@ -1926,6 +2185,19 @@ export default function AdminDashboardPage() {
           fetchData(true);
         }}
         jobToEdit={jobToEdit}
+      />
+
+      {/* News Article Create / Edit Modal */}
+      <AdminNewsModal
+        isOpen={isNewsModalOpen}
+        onClose={() => {
+          setIsNewsModalOpen(false);
+          setNewsToEdit(null);
+        }}
+        onSuccess={() => {
+          fetchData(true);
+        }}
+        editArticle={newsToEdit}
       />
     </div>
   );

@@ -1,57 +1,58 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { 
   Server, 
-  Database, 
-  ShieldCheck, 
   Cpu, 
-  Layers, 
+  HardDrive, 
+  ShieldCheck, 
   ArrowRight, 
   CheckCircle2, 
-  Phone,
-  HardDrive,
-  Award,
-  Users,
-  Settings,
-  Activity,
-  FileCheck
+  Network,
+  ChevronRight,
+  Terminal,
+  Activity
 } from "lucide-react";
-import { getPartnerLogo } from "@/components/PartnerLogos";
 
 export default function SystemEngineeringPage() {
-  const servicePillars = [
-    {
-      icon: Database,
-      title: "Enterprise Core Database & Middleware",
-      desc: "Comprehensive installation, configuration, and performance tuning for Oracle Enterprise Database, WebLogic Application Servers, and Real Application Clusters (RAC)."
-    },
+  const capabilities = [
     {
       icon: Server,
-      title: "Data Center Infrastructure & Compute",
-      desc: "Turnkey hardware provisioning, rack integration, structured networking, and high-performance server deployments engineered with IBM, Lenovo, and Oracle."
+      title: "Datacenter Architecture & Virtualization",
+      desc: "Designing and deploying enterprise VMware, KVM, and Proxmox virtualization clusters with high-availability compute pools and live migration."
     },
     {
       icon: HardDrive,
-      title: "Storage Solutions & Disaster Recovery",
-      desc: "High-availability SAN/NAS enterprise storage architectures, automated snapshot replication, and mission-critical Disaster Recovery (DR) data center failover systems."
+      title: "Storage Systems & SAN Infrastructure",
+      desc: "High-throughput Ceph, NetApp, and SAN/NAS storage arrays configured for multi-petabyte capacity, zero-data-loss snapshots, and real-time replication."
     },
     {
-      icon: Activity,
-      title: "Year-on-Year SLA Maintenance",
-      desc: "Continuous proactive monitoring, preventative maintenance, critical patch deployment, and guaranteed 15-minute emergency response SLAs for commercial banks."
+      icon: Network,
+      title: "Core Enterprise Networking & BGP",
+      desc: "Software-Defined Networking (SDN), BGP routing, Cisco/Arista fabric switches, and micro-segmented firewalls engineered for 99.999% uptime."
     },
     {
-      icon: Settings,
-      title: "Virtualization & Hyper-Converged Infrastructure",
-      desc: "Enterprise hyper-convergence with Oracle Linux Virtualization Manager (OLVM), Nutanix, and Red Hat Enterprise Virtualization for banking workloads."
+      icon: ShieldCheck,
+      title: "Disaster Recovery & Business Continuity",
+      desc: "Multi-region DR site replication, automated RPO/RTO failover orchestration, and continuous backup integrity validation."
     },
     {
-      icon: FileCheck,
-      title: "Infrastructure Audit, Commissioning & Verification",
-      desc: "Independent technical verification, capacity audit, stress testing, and regulatory compliance benchmarking for third-party or legacy ICT implementations."
+      icon: Cpu,
+      title: "Hardware Lifecycle & Vendor Management",
+      desc: "Tier-1 hardware procurement, rack-and-stack installation, firmware maintenance, and OEM warranty management with HP, Dell, and IBM."
+    },
+    {
+      icon: Terminal,
+      title: "Kernel Tuning & Linux Hardening",
+      desc: "Deep Linux OS performance tuning, CIS benchmark compliance hardening, and kernel-level parameter optimization for banking workloads."
     }
+  ];
+
+  const metrics = [
+    { value: "99.999%", label: "System Availability" },
+    { value: "15+ Yrs", label: "Datacenter Engineering" },
+    { value: "50+ PB", label: "Storage Managed" },
+    { value: "Tier III/IV", label: "Architected Standards" },
   ];
 
   const openDemoModal = (product: string) => {
@@ -61,142 +62,156 @@ export default function SystemEngineeringPage() {
   };
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Hero Section */}
-      <section className="relative pt-28 pb-20 overflow-hidden bg-primary-950 text-white">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto px-6">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-secondary-300 text-xs font-bold uppercase tracking-wider mb-6">
-              <Server size={14} className="text-secondary-400" />
-              <span>Infrastructure & Mission-Critical Systems</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display tracking-tight text-white mb-6 leading-[1.1]">
-              System Engineering & <br />
-              <span className="text-secondary-400">Core ICT Infrastructure</span>
-            </h1>
-
-            <p className="text-lg text-blue-100 leading-relaxed font-light mb-8 max-w-2xl">
-              Powering Ethiopia&apos;s most demanding banking and enterprise operations with certified hardware, Oracle databases, hyper-converged virtualization, and year-on-year SLA contracts.
-            </p>
-
-            <div className="flex flex-wrap gap-4">
-              <button
-                type="button"
-                onClick={() => openDemoModal("system-engineering")}
-                className="px-8 py-4 bg-secondary-400 hover:bg-secondary-300 text-primary-950 font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-sm cursor-pointer"
-              >
-                <span>Talk to an Infrastructure Architect</span>
-                <ArrowRight size={16} />
-              </button>
-
-              <Link
-                href="/case-studies"
-                className="px-7 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all flex items-center gap-2 text-sm"
-              >
-                <span>View EthSwitch Migration Story</span>
-              </Link>
-            </div>
+    <div className="bg-white font-sans min-h-screen text-neutral-900 selection:bg-[#3e7da2] selection:text-white">
+      {/* Light Enterprise Hero */}
+      <section className="relative pt-24 pb-20 bg-neutral-50 border-b border-neutral-200 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-500 mb-6">
+            <Link href="/" className="hover:text-neutral-900 transition-colors">Home</Link>
+            <ChevronRight className="w-3 h-3 text-neutral-400" />
+            <Link href="/solutions/private-cloud" className="hover:text-neutral-900 transition-colors">Solutions</Link>
+            <ChevronRight className="w-3 h-3 text-neutral-400" />
+            <span className="text-[#3e7da2] font-semibold">System Engineering</span>
           </div>
 
-          {/* Key Numbers */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-10 border-t border-white/10">
-            <div>
-              <div className="text-3xl font-bold text-secondary-300 font-display">35+</div>
-              <div className="text-xs text-blue-200 mt-1 uppercase tracking-wider">Certified Engineers</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-secondary-300 font-display">80+</div>
-              <div className="text-xs text-blue-200 mt-1 uppercase tracking-wider">Enterprise Implementations</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-secondary-300 font-display">10+</div>
-              <div className="text-xs text-blue-200 mt-1 uppercase tracking-wider">Active Bank SLAs</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-secondary-300 font-display">2011</div>
-              <div className="text-xs text-blue-200 mt-1 uppercase tracking-wider">15+ Years Track Record</div>
-            </div>
-          </div>
-        </div>
-      </section>
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white border border-neutral-200 shadow-xs text-neutral-700 text-xs font-mono mb-6">
+                <Cpu className="w-3.5 h-3.5 text-[#3e7da2]" />
+                <span>Enterprise Systems Architecture</span>
+              </div>
 
-      {/* Services Grid */}
-      <section className="py-24 bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-primary-600 font-bold text-xs uppercase tracking-wider block mb-3">
-              Capabilities
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 font-display">
-              End-to-End System Engineering Services
-            </h2>
-          </div>
+              <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-neutral-900 mb-6 leading-tight">
+                Mission-Critical Datacenter & System Engineering
+              </h1>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {servicePillars.map((pillar, i) => (
-              <motion.div
-                key={pillar.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="bg-white rounded-3xl p-8 border border-neutral-200 hover:border-primary-300 hover:shadow-xl transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <div className="w-12 h-12 rounded-2xl bg-primary-50 text-primary-600 flex items-center justify-center mb-6">
-                    <pillar.icon size={24} />
+              <p className="text-base sm:text-lg text-neutral-600 leading-relaxed mb-8 max-w-2xl">
+                Building resilient server architectures, high-performance SAN storage arrays, and redundant networking fabrics for banks, telecommunications, and national infrastructure.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <button
+                  type="button"
+                  onClick={() => openDemoModal("system-engineering")}
+                  className="px-6 py-3.5 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded shadow-sm transition-colors flex items-center gap-2 text-sm cursor-pointer"
+                >
+                  <span>Request Engineering Audit</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+
+                <Link
+                  href="/contact"
+                  className="px-6 py-3.5 bg-white hover:bg-neutral-100 text-neutral-800 font-semibold rounded border border-neutral-300 transition-colors flex items-center gap-2 text-sm"
+                >
+                  <span>Talk with Infrastructure Specialist</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <div className="bg-white border border-neutral-200 p-6 rounded shadow-sm">
+                <div className="flex items-center justify-between pb-4 mb-4 border-b border-neutral-100">
+                  <div className="flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-[#3e7da2]" />
+                    <span className="text-xs font-mono uppercase text-neutral-500">Hardware Telemetry</span>
                   </div>
-                  <h3 className="text-lg font-bold text-neutral-900 mb-3 font-display">
-                    {pillar.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
-                    {pillar.desc}
-                  </p>
+                  <span className="text-xs font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-semibold">Tier III Standard</span>
                 </div>
-                <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center gap-2 text-xs font-semibold text-primary-600">
-                  <CheckCircle2 size={14} />
-                  <span>SLA Covered</span>
+
+                <div className="space-y-3">
+                  {[
+                    "Dual-Power Redundancy & SAN Fabric",
+                    "Ceph & NetApp Multi-Petabyte Replication",
+                    "Red Hat & Oracle Linux Kernel Parameter Optimization",
+                    "Automated DR Failover < 15 Min RTO",
+                    "OEM Hardware Warranty & 24/7 Parts SLA"
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3 p-3 bg-neutral-50 border border-neutral-200/80 rounded">
+                      <CheckCircle2 className="w-4 h-4 text-[#3e7da2] shrink-0 mt-0.5" />
+                      <span className="text-xs font-medium text-neutral-700">{item}</span>
+                    </div>
+                  ))}
                 </div>
-              </motion.div>
-            ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Partners Validation */}
-      <section className="py-16 bg-white border-b border-neutral-200">
-        <div className="max-w-7xl mx-auto px-6">
-          <p className="text-xs font-bold uppercase tracking-wider text-neutral-400 text-center mb-8">
-            Hardware & Systems Supplied Hand-in-Hand with Global Alliances
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 items-center">
-            {["Oracle", "IBM", "Lenovo", "Nutanix", "RedHat", "SUSE"].map((p) => (
-              <div key={p} className="h-16 rounded-2xl bg-neutral-50 border border-neutral-200 flex items-center justify-center p-3 shadow-xs">
-                {getPartnerLogo(p, "h-7 w-auto max-w-[100px] object-contain")}
+      {/* Metrics Bar */}
+      <section className="border-b border-neutral-200 bg-white py-10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {metrics.map((metric, idx) => (
+              <div key={idx} className="border-l-2 border-[#3e7da2] pl-4">
+                <div className="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight">{metric.value}</div>
+                <div className="text-xs font-mono text-neutral-500 mt-1">{metric.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-(--steel-blue) text-white text-center">
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-3xl font-bold font-display mb-4">
-            Protect Your Critical Operations with ACT SLAs
-          </h2>
-          <p className="text-blue-100 text-sm mb-8 leading-relaxed">
-            From emergency recovery drills to continuous 24/7 telemetry and hardware maintenance, ensure uninterrupted operations for your enterprise.
-          </p>
-          <button
-            type="button"
-            onClick={() => openDemoModal("system-engineering")}
-            className="px-8 py-4 bg-secondary-400 hover:bg-secondary-300 text-primary-950 font-bold rounded-xl shadow-lg transition-all text-sm cursor-pointer"
-          >
-            Inquire About Infrastructure SLA
-          </button>
+      {/* Core Capabilities */}
+      <section className="py-20 bg-neutral-50 border-b border-neutral-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mb-12">
+            <span className="text-[#3e7da2] font-mono text-xs uppercase tracking-wider block mb-2 font-bold">
+              Engineering Disciplines
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
+              Enterprise System Engineering Capabilities
+            </h2>
+            <p className="text-sm sm:text-base text-neutral-600 mt-3">
+              Hardware-level precision, storage optimization, and high-availability systems tailored for demanding workloads.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {capabilities.map((cap) => (
+              <div
+                key={cap.title}
+                className="bg-white border border-neutral-200 p-8 rounded flex flex-col justify-between hover:border-neutral-300 transition-colors shadow-xs"
+              >
+                <div>
+                  <div className="w-10 h-10 rounded bg-neutral-50 border border-neutral-200 text-[#3e7da2] flex items-center justify-center mb-6 shadow-xs">
+                    <cap.icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-base sm:text-lg font-bold text-neutral-900 mb-3">
+                    {cap.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+                    {cap.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="bg-neutral-50 border border-neutral-200 p-8 sm:p-12 rounded flex flex-col md:flex-row items-center justify-between gap-8 shadow-xs">
+            <div className="max-w-2xl">
+              <h3 className="text-xl sm:text-2xl font-bold text-neutral-900 mb-2">
+                Need to Audit or Architect Your Infrastructure?
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+                Schedule a consultation with our senior systems architects to evaluate your server capacity, SAN storage throughput, and disaster recovery readiness.
+              </p>
+            </div>
+            <div className="flex gap-4 shrink-0">
+              <button
+                type="button"
+                onClick={() => openDemoModal("system-engineering")}
+                className="px-6 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded text-xs uppercase font-mono tracking-wider transition-colors cursor-pointer"
+              >
+                Schedule Architecture Review
+              </button>
+            </div>
+          </div>
         </div>
       </section>
     </div>

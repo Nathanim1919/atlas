@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, animate } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Target,
   Eye,
@@ -29,8 +29,8 @@ const values = [
 ];
 
 const stats = [
-  { value: 2011, suffix: "", label: "Year Established", icon: Award },
-  { value: 90, suffix: "+", label: "Professionals", icon: Users },
+  { value: 15, suffix: "+", label: "Years of Experience", icon: Award },
+  { value: 120, suffix: "+", label: "Team Members", icon: Users },
   { value: 80, suffix: "+", label: "Enterprise Projects", icon: Building2 },
   { value: 5, suffix: "", label: "Departments", icon: Globe2 },
 ];
@@ -77,9 +77,6 @@ const CountUp = ({
 };
 
 export default function About() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
     <section id="about" className="py-8 px-8   bg-gray-100 relative overflow-hidden">
  
@@ -88,28 +85,18 @@ export default function About() {
 
       <div className="relative w-full mx-auto">
         {/* Section Header - Minimalist & Bold */}
-        <div className="mb-24 w-full md:max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col md:flex-row md:items-end md:justify-between justify-start gap-8 border-b border-neutral-200"
-          >
-            <div className="">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-(--steel-blue)/5 border border-(--steel-blue)/10 text-xs font-bold text-(--steel-blue) uppercase tracking-wider mb-6">
-                <span className="w-2 h-2 rounded-full bg-(--steel-blue)"></span>
-                Who We Are
-              </div>
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold font-display text-slate-900 leading-[1.1] tracking-tight">
-                Architecting the <br />
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-(--steel-blue) to-slate-700">Future of Enterprise.</span>
+        <div className="mb-16 w-full md:max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between justify-start gap-8 border-b border-neutral-200 pb-8">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-[#3e7da2] mb-4">Who We Are</p>
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-[1.1] tracking-tight">
+                Atlas Computer Technology
               </h2>
             </div>
-            <p className="text-xl text-slate-500 max-w-lg leading-relaxed font-light border-l-2 border-slate-200 pl-6">
-              Atlas Computer Technology PLC (ACT) is Ethiopia's premier ICT solutions provider, delivering mission-critical infrastructure and software since 2011.
+            <p className="text-lg text-slate-500 max-w-lg leading-relaxed border-l-2 border-slate-200 pl-6">
+              Ethiopia's premier ICT solutions provider, delivering mission-critical infrastructure and software since 2011.
             </p>
-          </motion.div>
+          </div>
         </div>
 
         {/* Main Content Grid */}
@@ -148,53 +135,39 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* Right Column - Stats & Structure */}
+          {/* Right Column - Stats */}
           <div className="lg:col-span-5">
-            <div className="bg-slate-900 rounded-3xl p-10 shadow-2xl shadow-slate-900/20 relative overflow-hidden text-white h-full flex flex-col justify-between">
-              {/* Decorative Gradients */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-(--steel-blue)/20 rounded-full blur-3xl -mr-20 -mt-20" />
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-(--sunflower)/10 rounded-full blur-3xl -ml-20 -mb-20" />
-
-              <div className="relative z-10">
-                <h4 className="font-bold text-white mb-10 flex items-center gap-3 text-lg">
-                  <span className="w-1.5 h-6 bg-(--sunflower) rounded-full" />
-                  Key Metrics
-                </h4>
-
-                <div className="grid grid-cols-2 gap-x-8 gap-y-12">
-                  {stats.map((stat, index) => (
-                    <motion.div
-                      key={stat.label}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.1 }}
-                    >
-                      <div className="text-5xl font-bold text-white mb-2 tracking-tight font-display flex items-center">
+            <div className="border border-neutral-200 rounded-2xl p-8 bg-white h-full flex flex-col justify-between">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-8">Key Metrics</p>
+                <div className="grid grid-cols-2 gap-x-8 gap-y-10">
+                  {stats.map((stat) => (
+                    <div key={stat.label}>
+                      <div className="text-4xl font-bold text-slate-900 mb-1 tracking-tight flex items-center">
                         <CountUp
-                            from={0}
-                            to={stat.value}
-                            separator=","
-                            direction="up"
-                            duration={1.5}
-                            startCounting={false}
+                          from={0}
+                          to={stat.value}
+                          separator=","
+                          direction="up"
+                          duration={1.5}
+                          startCounting={false}
                         />
                         <span>{stat.suffix}</span>
                       </div>
-                      <div className="text-sm font-medium text-slate-400 flex items-center gap-2">
-                        <stat.icon size={16} className="text-(--steel-blue)" />
+                      <div className="text-sm text-slate-500 flex items-center gap-2">
+                        <stat.icon size={14} className="text-[#3e7da2] shrink-0" />
                         {stat.label}
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               </div>
 
-              <div className="relative z-10 mt-12 pt-8 border-t border-slate-800">
-                <h5 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Operational Divisions</h5>
+              <div className="mt-8 pt-6 border-t border-neutral-100">
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Divisions</p>
                 <div className="flex flex-wrap gap-2">
                   {["System Engineering", "Software Dev", "Product Delivery", "Managed Services", "Uni-Cash"].map((dept) => (
-                    <span key={dept} className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 transition-colors text-slate-300 text-xs font-medium rounded-lg border border-slate-700">
+                    <span key={dept} className="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-medium rounded-md border border-slate-200">
                       {dept}
                     </span>
                   ))}
@@ -204,40 +177,27 @@ export default function About() {
           </div>
         </div>
 
-        {/* Vision & Mission - Full Width Split */}
-        <div id="vision" className="w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] grid md:grid-cols-2 min-h-[400px]">
-          
-          {/* Vision Side (Dark/Brand) */}
-          <div className="relative bg-slate-900 flex items-center justify-center p-12 overflow-hidden group">
-            {/* Animated Gradient Background */}
-            <div className="absolute inset-0 bg-linear-to-br from-slate-900 via-(--steel-blue)/20 to-slate-900 z-0" />
-            <motion.div 
-              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-0 right-0 w-[500px] h-[500px] bg-(--steel-blue)/30 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2" 
-            />
-            
-            <div className="relative z-10 max-w-lg">
-              <h3 className="text-4xl lg:text-5xl font-bold text-white mb-6 font-display tracking-tight">Our Vision</h3>
-              <p className="text-xl text-blue-100/80 leading-relaxed font-light">
+        {/* Vision & Mission */}
+        <div id="vision" className="w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] grid md:grid-cols-2 min-h-[360px]">
+          {/* Vision Side */}
+          <div className="bg-[#3e7da2] flex items-center justify-center p-12">
+            <div className="max-w-lg">
+              <h3 className="text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight">Our Vision</h3>
+              <div className="w-10 h-0.5 bg-[#dde325] mb-6" />
+              <p className="text-lg text-white/85 leading-relaxed">
                 To create, adopt, and integrate technology so that people, businesses, and organizations can thrive in a digital-first world.
               </p>
-              <div className="mt-12 h-1 w-24 bg-linear-to-r from-(--sunflower) to-transparent rounded-full" />
             </div>
           </div>
 
-          {/* Mission Side (Light) */}
-          <div className="relative bg-white flex items-center justify-center p-12 overflow-hidden group">
-             {/* Subtle Grid Texture */}
-             <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] bg-size-[24px_24px] opacity-40" />
-             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-slate-50 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2" />
-
-             <div className="relative z-10 max-w-lg">
-              <h3 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 font-display tracking-tight">Our Mission</h3>
-              <p className="text-xl text-slate-600 leading-relaxed font-light">
+          {/* Mission Side */}
+          <div className="bg-white flex items-center justify-center p-12 border-t md:border-t-0 md:border-l border-neutral-200">
+            <div className="max-w-lg">
+              <h3 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4 tracking-tight">Our Mission</h3>
+              <div className="w-10 h-0.5 bg-[#3e7da2] mb-6" />
+              <p className="text-lg text-slate-600 leading-relaxed">
                 To engineer and integrate innovative, cost-effective software and IT solutions using cutting-edge technology to empower our customers with meaningful benefits and impact.
               </p>
-              <div className="mt-12 h-1 w-24 bg-linear-to-r from-(--steel-blue) to-transparent rounded-full" />
             </div>
           </div>
         </div>
@@ -254,26 +214,17 @@ export default function About() {
             <div className="hidden md:block h-px flex-1 bg-neutral-200 ml-12 mb-4" />
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
             {values.map((value, index) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="group"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-2 bg-neutral-50 rounded-lg group-hover:bg-(--steel-blue)/10 transition-colors">
-                    <value.icon className="text-neutral-400 group-hover:text-(--steel-blue) transition-colors" size={24} />
-                  </div>
-                  <h4 className="font-bold text-neutral-900">{value.title}</h4>
+              <div key={value.title}>
+                <div className="flex items-center gap-3 mb-3">
+                  <value.icon size={18} className="text-[#3e7da2] shrink-0" />
+                  <h4 className="font-bold text-neutral-900 text-sm">{value.title}</h4>
                 </div>
-                <p className="text-sm text-neutral-500 leading-relaxed pl-13 border-l-2 border-neutral-100 group-hover:border-(--steel-blue)/30 transition-colors">
+                <p className="text-sm text-neutral-500 leading-relaxed pl-7 border-l border-neutral-200">
                   {value.description}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

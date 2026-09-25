@@ -14,7 +14,7 @@ import {
   ChevronUp,
   Send
 } from "lucide-react";
-import Logo from "../../public/logo.png";
+import Logo from "../../public/final logo 3-02-01.png";
 
 const footerLinks = {
   solutions: [
@@ -211,19 +211,22 @@ export default function Footer() {
                     <div>
                       <span className="block text-neutral-900 font-semibold mb-0.5">Location 2 (Branch)</span>
                       <span className="text-neutral-600 leading-relaxed block">
-                        Kirkos Sub-city, Near Lancha Train Station, Zefco Building, 3rd Floor
+                        Lancha Train Station, Zefco Building, 3rd Floor
                       </span>
                     </div>
                   </div>
                 </li>
-                <li className="flex gap-3 items-center">
-                  <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center shrink-0 border border-primary-100">
+                <li className="flex gap-3 items-start">
+                  <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center shrink-0 border border-primary-100 mt-0.5">
                     <Phone size={15} className="text-primary-600" />
                   </div>
                   <div className="text-xs">
-                    <span className="block text-neutral-900 font-semibold mb-0.5">Phone Line</span>
+                    <span className="block text-neutral-900 font-semibold mb-0.5">Phone Lines</span>
                     <a href="tel:+251115329139" className="text-neutral-600 hover:text-primary-600 transition-colors block">
                       +25111-5-32-91-39
+                    </a>
+                    <a href="tel:+251929906251" className="text-neutral-600 hover:text-primary-600 transition-colors block">
+                      +251 929 906251
                     </a>
                   </div>
                 </li>
