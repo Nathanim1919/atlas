@@ -543,7 +543,7 @@ export default function AdminDashboardPage() {
         article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         article.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
         article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (article.authorName && article.authorName.toLowerCase().includes(searchQuery.toLowerCase()));
+        (article.author?.name && article.author.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
       const matchCategory = newsCategoryFilter === "ALL" || article.category === newsCategoryFilter;
 
@@ -612,7 +612,7 @@ export default function AdminDashboardPage() {
       csvContent = "data:text/csv;charset=utf-8," + 
         ["ID,Date,Title,Category,Author,ReadTime,Featured,Slug"]
         .concat(newsArticles.map(n => 
-          `"${n.id}","${n.date}","${n.title.replace(/"/g, '""')}","${n.categoryLabel}","${n.authorName}","${n.readTime}","${n.featured ? "Yes" : "No"}","${n.slug}"`
+          `"${n.id}","${n.date}","${n.title.replace(/"/g, '""')}","${n.categoryLabel}","${(n.author?.name || "").replace(/"/g, '""')}","${n.readTime}","${n.featured ? "Yes" : "No"}","${n.slug}"`
         ))
         .join("\n");
     }
@@ -1727,7 +1727,7 @@ export default function AdminDashboardPage() {
                           </span>
                         </td>
                         <td className="py-3.5 px-4">
-                          <div className="font-bold text-slate-900">{article.authorName}</div>
+                          <div className="font-bold text-slate-900">{article.author?.name || "Atlas Computer Technology"}</div>
                           <div className="text-slate-500 text-[11px] font-medium">{article.date}</div>
                         </td>
                         <td className="py-3.5 px-4">
